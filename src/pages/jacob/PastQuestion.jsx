@@ -61,7 +61,7 @@ const PastQuestion = () => {
       const response = await axios.get(
         `${
           import.meta.env.VITE_BASE_URL
-        }api/v1/fetch-questions/${year}/${subject}/${user?._id}`
+        }api/v1/fetch-questions/${year}/${subject}/${user?._id || user?.id}`,
       );
       toast.dismiss(toastId);
       dispatch(setPastQuestions(response.data.data));

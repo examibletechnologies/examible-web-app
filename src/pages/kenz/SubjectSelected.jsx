@@ -22,8 +22,8 @@ const SubjectSelected = () => {
     const id = toast.loading("Adding Subject ...");
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}api/v1/addSubject/${user?._id}`,
-        { subject }
+        `${import.meta.env.VITE_BASE_URL}api/v1/addSubject/${user?._id || user?.id}`,
+        { subject },
       );
       setLoading(false);
       if (res?.status === 200) {
@@ -46,7 +46,7 @@ const SubjectSelected = () => {
   // build a fast lookup for subject -> img once
   const subjectMap = useMemo(
     () => Object.fromEntries(allSubjectsData.map((s) => [s.subject, s.img])),
-    []
+    [],
   );
 
   return (

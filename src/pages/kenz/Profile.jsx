@@ -52,7 +52,7 @@ const Profile = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}api/v1/studentUpdate/${user?._id}`,
-        { fullName }
+        { fullName },
       );
       toast.dismiss(id);
       setTimeout(() => {
@@ -74,14 +74,14 @@ const Profile = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}api/v1/upload-profileImage/${
-          user?._id
+          user?._id || user?.id
         }`,
         formDatas,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       if (res?.status === 200) {
         toast.success("Upload Successfully");
@@ -102,9 +102,9 @@ const Profile = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}api/v1/change/password/student/${
-          user?._id
+          user?._id || user?.id
         }`,
-        edittedPassword
+        edittedPassword,
       );
       setLoading(false);
       toast.dismiss(id);

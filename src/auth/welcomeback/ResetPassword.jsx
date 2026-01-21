@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/authCss/resetpassword.css";
 import lock from "../../assets/public/uim_padlock.svg";
-import logo from "../../assets/public/legacy_builder_logo.png";
+import logo from "../../assets/public/logo.png";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -71,7 +71,7 @@ const ResetPassword = () => {
           `${
             import.meta.env.VITE_BASE_URL
           }api/v1/reset_password/student/${token}`,
-          data
+          data,
         );
         setLoading(false);
         if (res?.status === 200) {

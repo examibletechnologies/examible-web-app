@@ -42,8 +42,8 @@ const LeavingNow = () => {
       setLoading(true);
       const id = toast.loading("Please wait ...");
       const res = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}api/v1/myRating/${user._id}`,
-        { duration, completed, subject: mockSelectedSubject, performance }
+        `${import.meta.env.VITE_BASE_URL}api/v1/myRating/${user._id || user.id}`,
+        { duration, completed, subject: mockSelectedSubject, performance },
       );
       if (res?.status === 200) {
         toast.dismiss(id);

@@ -18,7 +18,7 @@ const FeedbackForm = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const url = `${import.meta.env.VITE_BASE_URL}api/v1/students/${
-    user._id
+    user._id || user.id
   }/feedback`;
 
   const { setShowFeedbackModal } = useExamibleContext();
@@ -63,7 +63,7 @@ const FeedbackForm = () => {
           toast.error(error.text, {
             autoClose: 2000,
           });
-        }
+        },
       );
   };
 

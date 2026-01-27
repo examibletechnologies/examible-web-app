@@ -23,7 +23,7 @@ const Overview = () => {
   // build a fast lookup for subject -> img once
   const subjectMap = useMemo(
     () => Object.fromEntries(allSubjectsData.map((s) => [s.subject, s.img])),
-    []
+    [],
   );
 
   const { setShowSubjectSelected, showSubjectSelected } = useExamibleContext();
@@ -33,8 +33,8 @@ const Overview = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}api/v1/removeSubject/${user?._id}`,
-        { subject }
+        `${import.meta.env.VITE_BASE_URL}api/v1/removeSubject/${user?._id || user?.id}`,
+        { subject },
       );
       setLoading(false);
       if (res?.status === 200) {
@@ -90,7 +90,7 @@ const Overview = () => {
     const id = toast.loading("Please wait ...");
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id}`
+        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id}`,
       );
       setLoading(false);
       if (res?.status) {
@@ -193,7 +193,7 @@ const Overview = () => {
                         }}
                         className="overview-trashIcon"
                         onClick={(e) => {
-                          e.stopPropagation(), removeSubject(item);
+                          (e.stopPropagation(), removeSubject(item));
                         }}
                       />
                     </nav>

@@ -101,7 +101,7 @@ const SubjectSelected = () => {
               <img
                 src={subjectMap[item]}
                 alt={item}
-                loading="lazy"
+                loading="eager"
                 width={48}
                 height={48}
               />

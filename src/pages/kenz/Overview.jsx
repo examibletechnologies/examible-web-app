@@ -90,7 +90,7 @@ const Overview = () => {
     const id = toast.loading("Please wait ...");
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id}`,
+        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id || user?.id}`,
       );
       setLoading(false);
       if (res?.status) {

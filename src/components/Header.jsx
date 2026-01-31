@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderLogo from "../assets/public/logo.png";
 import { toast } from "react-toastify";
 import Button from "../shared/Button";
+import { IoReorderThreeOutline } from "react-icons/io5";
 
 const Header = () => {
   const location = useLocation();
@@ -55,42 +56,36 @@ const Header = () => {
             </Button>
             <Button
               onClick={() => nav("/login")}
+              variant="primary-outline"
               style={{ width: 89 }}
               size="sm"
             >
               Login
             </Button>
           </aside>
-          <div
+          {/* <div
             className="header-menuIcon"
+            onClick={() => setShowDropdown(!showDropdown)}
+          > */}
+          <button
+            class="menu-button"
+            aria-label="Open Menu"
             onClick={() => setShowDropdown(!showDropdown)}
           >
             <svg
-              width="59"
-              height="47"
-              viewBox="0 0 59 47"
-              fill="none"
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect
-                x="1"
-                y="1"
-                width="57"
-                height="45"
-                rx="5"
-                fill="white"
-                stroke="#F2AE30"
-                strokeWidth="2"
-              />
+              <rect x="2" y="2" width="36" height="36" rx="4" class="icon-bg" />
 
-              <path
-                d="M11.6667 35H46.6667M11.6667 23.3333H46.6667M11.6667 11.6667H35"
-                stroke="#F2AE30"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
+              <line x1="8" y1="12" x2="32" y2="12" class="line top" />
+              <line x1="8" y1="20" x2="24" y2="20" class="line middle" />
+              <line x1="8" y1="28" x2="32" y2="28" class="line bottom" />
             </svg>
-          </div>
+          </button>
+          {/* </div> */}
         </div>
       </div>
       {showDropdown && (

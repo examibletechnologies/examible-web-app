@@ -4,6 +4,8 @@ import { IoMdArrowBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Input from "../shared/Input";
+import Button from "../shared/Button";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
@@ -44,10 +46,11 @@ const ForgetPassword = () => {
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_BASE_URL}api/v1/forgot_password/student`,
-          data
+          data,
         );
         if (res?.status === 200) {
           toast.info("Password reset link sent to your email!");
+          navigate("/resetlink", { state: { email: data.email } });
         }
         setLoading(false);
       } catch (error) {
@@ -94,34 +97,26 @@ const ForgetPassword = () => {
           <h1>FORGET PASSWORD</h1>
         </div>
         <form className="form" onSubmit={(e) => handleSubmit(e, inputValue)}>
-          <div className="signinput">
-            <label className="signuplabel">Email</label>
-            <input
-              name="email"
-              onChange={handleChange}
-              value={inputValue.email}
-              type="email"
-              onBlur={(e) => validateField(e.target.name, e.target.value)}
-              placeholder="Enter Your Email"
-              required
-              className="signinputmain"
-            />
-            {errorMessage.email && (
-              <p className="error">{errorMessage.email}</p>
-            )}
-          </div>
-
-          <button
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            value={inputValue.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+            required
+            error={errorMessage.email}
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+          />
+          <Button
             type="submit"
-            className="forgetbtn"
+            loading={loading}
             disabled={disabled}
-            style={{
-              backgroundColor: disabled ? "#dbd2f0d2" : "#804bf2",
-              cursor: disabled ? "not-allowed" : "pointer",
-            }}
+            fullWidth
+            style={{ marginTop: 12 }}
           >
-            {loading ? "Loading..." : "Send password Reset Link"}
-          </button>
+            {loading ? "Please wait..." : "Send password Reset Link"}
+          </Button>
         </form>
       </div>
     </div>

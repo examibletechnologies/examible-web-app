@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/overview.css";
 import image1 from "../../assets/public/home-firstlayer.png";
 import { FaBook } from "react-icons/fa6";
@@ -13,6 +13,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import { allSubjectsData } from "../../constants/common";
+import { PlusIcon } from "../../assets/public/svg/common";
 
 const Overview = () => {
   const user = useSelector((state) => state.user);
@@ -20,9 +21,12 @@ const Overview = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  // build a fast lookup for subject -> img once
+  // build a fast lookup for subject -> svg component OR img once
   const subjectMap = useMemo(
-    () => Object.fromEntries(allSubjectsData.map((s) => [s.subject, s.img])),
+    () =>
+      Object.fromEntries(
+        allSubjectsData.map((s) => [s.subject, s.svg || s.img]),
+      ),
     [],
   );
 
@@ -179,13 +183,17 @@ const Overview = () => {
                       onMouseLeave={() => setShowBin("")}
                       key={index}
                     >
-                      <img
-                        src={subjectMap[item]}
-                        alt={item}
-                        loading="eager"
-                        width={48}
-                        height={48}
-                      />
+                      {typeof subjectMap[item] === "function" ? (
+                        React.createElement(subjectMap[item])
+                      ) : (
+                        <img
+                          src={subjectMap[item]}
+                          alt={item}
+                          loading="eager"
+                          width={48}
+                          height={48}
+                        />
+                      )}
                       <TbTrashX
                         style={{
                           pointerEvents: loading ? "none" : "auto",
@@ -201,14 +209,17 @@ const Overview = () => {
                   <nav
                     style={{
                       pointerEvents: loading ? "none" : "auto",
-                      backgroundColor: "white",
                       cursor: "pointer",
                     }}
                     onClick={() => addMoreSubject()}
                   >
                     <aside>
-                      <div>+</div>
-                      <h6>Add Subject</h6>
+                      <div className="plus-icon">
+                        <PlusIcon />
+                      </div>
+                      <h6>
+                        Click to <br /> Add Subject
+                      </h6>
                     </aside>
                   </nav>
                 </main>

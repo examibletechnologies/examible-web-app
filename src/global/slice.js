@@ -223,6 +223,10 @@ const slice = createSlice({
       state.timeOut = false;
     },
     theExamTimer: (state) => {
+      if (state.examTimerMins <= 0 && state.examTimerSecs <= 0) {
+        state.timeOut = true;
+        return;
+      }
       if (state.examTimerSecs === 0) {
         state.examTimerMins--;
         state.examTimerSecs = 59;

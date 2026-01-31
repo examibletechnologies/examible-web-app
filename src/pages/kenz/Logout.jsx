@@ -25,7 +25,7 @@ const Logout = () => {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
       toast.dismiss(id);
       if (res?.status === 200) {
@@ -66,7 +66,7 @@ const Logout = () => {
   return (
     <div className="logout" onClick={() => setIsLogout(false)}>
       <div className="logoutHolder" onClick={(e) => e.stopPropagation()}>
-        <img src={img1} alt="" />
+        <img src={img1} alt="" loading="eager" />
         <main>
           <h3>Ready to log out? </h3>
           <p>Keep the momentum going — we’ll be here when you’re back!</p>

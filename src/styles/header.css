@@ -21,12 +21,16 @@
   justify-content: space-between;
   padding-right: 20px;
 
-  .header-menuIcon {
+  .header-menuIcon,
+  .menu-button {
     display: none;
   }
 
   @media screen and (max-width: 900px) {
     padding-inline: 15px;
+    .menu-button {
+      display: flex;
+    }
     .header-menuIcon {
       display: flex;
       padding: 4px;

@@ -1,16 +1,16 @@
 [
   {
-    "name": "HOME",
+    "name": "Home",
     "link": "/",
     "id": 1
   },
   {
-    "name": "ABOUT US",
+    "name": "About Us",
     "link": "/about-us",
     "id": 2
   },
   {
-    "name": "PLANS",
+    "name": "Plans",
     "link": "#",
     "id": 4
   }

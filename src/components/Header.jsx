@@ -3,8 +3,8 @@ import "../styles/header.css";
 import menuBar from "../assets/navBar.json";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderLogo from "../assets/public/logo.png";
-import hambuger from "../assets/public/hambuger.svg";
 import { toast } from "react-toastify";
+import Button from "../shared/Button";
 
 const Header = () => {
   const location = useLocation();
@@ -28,12 +28,9 @@ const Header = () => {
               {menuBar.map((item, index) => (
                 <li
                   key={index}
-                  style={{
-                    borderColor:
-                      location.pathname === item.link ? "#804BF2" : "white",
-                  }}
+                  className={location.pathname === item.link ? "active" : ""}
                   onClick={() => {
-                    item.name === "PLANS" &&
+                    item.name === "Plans" &&
                       toast.info("Plans page is currently unavailable");
                   }}
                 >
@@ -48,18 +45,51 @@ const Header = () => {
             </ul>
           </div>
           <aside className="header-holderButton">
-            <button className="header-signup" onClick={() => nav("/signup")}>
-              SIGN UP
-            </button>
-            <button className="header-login" onClick={() => nav("/login")}>
-              LOGIN
-            </button>
+            <Button
+              variant="outline"
+              onClick={() => nav("/signup")}
+              style={{ width: 89 }}
+              size="sm"
+            >
+              Sign Up
+            </Button>
+            <Button
+              onClick={() => nav("/login")}
+              style={{ width: 89 }}
+              size="sm"
+            >
+              Login
+            </Button>
           </aside>
           <div
             className="header-menuIcon"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <img src={hambuger} />
+            <svg
+              width="59"
+              height="47"
+              viewBox="0 0 59 47"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="1"
+                y="1"
+                width="57"
+                height="45"
+                rx="5"
+                fill="white"
+                stroke="#F2AE30"
+                strokeWidth="2"
+              />
+
+              <path
+                d="M11.6667 35H46.6667M11.6667 23.3333H46.6667M11.6667 11.6667H35"
+                stroke="#F2AE30"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -77,7 +107,7 @@ const Header = () => {
                 src={HeaderLogo}
                 alt="Examible"
                 onClick={() => {
-                  nav("/"), setShowDropdown(!showDropdown);
+                  (nav("/"), setShowDropdown(!showDropdown));
                 }}
               />
             </div>
@@ -86,12 +116,9 @@ const Header = () => {
                 {menuBar.map((item, index) => (
                   <li
                     key={index}
-                    style={{
-                      borderColor:
-                        location.pathname === item.link ? "#804BF2" : "white",
-                    }}
+                    className={location.pathname === item.link ? "active" : ""}
                     onClick={() => {
-                      item.name === "PLANS" &&
+                      item.name === "Pans" &&
                         toast.info("Plans page is currently unavailable");
                       setShowDropdown(!showDropdown);
                     }}
@@ -105,18 +132,21 @@ const Header = () => {
                   </li>
                 ))}
               </>
-              <button
-                className="headerDropdown-signup"
+              <Button
+                variant="outline"
                 onClick={() => nav("/signup")}
+                style={{ width: 89 }}
+                size="sm"
               >
-                SIGN UP
-              </button>
-              <button
-                className="headerDropdown-login"
+                Sign Up
+              </Button>
+              <Button
                 onClick={() => nav("/login")}
+                style={{ width: 89 }}
+                size="sm"
               >
-                LOGIN
-              </button>
+                Login
+              </Button>
             </div>
           </div>
         </div>

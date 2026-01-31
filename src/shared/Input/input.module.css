@@ -1,0 +1,164 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+
+  &.error {
+    .input {
+      border-color: #dc3545;
+
+      &:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+      }
+    }
+  }
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #727a86;
+  line-height: 1.4;
+  margin: 0;
+  cursor: pointer;
+
+  .required {
+    color: #dc3545;
+    margin-left: 2px;
+  }
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+
+  input {
+    width: 100%;
+  }
+}
+
+.eyeIcon {
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  right: 20px;
+  font-size: 20px;
+  color: #000;
+  cursor: pointer;
+}
+
+.input {
+  padding: 14px 17px;
+  background: #f9fafb;
+  border: 1px solid #98a2b3;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #011a2a;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+
+  &::placeholder {
+    color: #727a86;
+    font-weight: 400;
+  }
+
+  &:hover {
+    border-color: #667085;
+    background: #ffffff;
+  }
+
+  &:focus {
+    border-color: #7300ff;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(115, 0, 255, 0.1);
+  }
+
+  &:disabled {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+
+    &:hover {
+      border-color: #d1d5db;
+      background: #f3f4f6;
+    }
+  }
+
+  &.readOnly {
+    background: #f9fafb;
+    border-color: #e5e7eb;
+    color: #6b7280;
+    cursor: default;
+
+    &:hover {
+      border-color: #e5e7eb;
+      background: #f9fafb;
+    }
+
+    &:focus {
+      border-color: #e5e7eb;
+      background: #f9fafb;
+      box-shadow: none;
+    }
+  }
+}
+
+.errorMessage {
+  font-size: 12px;
+  font-weight: 400;
+  color: #dc3545;
+  line-height: 1.4;
+  margin: 0;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .inputContainer {
+    gap: 6px;
+  }
+
+  .label {
+    font-size: 13px;
+  }
+
+  .input {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .errorMessage {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+}

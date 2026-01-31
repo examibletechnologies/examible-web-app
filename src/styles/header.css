@@ -317,9 +317,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover effect to show it is clickable */
 .menu-button:hover .icon-bg {
-  fill: #fff9ed; /* Very light gold tint */
+  fill: #fff9ed;
   transform: scale(1.02);
 }
 

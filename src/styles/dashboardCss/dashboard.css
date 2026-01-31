@@ -12,9 +12,10 @@
     display: none;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 850px) {
     .dashboard-leftDropdown {
       display: flex;
+      z-index: 15;
     }
   }
 }
@@ -68,12 +69,14 @@
   }
 
   .dashboard-leftImg {
-    height: 150px;
+    height: 100px;
     width: 197px;
     margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
 
     img {
-      height: 100%;
+      height: 70%;
       width: 100%;
       object-fit: cover;
     }
@@ -85,13 +88,19 @@
     padding-inline: 20px;
     display: flex;
     gap: 6px;
-    background-color: #804bf233;
+    background-color: white;
     align-items: center;
     font-family: "Montserrat", sans-serif;
     font-weight: 400;
     font-size: 21px;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      background-color: #804bf233;
+    }
 
     nav {
       height: 35px;
@@ -103,6 +112,10 @@
         object-fit: cover;
       }
     }
+  }
+
+  .navbar-active {
+    background-color: #804bf233;
   }
 
   .dashboard-subscription {
@@ -176,7 +189,7 @@
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 850px) {
     display: none;
   }
 }
@@ -190,8 +203,9 @@
   justify-content: space-between;
   overflow: hidden;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 850px) {
     width: 100%;
+    padding-top: 105px;
   }
 
   .dashboard-header {
@@ -205,7 +219,7 @@
     position: sticky;
     top: 0;
     background-color: white;
-    z-index: 5;
+    z-index: 10;
 
     h3 {
       font-family: "sora", sans-serif;
@@ -241,9 +255,11 @@
       display: none;
     }
 
-    @media screen and (max-width: 768px) {
-      position: sticky;
+    @media screen and (max-width: 850px) {
+      position: fixed;
       top: 0;
+      margin-top: 0px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
       h3 {
         font-size: 20px;
       }
@@ -275,7 +291,7 @@
 
 .dashboard-leftDropdown {
   position: fixed;
-  background-color: #a09f9fc0;
+  background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   z-index: 10;
   width: 100%;
@@ -293,6 +309,8 @@
     align-items: center;
     justify-content: space-between;
     background-color: white;
+    animation-name: slideInLeft;
+    animation-duration: 1s;
   }
 
   .dashboard-leftDropdown-navbarHolder {
@@ -328,6 +346,8 @@
     font-size: 21px;
     cursor: pointer;
     margin-bottom: 10px;
+    color: black;
+    text-decoration: none;
 
     nav {
       height: 35px;
@@ -402,5 +422,14 @@
       color: white;
       cursor: pointer;
     }
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
   }
 }

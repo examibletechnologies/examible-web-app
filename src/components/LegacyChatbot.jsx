@@ -5,85 +5,149 @@ import {
   MessageList,
   Message,
   MessageInput,
-  TypingIndicator
+  TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 import { useState } from "react";
+import { setChatbotMessages } from "../global/slice";
+import { useDispatch, useSelector } from "react-redux";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
+import Latex from "react-latex-next";
+import remarkMath from "remark-math";
+import "katex/dist/katex.min.css";
+import rehypeKatex from "rehype-katex";
 
 const LegacyChatbot = () => {
-    const [typing,setTyping] = useState(false)
-    const [messages,setMessages] = useState([
-      {
-        message: "Hello, I am Legacy bot, Feel free to ask me ask me question based on O'level Subjects",
-        sender: "ChatGPT",
-        direction: 'Outgoing'
+  const [typing, setTyping] = useState(false);
+  const messages = useSelector((state) => state.chatbotMessages);
+  const dispatch = useDispatch();
+
+  const processMessage = async (chatMessages) => {
+    let apiMessages = chatMessages.map((message) => {
+      let role = "";
+      if (message.sender === "Gemini") {
+        role = "model";
+      } else {
+        role = "user";
       }
-    ])
-  
-    const processMessage = async (chatMessages) => {
-      let apiMessages = chatMessages.map((message)=>{
-        let role = ''
-        if(message.sender === 'ChatGPT'){
-          role = 'assistant'
-        }else{
-          role = 'user'
+      return { role: role, parts: [{ text: message.message }] };
+    });
+
+    const systemMessage = {
+      role: "model",
+      parts: [
+        {
+          text: `You are Examible bot, an AI assistant for students.
+          Your purpose is to help students with their academic questions and provide useful information about Examible's services.
+          Always respond in a helpful and friendly manner.
+          If you are unsure about an answer, it's better to admit it than to provide incorrect information.`,
+        },
+      ],
+    };
+
+    const apiRequest = {
+      contents: [systemMessage, ...apiMessages],
+    };
+
+    try {
+      const response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        {
+          method: "POST",
+          headers: {
+            "x-goog-api-key": import.meta.env.VITE_API_KEY,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apiRequest),
         }
-        return {role: role , content: message.message}
-      })
-  
-      const systemMessage = {
-        role: 'system',
-        content: 'Answer questions related to high school subject like biology, english, Literature in English, Physics, Economics, Geography, Government, history mathematics or other high school related subject. and if there is question not related to this field. please reply it is out of the scope'
+      );
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
       }
-  
-      const apiRequest = {
-        "model": "gpt-4o-mini",
-        "messages": [
-          systemMessage,
-          ...apiMessages
-        ]
-      }
-  
-      await fetch('https://api.openai.com/v1/chat/completions',{
-        method:'POST',
-        headers: {
-          "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-          "Content-Type": "application/json"
-         },
-         body: JSON.stringify(apiRequest)
-      }).then((data)=>data.json()).then((data)=>{
-        setMessages([...chatMessages,{
-        message: data.choices[0].message.content,
-        sender: 'ChatGPT',
-        direction: 'Outgoing'
-      }]),
-    setTyping(false)
-    })
+
+      const data = await response.json();
+      dispatch(
+        setChatbotMessages([
+          ...chatMessages,
+          {
+            message: data.candidates[0].content.parts[0].text,
+            sender: "Gemini",
+            direction: "Outgoing",
+          },
+        ])
+      );
+    } catch (error) {
+      dispatch(
+        setChatbotMessages([
+          ...chatMessages,
+          {
+            message: "Sorry, something went wrong. Please try again.",
+            sender: "Gemini",
+            direction: "Outgoing",
+          },
+        ])
+      );
+    } finally {
+      setTyping(false);
     }
-  
-    const handleSend = async(message)=>{
-      const newMessage = {
-        message: message,
-        sender: "user"
-      }
-      const newMessages = [...messages,newMessage]
-      setMessages(newMessages)
-      setTyping(true)
-      processMessage(newMessages)
-    }
-    return (
+  };
+
+  const handleSend = async (message) => {
+    const newMessage = {
+      message: message,
+      sender: "user",
+    };
+    const newMessages = [...messages, newMessage];
+    dispatch(setChatbotMessages(newMessages));
+    setTyping(true);
+    processMessage(newMessages);
+  };
+  return (
     <MainContainer>
       <ChatContainer>
-        <MessageList style={{padding:10}} scrollBehavior="smooth" typingIndicator={typing ? <TypingIndicator content="Legacy bot is typing"/> : null}>
-          {
-            messages.map((message,index)=>{
-              return <Message key={index} model={message} />
-            })
+        <MessageList
+          style={{ padding: 10 }}
+          scrollBehavior="smooth"
+          typingIndicator={
+            typing ? <TypingIndicator content="Examible bot is typing" /> : null
           }
+        >
+          {messages.map((message, index) => {
+            return (
+              <Message key={index} model={message}>
+                <Message.CustomContent>
+                  <div className="chat-markdown">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm, remarkMath]}
+                      rehypePlugins={[rehypeSanitize, rehypeKatex]}
+                      components={{
+                        code({ children, ...props }) {
+                          return (
+                            <code {...props}>
+                              <Latex>{children}</Latex>
+                            </code>
+                          );
+                        },
+                      }}
+                    >
+                      {message.message}
+                    </ReactMarkdown>
+                  </div>
+                </Message.CustomContent>
+              </Message>
+            );
+          })}
         </MessageList>
-        <MessageInput attachButton={false} placeholder="Type message here" onSend={handleSend}/>
+        <MessageInput
+          attachButton={false}
+          placeholder="Type message here"
+          onSend={handleSend}
+        />
       </ChatContainer>
     </MainContainer>
-    )
-}
+  );
+};
 
-export default LegacyChatbot
+export default LegacyChatbot;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import "../../styles/dashboardCss/pastquestion.css";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,15 +8,22 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const PastQuestion = () => {
+  // Using useNavigate to programmatically navigate between routes
+  // Using useDispatch to dispatch actions to the Redux store
+  // Using useSelector to access the Redux store state
+  // Using useState to manage local component state
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
-  const [dropDownSubject, setDropDownSubject] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState("All");
   const [selectedYear, setSelectedYear] = useState("All");
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [years, setYears] = useState([]); // State to hold the years fetched from the API
+  const [subjectYearsMap, setSubjectYearsMap] = useState({}); // State to hold the mapping of subjects to years
 
+  // Function to toggle the dropdown
+  // This function checks if the dropdown is already active. If it is, it sets the activeDropdown to null, effectively closing it. If it is not active, it sets the activeDropdown to the dropdown that was clicked, opening it.
+  // This allows for only one dropdown to be open at a time.
   const toggleDropdown = (dropdown) => {
     if (activeDropdown === dropdown) {
       setActiveDropdown(null);
@@ -27,33 +34,21 @@ const PastQuestion = () => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
-  const years = [
-    // "2023",
-    // "2022",
-    // "2021",
-    // "2020",
-    // "2019",
-    // "2018",
-    // "2017",
-    // "2016",
-    // "2015",
-    // "2014",
-    // "2013",
-    // "2012",
-    // "2011",
-    // "2010",
-    // "2009",
-    // "2008",
-    // "2007",
-    // "2006",
-    "2005",
-    "2004",
-    "2003",
-    "2002",
-    "2001",
-    "2000",
-  ];
+  // Base URL for fetching subjects and years
+  const baseUrl = "https://examiblequestionbank.onrender.com/subjects";
+  const getYears = async () => {
+    try {
+      const response = await axios.get(baseUrl);
+      setSubjectYearsMap(response.data.data); // Save the mapping
+    } catch (error) {
+      console.error("Error fetching years:", error);
+    }
+  };
 
+  useEffect(() => {
+    getYears();
+  }, []);
+  // function to get past question for year and subject
   const getPastQuestionForYearSubject = async (year, subject) => {
     if (year === "All" || subject === "All") {
       toast.error("please select both subject and year.");
@@ -61,23 +56,16 @@ const PastQuestion = () => {
     }
     setLoading(true);
 
-    const toastId = toast.loading("fecthing questions....");
+    const toastId = toast.loading("Please wait....");
     try {
       const response = await axios.get(
         `${
           import.meta.env.VITE_BASE_URL
-        }api/v1/fetch-questions/${year}/${subject}/${user?._id}`
+        }api/v1/fetch-questions/${year}/${subject}/${user?._id || user?.id}`,
       );
-      console.log(response);
-      toast.update(toastId, {
-        // render: "Question fetched succesfully!",
-        render: response?.data?.data?.message,
-        type: "success",
-        isLoading: false,
-        autoClose: 2000,
-      });
+      toast.dismiss(toastId);
       dispatch(setPastQuestions(response.data.data));
-      navigate("/dashboard/view-pastquestion");
+      navigate("/dashboard/past-questions/view");
       setLoading(false);
       setDisabled(true);
     } catch (error) {
@@ -93,6 +81,12 @@ const PastQuestion = () => {
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
     dispatch(setExam(subject));
+    if (subjectYearsMap[subject]) {
+      setYears(subjectYearsMap[subject].sort((a, b) => b - a)); // Sort years in descending order
+    } else {
+      setYears([]); // If no years are available for the subject, set years to an empty array
+    }
+    setSelectedYear("All"); // Reset selected year when subject changes
   };
 
   const handleYearClick = (year) => {
@@ -100,6 +94,9 @@ const PastQuestion = () => {
     dispatch(setYear(year));
   };
 
+  // Effect to enable or disable the button based on loading state and selected values
+  // This effect checks if the loading state is false and both selectedYear and selectedSubject are not "All". If these conditions are met, it enables the button by setting disabled to false. Otherwise, it disables the button.
+  // This ensures that the button is only enabled when both a year and a subject are selected
   useEffect(() => {
     if (!loading && selectedYear !== "All" && selectedSubject !== "All") {
       setDisabled(false);
@@ -158,8 +155,13 @@ const PastQuestion = () => {
           <div className="pastrightdiv">
             <span>Select Year</span>
             <div
-              onClick={() => toggleDropdown("year")}
-              style={{ cursor: "pointer" }}
+              onClick={() => {
+                if (selectedSubject !== "All") toggleDropdown("year");
+              }}
+              style={{
+                cursor: "pointer",
+                opacity: selectedSubject === "All" ? 0.5 : 1,
+              }}
             >
               {selectedYear}
               {activeDropdown === "year" ? (
@@ -197,7 +199,7 @@ const PastQuestion = () => {
             }
             disabled={disabled || loading}
             style={{
-              backgroundColor: disabled || loading ? "#dbd2f0d2" : "#804bf2",
+              opacity: disabled || loading ? 0.3 : 1,
               cursor: disabled || loading ? "not-allowed" : "pointer",
             }}
           >

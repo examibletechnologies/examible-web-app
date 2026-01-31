@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/makepayment.css";
 import payment from "../../assets/public/payment.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { setReference } from "../../global/slice";
 
 const MakePayment = () => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log(user);
-  const dispatch = useDispatch();
 
   const location = useLocation();
-  const { amount, plan } = location.state || {};
+  const { amount, selectedPlan: plan } = location.state || {};
 
-  const koraPayPaymentIntegration = async (e, amount, email, name, plan) => {
+  const koraPayPaymentIntegration = async (e, amount, email, name) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -28,7 +25,6 @@ const MakePayment = () => {
         { amount, email, name, plan }
       );
       if (response?.status === 200) {
-        dispatch(setReference(response?.data?.data?.reference));
         setTimeout(() => {
           window.location.href = response?.data?.data?.checkout_url;
         }, 500);

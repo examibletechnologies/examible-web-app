@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Loading from "./Loading";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -20,13 +20,13 @@ const Callback = () => {
         dispatch(setUser(res?.data?.data));
         dispatch(setUserToken(token));
         setTimeout(() => {
-          nav("/dashboard/overview");
+          nav("/dashboard/overview", { replace: true });
         }, 3000);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setTimeout(() => {
-        nav('/login')
+        nav("/login");
       }, 3000);
     }
   };

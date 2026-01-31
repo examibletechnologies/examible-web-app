@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/kenz/Home";
 import Login from "../src/auth/Login";
@@ -8,7 +7,6 @@ import Congratulation from "./auth/welcomeback/Congratulation";
 import ForgetPassword from "./auth/ForgetPassword";
 import ResetLink from "./auth/ResetLink";
 import ResetPassword from "./auth/welcomeback/ResetPassword";
-import LearnMore from "./pages/jacob/LearnMore";
 import MainHolder from "./routes/MainHolder";
 import Dashboard from "./pages/kenz/Dashboard";
 import Overview from "./pages/kenz/Overview";
@@ -29,54 +27,65 @@ import Facebookredirect from "./auth/Facebookredirect";
 import AppWrapper from "./components/AppWrapper";
 import ErrorPgae from "./pages/jacob/ErrorPgae";
 import ResultPage from "./pages/jacob/ResultPage";
+import Plans from "./pages/jacob/Plans";
 
 const routes = createBrowserRouter([
- {element:<AppWrapper/>,children:[
-  { path: "*", element: <ErrorPgae/> },
   {
-    path: "",
-    element: <MainHolder />,
+    element: <AppWrapper />,
     children: [
-      { path: "", element: <Home /> },
-      { path: "/learn-more", element: <LearnMore /> },
-      { path: "about-us", element: <AboutUs /> },
-    ],
-  },
-  { path: "/signup", element: <SignUp /> },
-  { path: "/login", element: <Login /> },
-  { path: "/welcome", element: <Welcome /> },
-  { path: "/congratulation", element: <Congratulation /> },
-  { path: "/forgetpassword", element: <ForgetPassword /> },
-  { path: "/resetlink", element: <ResetLink /> },
-  { path: "/resetpassword/:token", element: <ResetPassword /> },
-  { path: "/verify/:token", element: <Verify /> },
-  { path: "/callback/:token/:userId", element: <Callback /> },
-  {
-    element: <PrivateRoute />,
-    children: [
-      { path: "verifyingPayment", element: <VerifyPayment /> },
+      { path: "*", element: <ErrorPgae /> },
       {
-        element: <Dashboard />,
+        path: "",
+        element: <MainHolder />,
         children: [
-          { path: "/dashboard/overview", element: <Overview />, index: true },
-          { path: "/dashboard/mock-exam", element: <Mockexam /> },
-          { path: "/dashboard/past-questions", element: <PastQuestion /> },
-          { path: "/dashboard/profile", element: <Profile /> },
-          { path: "/dashboard/subscription", element: <Subscription /> },
-          { path: "/dashboard/make-payment", element: <MakePayment /> },
-          { path: "/dashboard/mock-exam/result", element: <MockResult /> },
-          {
-            path: "/dashboard/view-pastquestion",
-            element: <ViewPastQuestion />,
-          },
-          { path: "/dashboard/resultpage", element: <ResultPage /> },
+          { path: "", element: <Home /> },
+          { path: "about-us", element: <AboutUs /> },
+          { path: "plans", element: <Plans /> },
         ],
       },
-      { path: "mock-exam/:subject/:subjectId", element: <ExamBody /> },
+      { path: "/signup", element: <SignUp /> },
+      { path: "/login", element: <Login /> },
+      { path: "/welcome", element: <Welcome /> },
+      { path: "/congratulation", element: <Congratulation /> },
+      { path: "/forgetpassword", element: <ForgetPassword /> },
+      { path: "/resetlink", element: <ResetLink /> },
+      { path: "/resetpassword/:token", element: <ResetPassword /> },
+      { path: "/verify/:token", element: <Verify /> },
+      { path: "/callback/:token/:userId", element: <Callback /> },
+      {
+        element: <PrivateRoute />,
+        children: [
+          { path: "verifyingPayment", element: <VerifyPayment /> },
+          {
+            element: <Dashboard />,
+            children: [
+              {
+                path: "/dashboard/overview",
+                element: <Overview />,
+                index: true,
+              },
+              { path: "/dashboard/mock-exam", element: <Mockexam /> },
+              { path: "/dashboard/past-questions", element: <PastQuestion /> },
+              { path: "/dashboard/profile", element: <Profile /> },
+              { path: "/dashboard/subscription", element: <Subscription /> },
+              { path: "/dashboard/make-payment", element: <MakePayment /> },
+              { path: "/dashboard/mock-exam/result", element: <MockResult /> },
+              {
+                path: "/dashboard/past-questions/view",
+                element: <ViewPastQuestion />,
+              },
+              {
+                path: "/dashboard/past-questions/result",
+                element: <ResultPage />,
+              },
+            ],
+          },
+          { path: "mock-exam/:subjectId", element: <ExamBody /> },
+        ],
+      },
+      { path: "/data-deletion", element: <Facebookredirect /> },
     ],
   },
-  { path: "/data-deletion", element: <Facebookredirect /> },
- ]}           
 ]);
 
 const App = () => {

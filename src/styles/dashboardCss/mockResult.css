@@ -1,4 +1,4 @@
-.mockResult{
+.mockResult {
   width: 100%;
   height: fit-content;
   display: flex;
@@ -21,17 +21,18 @@
     padding-left: 20px;
   }
 
-  @media screen and (max-width:480px) {
-    h2{
+  @media screen and (max-width: 550px) {
+    background-color: white;
+    h2 {
       font-size: 25px;
     }
 
-    h5{
+    h5 {
       font-size: 20px;
     }
   }
 
-  .mockResult-holder{
+  .mockResult-holder {
     height: fit-content;
     width: 100%;
     /* background-color: aqua; */
@@ -40,61 +41,106 @@
     gap: 20px;
     margin-top: 50px;
 
-    main{
-        min-height: 210px;
-        width: 100%;
+    main {
+      min-height: 210px;
+      width: 100%;
+      font-family: "Montserrat", sans-serif;
+
+      h2 {
+        font-size: 25px;
+        line-height: 25px;
+        font-weight: 600;
         font-family: "Montserrat", sans-serif;
-      
-        header{
+        margin-bottom: 19.5px;
+        width: 95%;
+      }
+
+      h3 {
+        font-size: 22px;
+        line-height: 25px;
+        font-weight: 500;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 19.5px;
+        width: 95%;
+      }
+
+      img {
+        height: max-content;
+        max-height: 400px;
+        margin-bottom: 19.5px;
+        max-width: 90%;
+        object-fit: contain;
+      }
+
+      header {
+        width: 100%;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 35px;
+        margin-bottom: 12px;
+      }
+
+      ul {
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        /* gap: 5px; */
+        width: 100%;
+
+        li {
           min-height: 5vh;
           width: 100%;
-          font-weight: 600;
+          font-weight: 400;
           font-size: 16px;
-          line-height: 35px;
-        }
-
-        ul{
-          height: fit-content;
+          line-height: 20px;
+          list-style: none;
           display: flex;
-          flex-direction: column;
-          /* gap: 5px; */
-          width: 100%;
+          gap: 30px;
+          align-items: center;
+        }
+      }
 
-          li{
-            min-height: 5vh;
-            width: 100%;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 20px;
-            list-style: none;
-            display: flex;
-            gap: 30px;
-            align-items: center;
-          }
+      footer {
+        min-height: 5vh;
+        width: 100%;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+
+    @media screen and (max-width: 550px) {
+      main {
+        header {
+          line-height: 25px;
+        }
+        h2 {
+          font-size: 20px;
         }
 
-        footer{
-            min-height: 5vh;
-            width: 100%;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 20px;
+        h3 {
+          font-size: 18px;
         }
+
+        img {
+          max-width: 100%;
+        }
+      }
     }
   }
 }
 
-.mockResult-button{
+.mockResult-button {
   width: 70%;
   height: 45px;
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 
-  .mockResult-retry{
+  .mockResult-retry {
     height: 45px;
     width: 140px;
-    background-color: #F2AE30;
+    background-color: #f2ae30;
     color: black;
     border-radius: 133px;
     display: flex;
@@ -108,7 +154,7 @@
     cursor: pointer;
   }
 
-  .mockResult-more{
+  .mockResult-more {
     height: 45px;
     width: 140px;
     background-color: white;
@@ -126,7 +172,38 @@
     cursor: pointer;
   }
 
-  @media screen and (max-width:480px) {
-      width: 100%;
+  @media screen and (max-width: 550px) {
+    width: 100%;
+  }
+}
+
+.mockResult-scores {
+  display: flex;
+  width: 450px;
+  margin-top: 10px;
+  max-width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    min-width: 116px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background-color: #f2ae30;
+    font-family: "Montserrat", sans-serif;
+    font-size: 11px;
+    padding: 5px;
+    font-weight: 600;
+    color: #1e1e1e;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all 400ms ease-in-out;
+
+    &:hover {
+      transform: scale(1.05);
+      background-color: #ffca67;
+    }
   }
 }

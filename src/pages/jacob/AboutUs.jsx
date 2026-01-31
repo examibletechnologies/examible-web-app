@@ -1,10 +1,9 @@
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import "../../styles/aboutus.css";
 import { FaFacebook, FaTwitter, FaSkype, FaYoutube } from "react-icons/fa";
-import heroImg from "../../assets/public/aboutHeroImage.png";
+import heroImg from "../../assets/public/heroimg1.png";
 import target from "../../assets/public/targget.png";
 import camera from "../../assets/public/sweemglasses.png";
 import hand from "../../assets/public/hands.png";
@@ -19,6 +18,8 @@ import team4 from "../../assets/public/team4.png";
 import team5 from "../../assets/public/team5.jpg";
 import team6 from "../../assets/public/team6.jpg";
 import team7 from "../../assets/public/team7.jpg";
+import { FaCheck } from "react-icons/fa6";
+import ProvenProcess from "../../components/ProvenProcess";
 
 const AboutUs = () => {
   const heroDescription = [
@@ -58,29 +59,30 @@ const AboutUs = () => {
   return (
     <main className="aboutUsMain">
       <section className="aboutUsContainer">
-        <div className="heroImgContainer">
-          <img className="heroImg" src={heroImg} />
-        </div>
-        <div className="aboutdescription">
-          <h1>
-            Introduction to <em className="aboutem">Legacy Builders</em>
-          </h1>
-          <div className="heroline">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="3"
-              height="144"
-              viewBox="0 0 3 144"
-              fill="none"
-            >
-              <path d="M1.5 0V144" stroke="white" stroke-width="2" />
-            </svg>
+        <div className="heroSection">
+          <div className="heroImgContainer">
+            <img className="heroImg" src={heroImg} />
           </div>
-          <span>
-            Legacy Builders is dedicated to helping students achieve their
-            academic goals through, Mock Exams, Past Questions and
-            expert guidance.
-          </span>
+          <div className="aboutdescription">
+            <h1>
+              Introduction to <em className="aboutem">Examible</em>
+            </h1>
+            <div className="heroline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="3"
+                height="144"
+                viewBox="0 0 3 144"
+                fill="none"
+              >
+                <path d="M1.5 0V144" stroke="white" strokeWidth="2" />
+              </svg>
+            </div>
+            <span>
+              Examible is dedicated to helping students achieve their academic
+              goals through, Mock Exams, Past Questions and expert guidance.
+            </span>
+          </div>
         </div>
         <div className="aboutstatements">
           {heroDescription.map((aboutcard, index) => (
@@ -107,21 +109,34 @@ const AboutUs = () => {
           </div>
           <div className="rightthirdsection">
             <h1>
-              Legacy Builders Your Ultimate Platform for{" "}
+              Examible Your Ultimate Platform for{" "}
               <em className="emsucces">JAMB Success!</em>
             </h1>
             <div className="aboutstudytext">
               <p>
-                Legacy Builders offers a comprehensive and study experience,
-                providing you with past questions, personalized quizzes,
+                Examible offers a comprehensive and study experience,
+                <br /> providing you with past questions, personalized quizzes,
+                <br />
                 real-time progress tracking, and expert assistance.
               </p>
               <span>
-                All designed to help you excel in your JAMB exams, boost your
-                knowledge, and increase your chances of scoring 300+.
+                All designed to help you excel in your JAMB exams,
+                <br />
+                boost your knowledge, and increase your chances
+                <br />
+                of scoring 300+.
               </span>
             </div>
           </div>
+          <div className="aboutcircle">
+            <div className="aboutinnercircle"></div>
+          </div>
+          <div className="aboutcircle1">
+            <div className="aboutinnercircle1"></div>
+          </div>
+          <div className="aboutpurplesmallcircle1"></div>
+          <div className="aboutgoldsmallcircle1"></div>
+          <div className="aboutpurplesmallcircle"></div>
         </div>
         <div className="bottomheader">
           <h1>
@@ -140,6 +155,11 @@ const AboutUs = () => {
             slidesPerView={4}
             autoplay={{
               disableOnInteraction: false,
+            }}
+            breakpoints={{
+              1024: { slidesPerView: 4 },
+              768: { slidesPerView: 3 },
+              320: { slidesPerView: 3 },
             }}
             speed={8000}
             loop={true}
@@ -216,7 +236,7 @@ const AboutUs = () => {
               <div className="teamdiv">
                 <img src={team5} />
                 <div className="aboutname">
-                  <h1>Austine Okoye</h1>
+                  <h1>Augustine Okoye</h1>
                   <span>Frontend Developer</span>
                 </div>
                 <div className="role">
@@ -233,8 +253,8 @@ const AboutUs = () => {
               <div className="teamdiv">
                 <img src={team6} />
                 <div className="aboutname">
-                  <h1>Kenneth</h1>
-                  <span>Backend</span>
+                  <h1>Kenneth Ukunwanne</h1>
+                  <span>Backend Developer</span>
                 </div>
                 <div className="role">
                   <div className="abouticons">
@@ -251,7 +271,7 @@ const AboutUs = () => {
                 <img src={team7} />
                 <div className="aboutname">
                   <h1>Aimudo Anthony</h1>
-                  <span>Backend</span>
+                  <span>Backend Developer</span>
                 </div>
                 <div className="role">
                   <div className="abouticons">
@@ -265,9 +285,57 @@ const AboutUs = () => {
             </SwiperSlide>
           </Swiper>
         </div>
+        <div className="smartpreparation">
+          <div className="smartheader">
+            <h1>
+              Faster & Smarter{" "}
+              <span style={{ color: "#804bf2" }}>Preparation</span>
+            </h1>
+            <p>No more aimless studying; focus on what truly matters.</p>
+          </div>
+
+          <div className="carddata">
+            {cardData.map((card, index) => (
+              <div className="card" key={index}>
+                {card.showCircle && (
+                  <div className="whitecircle">
+                    <div className="innerpurplecircle">
+                      <FaCheck className="checkicon" />
+                    </div>
+                  </div>
+                )}
+                <p>{card.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <ProvenProcess />
       </section>
     </main>
   );
 };
 
 export default AboutUs;
+
+const cardData = [
+  {
+    title:
+      "Exam-Style Practice – Real CBT simulations ensure you're fully prepared.",
+    showCircle: true,
+  },
+  {
+    title:
+      "Time Management Boost – Learn to answer questions under real exam conditions.",
+    showCircle: true,
+  },
+  {
+    title:
+      "Performance Insights – Track progress, identify weak topics, and improve.",
+    showCircle: true,
+  },
+  {
+    title:
+      "Stress-Free Learning – Reduce anxiety with structured practice and study tips.",
+    showCircle: true,
+  },
+];

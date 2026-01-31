@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import "../../styles/dashboardCss/subscription.css";
 import payment from "../../assets/public/paymentsymbol.svg";
 import { FiCheckCircle } from "react-icons/fi";
@@ -9,9 +8,6 @@ const YearlyPayment = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const currentPlan = user?.plan;
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
   const handleChoosePlan = (amount, plan) => {
     navigate("/dashboard/make-payment", { state: { amount, plan } });
   };
@@ -61,7 +57,7 @@ const YearlyPayment = () => {
             <div className="paymentsymboldiv">
               <img src={payment} />
             </div>
-            <h1>premium</h1>
+            <h1>Monthly</h1>
             <span>Get the best value for your money</span>
 
             <div className="premiumbofferdiv">
@@ -104,7 +100,7 @@ const YearlyPayment = () => {
             <div className="paymentsymboldiv">
               <img src={payment} />
             </div>
-            <h1 className="accessmodel">Premium</h1>
+            <h1 className="accessmodel">Yearly</h1>
             <span className="lifevalue">Get the best value for your money</span>
 
             <div className="offercontainer">

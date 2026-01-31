@@ -3,4 +3,51 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+.katex-display,
+.katex-display > .katex,
+.katex-display > .katex > .katex-html {
+  display: inline !important;
+}
+
+.chat-markdown {
+  padding: 4px 8px;
+}
+
+.chat-markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 8px 0;
+}
+.chat-markdown th,
+.chat-markdown td {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+.chat-markdown th {
+  background: rgba(0, 0, 0, 0.04);
+  font-weight: 600;
+}
+.chat-markdown tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.02);
+}
+/* optional extras */
+.chat-markdown pre,
+.chat-markdown code {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px 6px;
+  border-radius: 4px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.chat-markdown img {
+  max-width: 100%;
+  height: auto;
 }

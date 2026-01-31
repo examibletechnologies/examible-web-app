@@ -76,8 +76,8 @@
 
 .closeicondiv {
   position: absolute;
-  width: 12%;
-  height: 25vh;
+  width: 15%;
+  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,8 +86,8 @@
 
   & img {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 150px;
+    height: 150px;
     cursor: pointer;
   }
 
@@ -98,7 +98,7 @@
 }
 .signupForm {
   width: 50%;
-  min-height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -108,10 +108,13 @@
 }
 .signheader {
   width: 100%;
-  height: 15vh;
+  height: 80px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
   z-index: 1;
 
   & h1 {
@@ -278,6 +281,7 @@
   font-family: "Sora", sans-serif;
   cursor: pointer;
   z-index: 1;
+  border-radius: 6px;
 }
 .alreadyhaveaccount {
   height: 10%;
@@ -322,6 +326,7 @@
   justify-content: center;
   width: 70%;
   gap: 10px;
+  margin: 10px 0px;
 }
 
 .or {
@@ -359,10 +364,6 @@
 }
 .googleIcon {
   font-size: 30px;
-}
-.googleIcon:hover {
-  transform: scale(1.3);
-  transition: 350ms ease-in-out;
 }
 
 .forgotpassworddiv {
@@ -406,79 +407,72 @@
   }
 }
 
-@media screen and (min-width: 320px) and (max-width: 480px) {
+@media screen and (min-width: 320px) and (max-width: 550px) {
   .circle {
     position: fixed;
-    width: 300px;
-    height: 300px;
+    width: 270px;
+    height: 270px;
     border-radius: 50%;
     background-color: #dbd2f0d2;
-    bottom: 200px;
+    bottom: 120px;
     right: -220px;
 
     .innercircle {
       position: absolute;
-      width: 120px;
-      height: 120px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background-color: white;
-      top: 90px;
-      left: 60px;
+      top: 60px;
+      left: 40px;
     }
   }
 
   .circle1 {
     position: fixed;
-    width: 300px;
-    height: 300px;
+    width: 270px;
+    height: 270px;
     border-radius: 50%;
     background-color: #dbd2f0d2;
-    top: 150px;
+    top: 100px;
     left: -220px;
     overflow: hidden;
 
     .innercircle1 {
       position: absolute;
-      width: 120px;
-      height: 120px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background-color: white;
-      top: 90px;
-      left: 120px;
+      top: 60px;
+      left: 85px;
       overflow: hidden;
     }
   }
 
   .goldsmallcircle {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: rgb(231, 179, 9);
-    left: 180px;
-    top: 120px;
+    left: 100px;
+    top: 20px;
   }
 
   .goldsmallcircle1 {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: rgb(231, 179, 9);
 
-    bottom: 120px;
+    bottom: 50px;
     right: 60px;
   }
 
   .signupForm {
     width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    padding: 20px;
   }
 
   .signinput {
@@ -499,7 +493,8 @@
 
   .closeicondiv {
     position: absolute;
-    width: 30%;
+    width: 100px;
+    min-width: 200px;
     height: 25vh;
     display: flex;
     justify-content: flex-start;
@@ -638,5 +633,107 @@
     gap: 10px;
     cursor: pointer;
     z-index: 1;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 1028px) {
+  .circle {
+    position: fixed;
+    width: 270px;
+    height: 270px;
+    border-radius: 50%;
+    background-color: #dbd2f0d2;
+    bottom: 120px;
+    right: -220px;
+
+    .innercircle {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: white;
+      top: 60px;
+      left: 40px;
+    }
+  }
+
+  .circle1 {
+    position: fixed;
+    width: 270px;
+    height: 270px;
+    border-radius: 50%;
+    background-color: #dbd2f0d2;
+    top: 100px;
+    left: -220px;
+    overflow: hidden;
+
+    .innercircle1 {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: white;
+      top: 60px;
+      left: 85px;
+      overflow: hidden;
+    }
+  }
+
+  .goldsmallcircle {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(231, 179, 9);
+    left: 100px;
+    top: 20px;
+  }
+
+  .goldsmallcircle1 {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(231, 179, 9);
+
+    bottom: 50px;
+    right: 60px;
+  }
+  .signupForm {
+    width: 100%;
+  }
+}
+
+.signup-authBtn {
+  background-color: #5e1cee3f;
+  width: 80%;
+  height: 45px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  z-index: 5;
+  border-radius: 6px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  span {
+    font-size: 18px;
+    font-family: "Sora", sans-serif;
+  }
+
+  &:hover {
+    background-color: #5f1cee6a;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  @media screen and (max-width: 550px) {
+    width: 100%;
   }
 }

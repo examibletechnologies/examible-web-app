@@ -35,7 +35,8 @@
 .chat-markdown tr:nth-child(even) td {
   background: rgba(0, 0, 0, 0.02);
 }
-/* optional extras */
+
+
 .chat-markdown pre,
 .chat-markdown code {
   background: rgba(0, 0, 0, 0.04);

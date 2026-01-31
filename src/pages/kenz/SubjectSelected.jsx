@@ -47,7 +47,7 @@ const SubjectSelected = () => {
   const subjectMap = useMemo(
     () =>
       Object.fromEntries(
-        allSubjectsData.map((s) => [s.subject, s.img || s.svg]),
+        allSubjectsData.map((s) => [s.subject, s.svg || s.img]),
       ),
     [],
   );

@@ -58,7 +58,11 @@ const Home = () => {
                 progress to unlock your best JAMB score yet!
               </p>
             </section>
-            <Button size="lg" onClick={() => nav("/signup")}>
+            <Button
+              size="lg"
+              onClick={() => nav("/signup")}
+              variant="primary-outline"
+            >
               Get Started
             </Button>
           </main>

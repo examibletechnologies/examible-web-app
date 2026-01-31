@@ -109,7 +109,7 @@
       }
     }
 
-    @media screen and (max-width: 550px) {
+    @media screen and (max-width: 850px) {
       main {
         header {
           line-height: 25px;
@@ -120,6 +120,36 @@
 
         h3 {
           font-size: 18px;
+        }
+
+        img {
+          max-width: 100%;
+        }
+      }
+    }
+
+    @media screen and (max-width: 550px) {
+      main {
+        header {
+          line-height: 25px;
+        }
+        h2 {
+          font-size: 16px;
+        }
+
+        h3 {
+          font-size: 14px;
+        }
+
+        h5,
+        h6 {
+          font-size: 16px;
+        }
+
+        ul {
+          li {
+            font-size: 14px;
+          }
         }
 
         img {

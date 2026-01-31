@@ -146,80 +146,6 @@
   }
 }
 
-.signinput {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-
-  .signuplabel {
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-  }
-
-  .signinputmain {
-    width: 100%;
-    height: 45px;
-    border: 1px solid #000;
-    padding-left: 10px;
-    outline: none;
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-  }
-
-  .error {
-    color: red;
-    font-family: "Montserrat", sans-serif;
-    font-size: 13px;
-    position: relative;
-  }
-
-  .signinputmain1 {
-    width: 100%;
-    height: 45px;
-    border: 1px solid #000;
-    background: #fff;
-    padding-left: 10px;
-    outline: none;
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-  }
-  .eyeIcon1 {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #000;
-    cursor: pointer;
-    z-index: 1;
-  }
-  .signinputmain2 {
-    width: 100%;
-    height: 45px;
-    border: 1px solid #000;
-    background: #fff;
-    padding-left: 10px;
-    outline: none;
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-  }
-  .inputwrapper {
-    position: relative;
-    width: 100%;
-  }
-  .eyeIcon2 {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 20px;
-    font-size: 20px;
-    color: #000;
-    cursor: pointer;
-  }
-}
-
 .checkbox {
   height: 5%;
   display: flex;
@@ -270,18 +196,7 @@
   z-index: 1;
   margin: 8px 0px;
 }
-.signupbtn {
-  width: 100%;
-  padding: 15px;
-  background-color: #804bf2;
-  border: none;
-  color: white;
-  font-size: 20px;
-  font-family: "Sora", sans-serif;
-  cursor: pointer;
-  z-index: 1;
-  border-radius: 6px;
-}
+
 .alreadyhaveaccount {
   height: 10%;
   width: 100%;
@@ -409,75 +324,32 @@
   }
 }
 
-@media screen and (min-width: 320px) and (max-width: 550px) {
+@media screen and (max-width: 550px) {
   .circle {
-    position: fixed;
-    width: 270px;
-    height: 270px;
-    border-radius: 50%;
-    background-color: #dbd2f0d2;
-    bottom: 120px;
-    right: -220px;
+    display: none;
 
     .innercircle {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-color: white;
-      top: 60px;
-      left: 40px;
+      display: none;
     }
   }
 
   .circle1 {
-    position: fixed;
-    width: 270px;
-    height: 270px;
-    border-radius: 50%;
-    background-color: #dbd2f0d2;
-    top: 100px;
-    left: -220px;
-    overflow: hidden;
+    display: none;
 
     .innercircle1 {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-color: white;
-      top: 60px;
-      left: 85px;
-      overflow: hidden;
+      display: none;
     }
   }
 
   .goldsmallcircle {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgb(231, 179, 9);
-    left: 100px;
-    top: 20px;
+    display: none;
   }
 
   .goldsmallcircle1 {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgb(231, 179, 9);
-
-    bottom: 50px;
-    right: 60px;
+    display: none;
   }
 
   .signupForm {
-    width: 100%;
-  }
-
-  .signinput {
     width: 100%;
   }
 
@@ -513,7 +385,6 @@
 
   .signheader {
     width: 100%;
-    height: 10vh;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -525,6 +396,7 @@
       text-align: center;
       font-family: "Sora", sans-serif;
       color: #804bf2;
+      text-align: left;
     }
 
     & p {
@@ -533,6 +405,7 @@
       text-align: center;
       font-family: "Montserrat", sans-serif;
       color: black;
+      text-align: left;
     }
   }
 
@@ -561,17 +434,6 @@
         cursor: pointer;
       }
     }
-  }
-  .signupbtn {
-    width: 100%;
-    padding: 10px;
-    background-color: #804bf2;
-    border: none;
-    color: white;
-    font-size: 20px;
-    font-family: "Sora", sans-serif;
-    cursor: pointer;
-    z-index: 1;
   }
 
   .forgotpassworddiv {
@@ -702,40 +564,6 @@
     right: 60px;
   }
   .signupForm {
-    width: 100%;
-  }
-}
-
-.signup-authBtn {
-  background-color: #5e1cee3f;
-  width: 80%;
-  height: 45px;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-  z-index: 5;
-  border-radius: 6px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
-  span {
-    font-size: 18px;
-    font-family: "Sora", sans-serif;
-  }
-
-  &:hover {
-    background-color: #5f1cee6a;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-
-  @media screen and (max-width: 550px) {
-    width: 100%;
+    width: 70%;
   }
 }

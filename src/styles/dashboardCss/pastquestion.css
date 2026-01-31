@@ -273,7 +273,7 @@
   font-size: 15px;
 }
 
-@media screen and (min-width: 0px) and (max-width: 550px) {
+@media screen and (max-width: 550px) {
   .pastquestionmain {
     background: white;
   }
@@ -488,7 +488,10 @@
   }
 }
 
-@media screen and (min-width: 480px) and (max-width: 1024px) {
+@media screen and (min-width: 550px) and (max-width: 1024px) {
+  .pastquestionmain {
+    background: white;
+  }
   .selectpastquestion {
     width: 90%;
     height: max-content;

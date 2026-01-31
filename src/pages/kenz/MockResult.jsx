@@ -65,7 +65,7 @@ const MockResult = () => {
     subheadingB,
     diagramUrlA,
     diagramUrlB,
-    id
+    id,
   ) => {
     setLoading(id);
     try {
@@ -79,7 +79,7 @@ const MockResult = () => {
         subheadingA,
         subheadingB,
         diagramUrlA,
-        diagramUrlB
+        diagramUrlB,
       );
       if (res) {
         setLoading(null);
@@ -98,7 +98,7 @@ const MockResult = () => {
         <span style={{ color: "#804bf2" }}>Mock Exam</span> (Jamb CBT Practice)
       </h2>
       <h2>Questions & Answers </h2>
-      <h5>You Scored {performance.toFixed(2)} out of 100</h5>
+      <h5>You Scored {performance.toFixed(0)} out of 100</h5>
       <div className="mockResult-holder">
         {mockExamQuestions
           ?.slice(intialCount, finalCount)
@@ -279,7 +279,7 @@ const MockResult = () => {
                         item.subheadingB,
                         item.diagramUrlA,
                         item.diagramUrlB,
-                        index
+                        index,
                       );
                     }}
                     disabled={loading}

@@ -92,7 +92,6 @@
 .primary {
   background: #804bf2;
   color: #f9fafb;
-  /* font-size: 16px; */
   font-weight: 600;
   line-height: 145%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -100,6 +99,25 @@
   &:hover:not(.disabled) {
     background-color: #885aed;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(.disabled) {
+    background: #763af8;
+  }
+}
+
+.primary-outline {
+  background: #804bf2;
+  color: #f9fafb;
+  font-weight: 600;
+  line-height: 145%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #804bf2;
+
+  &:hover:not(.disabled) {
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    color: #804bf2;
   }
 
   &:active:not(.disabled) {

@@ -14,6 +14,7 @@ import { useExamibleContext } from "../../context/ExamibleContext";
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [showBot, setShowBot] = useState(false);
 

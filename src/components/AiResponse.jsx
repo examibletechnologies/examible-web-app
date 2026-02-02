@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import "../styles/dashboardCss/airesponse.css";
-import { useSelector } from "react-redux";
 import { BiArrowBack } from "react-icons/bi";
 import handwave from "../assets/public/fluent_hand-wave-16-filled.svg";
 import FormattedResponse from "./FormattedResponse";

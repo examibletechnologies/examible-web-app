@@ -1,6 +1,35 @@
-import "../../src/styles/authCss/resetlink.css";
+import { useLocation } from "react-router-dom";
+import "../styles/authCss/resetlink.css";
 import { CiMail } from "react-icons/ci";
+
 const ResetLink = () => {
+  const location = useLocation();
+  const openMail = () => {
+    const email = location.state?.email;
+    if (!email) {
+      window.location.href = "mailto:";
+      return;
+    }
+    const domain = email.split("@")[1]?.toLowerCase() || "";
+
+    if (domain.includes("gmail.com") || domain.includes("googlemail.com")) {
+      window.open("https://mail.google.com", "_blank");
+    } else if (domain.includes("yahoo")) {
+      window.open("https://mail.yahoo.com", "_blank");
+    } else if (
+      domain.includes("outlook") ||
+      domain.includes("hotmail") ||
+      domain.includes("live") ||
+      domain.includes("msn")
+    ) {
+      window.open("https://outlook.live.com", "_blank");
+    } else if (domain.includes("icloud") || domain.includes("me.com")) {
+      window.open("https://www.icloud.com/mail", "_blank");
+    } else {
+      window.location.href = `mailto:info@examible.com`;
+    }
+  };
+
   return (
     <main className="resetMain">
       <div className="resetcircle">
@@ -25,7 +54,9 @@ const ResetLink = () => {
           <CiMail className="mailIcon" />
         </div>
         <div className="btndiv">
-          <button className="restlinkbtn">OK</button>
+          <button className="restlinkbtn" onClick={openMail}>
+            Go to my mail
+          </button>
         </div>
       </section>
     </main>

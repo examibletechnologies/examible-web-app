@@ -178,6 +178,11 @@
     font-family: "Sora", sans-serif;
     background-color: white;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #e9ecef;
+    }
   }
 
   @media screen and (max-width: 1024px) {
@@ -269,6 +274,7 @@
         margin-bottom: 24px;
         gap: 20px;
         justify-content: space-between;
+        transition: background-color 0.2s ease-in-out;
 
         p,
         h4 {
@@ -289,12 +295,28 @@
         }
       }
 
+      nav:hover {
+        background-color: #d4c1fd;
+      }
+
       @media screen and (max-width: 850px) {
         padding: 10px;
         max-width: 700px;
         margin: 0 auto;
         nav {
           width: 100%;
+        }
+        h6 {
+          font-size: 16px;
+        }
+        h5 {
+          font-size: 16px;
+        }
+        h2 {
+          font-size: 20px;
+        }
+        h3 {
+          font-size: 18px;
         }
       }
     }
@@ -306,11 +328,11 @@
         width: 95%;
 
         h2 {
-          font-size: 20px;
+          font-size: 16px;
         }
 
         h3 {
-          font-size: 18px;
+          font-size: 14px;
         }
 
         h5,
@@ -327,6 +349,11 @@
           justify-content: space-between;
           padding: 15px;
           gap: 5px;
+
+          p,
+          h4 {
+            font-size: 14px;
+          }
         }
       }
     }
@@ -367,6 +394,14 @@
         font-family: "Montserrat", sans-serif;
       }
     }
+
+    button:hover {
+      background: #f3f4f5;
+    }
+
+    button[style*="background: #804BF2"]:hover {
+      background: white !important;
+    }
   }
 
   @media screen and (max-width: 1024px) {
@@ -403,6 +438,11 @@
         border: 1px solid #804bf2;
         background-color: white;
         color: #804bf2;
+
+        &:hover {
+          background-color: #804bf2 !important;
+          color: white !important;
+        }
       }
     }
   }

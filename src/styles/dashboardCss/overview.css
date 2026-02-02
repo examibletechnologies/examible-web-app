@@ -210,6 +210,10 @@
           justify-content: center;
           position: relative;
 
+          &:last-child {
+            background-color: white;
+          }
+
           .overview-trashIcon {
             position: absolute;
             top: 10px;
@@ -683,4 +687,13 @@
   font-weight: 700;
   font-size: 24px;
   font-family: "Montserrat", sans-serif;
+}
+
+.plus-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.plus-icon:hover {
+  transform: scale(1.08);
 }

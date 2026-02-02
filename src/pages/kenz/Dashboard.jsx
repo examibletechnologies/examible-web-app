@@ -4,13 +4,13 @@ import { RiRobot2Line } from "react-icons/ri";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logout from "./Logout";
-import hambuger from "../../assets/public/hambuger.svg";
 import LegacyBot from "../../components/LegacyBot";
 import FeedbackForm from "../../components/FeedbackForm";
 import AiResponse from "../../components/AiResponse";
 import Sidebar from "../../components/Sidebar";
 import ResponsiveSidebar from "../../components/ResponsiveSidebar";
 import { useExamibleContext } from "../../context/ExamibleContext";
+import { HamburgerIcon } from "../../assets/public/svg/common";
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user);
@@ -72,12 +72,13 @@ const Dashboard = () => {
               </h1>
             )}
           </nav>
-          <div
-            className="header-menuIcon"
+          <button
+            class="menu-button"
+            aria-label="Open Menu"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <img src={hambuger} />
-          </div>
+            <HamburgerIcon />
+          </button>
         </div>
         <div className="dashboard-rightHolder">
           <Outlet />

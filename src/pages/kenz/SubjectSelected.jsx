@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/subjectSelected.css";
 import image1 from "../../assets/public/home-firstlayer.png";
-import { FaArrowLeftLong, FaBook } from "react-icons/fa6";
+import { FaArrowLeftLong } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../global/slice";
 import axios from "axios";
@@ -45,7 +45,10 @@ const SubjectSelected = () => {
 
   // build a fast lookup for subject -> img once
   const subjectMap = useMemo(
-    () => Object.fromEntries(allSubjectsData.map((s) => [s.subject, s.img])),
+    () =>
+      Object.fromEntries(
+        allSubjectsData.map((s) => [s.subject, s.svg || s.img]),
+      ),
     [],
   );
 
@@ -56,7 +59,7 @@ const SubjectSelected = () => {
           <FaArrowLeftLong onClick={() => setShowSubjectSelected(false)} />
         </aside>
         <div className="subjectSelected-firstLayerHolder">
-          <img src={image1} alt="" />
+          <img src={image1} alt="Illustration" loading="eager" />
           <main>
             <nav>
               <h5>
@@ -78,17 +81,23 @@ const SubjectSelected = () => {
         <main>
           {user?.enrolledSubjects.map((item, index) => (
             <nav key={index}>
-              <img
-                src={subjectMap[item]}
-                alt={item}
-                loading="eager"
-                width={48}
-                height={48}
-              />
+              {typeof subjectMap[item] === "function" ? (
+                React.createElement(subjectMap[item])
+              ) : (
+                <img
+                  src={subjectMap[item]}
+                  alt={item}
+                  loading="eager"
+                  width={48}
+                  height={48}
+                />
+              )}
             </nav>
           ))}
         </main>
-        <div className="not-selected">Not Selected yet.</div>
+        <div className="not-selected">
+          Not Selected yet. <br /> Pick your subjects.
+        </div>
         <article>
           {notEnrolledSubjects.map((item, index) => (
             <nav
@@ -98,13 +107,17 @@ const SubjectSelected = () => {
                 pointerEvents: loading ? "none" : "auto",
               }}
             >
-              <img
-                src={subjectMap[item]}
-                alt={item}
-                loading="eager"
-                width={48}
-                height={48}
-              />
+              {typeof subjectMap[item] === "function" ? (
+                React.createElement(subjectMap[item])
+              ) : (
+                <img
+                  src={subjectMap[item]}
+                  alt={item}
+                  loading="eager"
+                  width={48}
+                  height={48}
+                />
+              )}
             </nav>
           ))}
         </article>

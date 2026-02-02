@@ -20,7 +20,7 @@ const MainHolder = () => {
   }
 
   if (userToken && !loading) {
-    nav("/dashboard/overview", { replace: true });
+    nav("/overview", { replace: true });
   }
   return (
     <>

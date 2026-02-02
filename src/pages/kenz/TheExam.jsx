@@ -25,7 +25,7 @@ const TheExam = () => {
   const [isNext, setIsNext] = useState(false);
   const arrayOfNumbers = Array.from(
     { length: mockExamQuestions?.length },
-    (_, i) => i + 1
+    (_, i) => i + 1,
   );
 
   const { setShowLeavingNow } = useExamibleContext();
@@ -35,12 +35,12 @@ const TheExam = () => {
   const { subjectId } = useParams();
   const num = Number(subjectId);
   const currentQuestion = mockExamQuestions?.find(
-    (_, index) => index === num - 1
+    (_, index) => index === num - 1,
   );
 
   useLayoutEffect(() => {
     if (mockExamQuestions?.length <= 0 || !mockExamQuestions) {
-      location.href = "/dashboard/overview";
+      location.href = "/overview";
     }
   }, [mockExamQuestions]);
 
@@ -60,7 +60,7 @@ const TheExam = () => {
       setMockExamOption({
         option: exam[num - 2]?.option,
         answer: exam[num - 2]?.answer,
-      })
+      }),
     );
     nav(`/mock-exam/${num - 1}`);
     // dispatch(previousQuestion())
@@ -74,7 +74,7 @@ const TheExam = () => {
         setMockExamOption({
           option: exam[num]?.option,
           answer: exam[num]?.answer,
-        })
+        }),
       );
     } else {
       dispatch(setMockExamOption("F"));
@@ -106,7 +106,7 @@ const TheExam = () => {
         <article>
           <aside>
             <meter min={0} max={100} value={examMeter}></meter>
-            <p>{examMeter.toFixed(2)}%</p>
+            <p>{examMeter.toFixed(0)}%</p>
           </aside>
           <section>
             <LuClock2 fontSize={30} />
@@ -118,7 +118,7 @@ const TheExam = () => {
         <h3>Jamb Mock Exam</h3>
         <aside>
           <meter min={0} max={100} value={examMeter}></meter>
-          <p>{examMeter.toFixed(2)}%</p>
+          <p>{examMeter.toFixed(0)}%</p>
         </aside>
         <section>
           <LuClock2 fontSize={30} />
@@ -308,14 +308,17 @@ const TheExam = () => {
                 }}
                 onClick={() => {
                   dispatch(
-                    nextQuestion({ answer: currentQuestion?.answer, subjectId })
+                    nextQuestion({
+                      answer: currentQuestion?.answer,
+                      subjectId,
+                    }),
                   );
                   nav(`/mock-exam/${index + 1}`);
                   dispatch(
                     setMockExamOption({
                       option: exam[index]?.option,
                       answer: exam[index]?.answer,
-                    })
+                    }),
                   );
                 }}
                 key={index}

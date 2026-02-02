@@ -56,7 +56,7 @@ const FinishedExam = () => {
       if (res?.status === 200) {
         setTimeout(() => {
           dispatch(setUser(res?.data?.data));
-          nav("/dashboard/mock-exam/result", {
+          nav("/mock-exam/result", {
             state: { subject: mockSelectedSubject },
           });
           setTimeout(() => {

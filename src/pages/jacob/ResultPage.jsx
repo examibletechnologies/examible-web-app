@@ -26,7 +26,7 @@ const ResultPage = () => {
       >
         {passed ? "✅ You Passed!" : "❌ You Didn't Pass!"}
       </p>
-      <button onClick={() => navigate("/dashboard/past-questions")}>
+      <button onClick={() => navigate("/past-questions")}>
         Back to dashboard
       </button>
     </div>

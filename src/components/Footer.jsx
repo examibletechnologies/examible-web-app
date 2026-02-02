@@ -22,7 +22,7 @@ const Footer = () => {
                   color: "black",
                   cursor: "pointer",
                 }}
-                to={"/dashboard/mock-exam"}
+                to={"/mock-exam"}
               >
                 Mock Exam
               </Link>
@@ -32,7 +32,7 @@ const Footer = () => {
                   color: "black",
                   cursor: "pointer",
                 }}
-                to={"/dashboard/past-questions"}
+                to={"/past-questions"}
               >
                 Past Question
               </Link>
@@ -56,20 +56,19 @@ const Footer = () => {
               Olodi-Apapa, Lagos
             </p>
             <h5>
-              +234 818 6793482 <br />
-              +234 816 5883204
+              +234 913 1701630 <br />
+              +234 815 8882242
             </h5>
           </div>
           <div className="footer-handles">
             <h3>Get in touch</h3>
-            <article>
-              <MdEmail
-                fontSize={24}
-                cursor={"pointer"}
-                onClick={() =>
-                  (window.location.href = "mailto:legacybuilders710@gmail.com")
-                }
-              />
+            <article
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                (window.location.href = "mailto:info@examible.com")
+              }
+            >
+              <MdEmail fontSize={24} />
               info@examible.com
             </article>
             <main>
@@ -85,8 +84,22 @@ const Footer = () => {
                     }
                   />
                   <AiFillTwitterCircle fontSize={24} cursor={"pointer"} />
-                  <FaLinkedin fontSize={24} cursor={"pointer"} />
-                  <FaInstagram fontSize={24} cursor={"pointer"} />
+                  <FaLinkedin
+                    fontSize={24}
+                    cursor={"pointer"}
+                    onClick={() =>
+                      (window.location.href =
+                        "https://www.linkedin.com/company/examible")
+                    }
+                  />
+                  <FaInstagram
+                    fontSize={24}
+                    cursor={"pointer"}
+                    onClick={() =>
+                      (window.location.href =
+                        "https://www.instagram.com/examible?igsh=MWswazkxcmVnaWoybQ%3D%3D&utm_source=qr")
+                    }
+                  />
                 </div>
                 <h6>@examible</h6>
               </nav>
@@ -95,7 +108,7 @@ const Footer = () => {
         </div>
       </div>
       <footer className="footer-bottom">
-        © 2025 Examible | All rights reserved
+        © {new Date().getFullYear()} Examible | All rights reserved
       </footer>
     </div>
   );

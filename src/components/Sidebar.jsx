@@ -13,6 +13,7 @@ import "../styles/dashboardCss/dashboard.css";
 import { useExamibleContext } from "../context/ExamibleContext";
 import { toast } from "react-toastify";
 import { setMockExamQuestion } from "../global/slice";
+import Button from "../shared/Button";
 
 const Sidebar = () => {
   const dashboardIcons = [
@@ -42,7 +43,7 @@ const Sidebar = () => {
           <img
             src={dashboardIcon}
             alt=""
-            onClick={() => nav("/dashboard/overview")}
+            onClick={() => nav("/overview")}
             style={{ cursor: "pointer" }}
           />
         </div>
@@ -66,25 +67,27 @@ const Sidebar = () => {
             </div>
             <h5>Unlimited Access</h5>
             <p>Explore more with a lifetime members</p>
-            <button
+            <Button
               onClick={() => {
                 toast.info("This feature is coming soon!");
               }}
+              size="sm"
             >
+              {" "}
               Subscribe Now
-            </button>
+            </Button>
           </div>
         </>
         {/* <>
           {user?.plan === "Freemium" ? (
             <>
-              {location.pathname === "/dashboard/subscription" ? (
+              {location.pathname === "/subscription" ? (
                 <Link
-                  to="/dashboard/subscription"
+                  to="/subscription"
                   className="dashboard-navBar"
                   style={{
                     backgroundColor:
-                      location.pathname === "/dashboard/subscription"
+                      location.pathname === "/subscription"
                         ? "#804BF233"
                         : "white",
                   }}
@@ -111,11 +114,11 @@ const Sidebar = () => {
             </>
           ) : (
             <Link
-              to="/dashboard/subscription"
+              to="/subscription"
               className="dashboard-navBar"
               style={{
                 backgroundColor:
-                  location.pathname === "/dashboard/subscription"
+                  location.pathname === "/subscription"
                     ? "#804BF233"
                     : "white",
               }}

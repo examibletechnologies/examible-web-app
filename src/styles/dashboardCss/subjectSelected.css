@@ -26,6 +26,11 @@
     font-size: 25px;
     cursor: pointer;
     z-index: 2;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.08);
+    }
   }
 
   .subjectSelected-firstLayerHolder {

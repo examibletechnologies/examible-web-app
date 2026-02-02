@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import "../styles/authCss/auth.css";
 import { FcGoogle } from "react-icons/fc";
 import logo from "../assets/public/logo.png";
-import { FaRegEye } from "react-icons/fa";
-import { FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -15,8 +13,6 @@ import Button from "../shared/Button";
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(!show);
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
@@ -62,7 +58,7 @@ const Login = () => {
           setLoading(false);
           setTimeout(() => {
             if (location.state?.selectedPlan) {
-              navigate("/dashboard/make-payment", {
+              navigate("/make-payment", {
                 state: {
                   selectedPlan: location.state?.selectedPlan,
                   amount: location.state?.amount,
@@ -70,7 +66,7 @@ const Login = () => {
                 replace: true,
               });
             } else {
-              navigate("/dashboard/overview", { replace: true });
+              navigate("/overview", { replace: true });
             }
           }, 3000);
         }

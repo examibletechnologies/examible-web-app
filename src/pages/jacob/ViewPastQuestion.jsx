@@ -23,7 +23,7 @@ const ViewPastQuestion = () => {
 
   const calculateScore = () => {
     const correctCount = Object.values(pastQuestionsOption).filter(
-      (entry) => entry?.isCorrect
+      (entry) => entry?.isCorrect,
     ).length;
 
     const total = questions.length;
@@ -46,7 +46,7 @@ const ViewPastQuestion = () => {
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
   const currentQuestions = questions.slice(
     indexOfFirstQuestion,
-    indexOfLastQuestion
+    indexOfLastQuestion,
   );
 
   const { handleShowUserFeedback, setShowAiResponseModal, setAIResponse } =
@@ -75,7 +75,7 @@ const ViewPastQuestion = () => {
     questionIndex,
     selectedOption,
     correctAnswerLetter,
-    options
+    options,
   ) => {
     const correctAnswer = getAnswerText(correctAnswerLetter, options);
 
@@ -85,7 +85,7 @@ const ViewPastQuestion = () => {
         selectedOption,
         isCorrect: String(selectedOption) === String(correctAnswer),
         correctAnswerText: correctAnswer,
-      })
+      }),
     );
   };
 
@@ -127,7 +127,7 @@ const ViewPastQuestion = () => {
     subheadingB,
     diagramUrlA,
     diagramUrlB,
-    id
+    id,
   ) => {
     setLoading(id);
     try {
@@ -141,7 +141,7 @@ const ViewPastQuestion = () => {
         subheadingA,
         subheadingB,
         diagramUrlA,
-        diagramUrlB
+        diagramUrlB,
       );
       if (res) {
         setLoading(null);
@@ -220,7 +220,7 @@ const ViewPastQuestion = () => {
                         indexOfFirstQuestion + index,
                         option,
                         item.answer,
-                        item.options || []
+                        item.options || [],
                       )
                     }
                     style={{
@@ -272,7 +272,7 @@ const ViewPastQuestion = () => {
                         item.subheadingB,
                         item.diagramUrlA,
                         item.diagramUrlB,
-                        index
+                        index,
                       )
                     }
                   >
@@ -309,7 +309,7 @@ const ViewPastQuestion = () => {
           <button
             onClick={() => {
               const result = calculateScore();
-              navigate("/dashboard/past-questions/result", {
+              navigate("/past-questions/result", {
                 state: result,
               });
             }}

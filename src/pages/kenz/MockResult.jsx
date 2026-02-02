@@ -53,7 +53,7 @@ const MockResult = () => {
 
   const retryExam = () => {
     dispatch(cancelExam());
-    nav("/dashboard/mock-exam");
+    nav("/mock-exam");
   };
 
   const handleViewExplanation = async (

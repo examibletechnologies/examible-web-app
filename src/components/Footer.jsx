@@ -22,7 +22,7 @@ const Footer = () => {
                   color: "black",
                   cursor: "pointer",
                 }}
-                to={"/dashboard/mock-exam"}
+                to={"/mock-exam"}
               >
                 Mock Exam
               </Link>
@@ -32,7 +32,7 @@ const Footer = () => {
                   color: "black",
                   cursor: "pointer",
                 }}
-                to={"/dashboard/past-questions"}
+                to={"/past-questions"}
               >
                 Past Question
               </Link>
@@ -92,7 +92,14 @@ const Footer = () => {
                         "https://www.linkedin.com/company/examible")
                     }
                   />
-                  <FaInstagram fontSize={24} cursor={"pointer"} />
+                  <FaInstagram
+                    fontSize={24}
+                    cursor={"pointer"}
+                    onClick={() =>
+                      (window.location.href =
+                        "https://www.instagram.com/examible?igsh=MWswazkxcmVnaWoybQ%3D%3D&utm_source=qr")
+                    }
+                  />
                 </div>
                 <h6>@examible</h6>
               </nav>

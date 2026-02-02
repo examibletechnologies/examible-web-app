@@ -51,7 +51,7 @@ const LeavingNow = () => {
           dispatch(setUser(res?.data?.data));
           setShowLeavingNow(false);
           setLoading(false);
-          nav("/dashboard/mock-exam/result", {
+          nav("/mock-exam/result", {
             state: { subject: mockSelectedSubject },
           });
           setTimeout(() => {

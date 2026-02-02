@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/authCss/resetpassword.css";
 import lock from "../../assets/public/uim_padlock.svg";
-import logo from "../../assets/public/legacy_builder_logo.png";
+import logo from "../../assets/public/logo.png";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Input from "../../shared/Input";
+import Button from "../../shared/Button";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -59,7 +61,7 @@ const ResetPassword = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputValue((prev) => ({ ...prev, [name]: value }));
-    validateField(name, value);
+    setErrorMessage((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e, data) => {
@@ -71,7 +73,7 @@ const ResetPassword = () => {
           `${
             import.meta.env.VITE_BASE_URL
           }api/v1/reset_password/student/${token}`,
-          data
+          data,
         );
         setLoading(false);
         if (res?.status === 200) {
@@ -130,62 +132,31 @@ const ResetPassword = () => {
           className="resetinputdiv"
           onSubmit={(e) => handleSubmit(e, inputValue)}
         >
-          <div className="resetinput">
-            <label className="resetlabel">Password</label>
-            <div className="inputwrapper">
-              <input
-                name="newPassword"
-                onChange={handleChange}
-                value={inputValue.newPassword}
-                type={showPassword ? "text" : "password"}
-                onBlur={(e) => validateField(e.target.name, e.target.value)}
-                placeholder="Enter Your Password"
-                required
-                className="resetinputmain"
-              />
-              <div className="reseteyeIcon" onClick={handleShowPassword}>
-                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
-            {errorMessage.newPassword && (
-              <p className="reseterror">{errorMessage.newPassword}</p>
-            )}
-          </div>
-          <div className="resetinput">
-            <label className="resetlabel">Confirm Password</label>
-            <div className="inputwrapper">
-              <input
-                name="confirmPassword"
-                onChange={handleChange}
-                value={inputValue.confirmPassword}
-                type={showConfirmPassword ? "text" : "password"}
-                onBlur={(e) => validateField(e.target.name, e.target.value)}
-                placeholder="Confirm Password"
-                required
-                className="resetinputmain"
-              />
-              <div
-                className="reseteyeIcon1"
-                onClick={handleShowConfirmPassword}
-              >
-                {showConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
-            {errorMessage.confirmPassword && (
-              <p className="reseterror">{errorMessage.confirmPassword}</p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="resetbtn"
-            disabled={disabled}
-            style={{
-              backgroundColor: disabled ? "#dbd2f0d2" : "#804bf2",
-              cursor: disabled ? "not-allowed" : "pointer",
-            }}
-          >
-            {loading ? "Loading..." : "Reset Password"}
-          </button>
+          <Input
+            name="newPassword"
+            label="Password"
+            onChange={handleChange}
+            value={inputValue.newPassword}
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+            placeholder="Enter new password"
+            required
+            isPassword
+            error={errorMessage.newPassword}
+          />
+          <Input
+            label="Confirm Password"
+            name="confirmPassword"
+            onChange={handleChange}
+            value={inputValue.confirmPassword}
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+            placeholder="Confirm your password"
+            required
+            isPassword
+            error={errorMessage.confirmPassword}
+          />
+          <Button type="submit" disabled={disabled} loading={loading} fullWidth>
+            {loading ? "Reseting..." : "Reset Password"}
+          </Button>
         </form>
       </section>
     </main>

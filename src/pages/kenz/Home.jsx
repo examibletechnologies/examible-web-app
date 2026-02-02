@@ -15,6 +15,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 import { Rate } from "antd";
+import Button from "../../shared/Button";
 
 const responsive = {
   superLargeDesktop: {
@@ -57,7 +58,13 @@ const Home = () => {
                 progress to unlock your best JAMB score yet!
               </p>
             </section>
-            <button onClick={() => nav("/signup")}>GET STARTED</button>
+            <Button
+              size="lg"
+              onClick={() => nav("/signup")}
+              variant="primary-outline"
+            >
+              Get Started
+            </Button>
           </main>
           <nav>
             <aside>

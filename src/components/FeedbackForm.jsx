@@ -18,7 +18,7 @@ const FeedbackForm = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const url = `${import.meta.env.VITE_BASE_URL}api/v1/students/${
-    user._id
+    user._id || user.id
   }/feedback`;
 
   const { setShowFeedbackModal } = useExamibleContext();
@@ -44,7 +44,6 @@ const FeedbackForm = () => {
         async () => {
           try {
             const res = await axios.put(url, {});
-            console.log(res);
             if (res.status === 200) {
               toast.success("Thanks for the feedback", {
                 autoClose: 2000,
@@ -57,16 +56,14 @@ const FeedbackForm = () => {
                 setLoading(false);
               }, 1000);
             }
-          } catch (error) {
-            console.log(error);
-          }
+          } catch (error) {}
         },
         (error) => {
           setLoading(false);
           toast.error(error.text, {
             autoClose: 2000,
           });
-        }
+        },
       );
   };
 

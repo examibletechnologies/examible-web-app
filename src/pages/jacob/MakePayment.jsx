@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/makepayment.css";
 import payment from "../../assets/public/payment.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -12,8 +12,6 @@ const MakePayment = () => {
   const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log(user);
-  const dispatch = useDispatch();
 
   const location = useLocation();
   const { amount, selectedPlan: plan } = location.state || {};
@@ -24,7 +22,7 @@ const MakePayment = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}api/v1/initializeKoraPay`,
-        { amount, email, name, plan }
+        { amount, email, name, plan },
       );
       if (response?.status === 200) {
         setTimeout(() => {
@@ -48,7 +46,7 @@ const MakePayment = () => {
           <div className="backtosubscription">
             <IoIosArrowRoundBack
               size={40}
-              onClick={() => navigate("/dashboard/subscription")}
+              onClick={() => navigate("/subscription")}
               style={{ cursor: "pointer" }}
             />
           </div>
@@ -93,7 +91,7 @@ const MakePayment = () => {
               amount,
               user?.email,
               user?.fullName,
-              plan
+              plan,
             )
           }
           disabled={disabled}

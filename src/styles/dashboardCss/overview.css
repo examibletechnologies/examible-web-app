@@ -208,8 +208,11 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: black;
           position: relative;
+
+          &:last-child {
+            background-color: white;
+          }
 
           .overview-trashIcon {
             position: absolute;
@@ -219,6 +222,12 @@
             font-size: 30px;
             cursor: pointer;
             z-index: 5;
+          }
+
+          img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
           }
 
           aside {
@@ -345,6 +354,36 @@
           p {
             font-size: 13px;
             font-weight: 400;
+            font-family: "Montserrat", sans-serif;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .overview-firstLayerMiddle {
+      width: 95%;
+
+      main {
+        justify-content: flex-start;
+        gap: 20px;
+        padding-inline: 24px;
+
+        div {
+          min-height: 54.4px;
+          min-width: 54.4px;
+        }
+
+        nav {
+          display: flex;
+          width: fit-content;
+          align-items: center;
+          gap: 8px;
+
+          p {
+            font-size: 16px;
+            font-weight: 500;
             font-family: "Montserrat", sans-serif;
           }
         }
@@ -648,4 +687,13 @@
   font-weight: 700;
   font-size: 24px;
   font-family: "Montserrat", sans-serif;
+}
+
+.plus-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.plus-icon:hover {
+  transform: scale(1.08);
 }

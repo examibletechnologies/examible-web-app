@@ -24,8 +24,8 @@ const Mockexam = () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}api/v1/mock-questions/${subject}/${
-          user?._id
-        }`
+          user?._id || user?.id
+        }`,
       );
       if (res?.status === 200) {
         dispatch(setMockExamQuestion(res?.data?.data));
@@ -44,7 +44,6 @@ const Mockexam = () => {
       setTimeout(() => {
         toast.error(error?.response?.data?.message);
       }, 500);
-      console.log(error);
     }
   };
 
@@ -58,7 +57,7 @@ const Mockexam = () => {
         <>
           {user?.enrolledSubjects?.map((item, index) => (
             <div
-              className="mockExam-holderSubject"
+              className={`mockExam-holderSubject ${mySubject === item ? "" : "inactive"}`}
               key={index}
               onClick={() => dispatch(setMockSubject(item))}
             >

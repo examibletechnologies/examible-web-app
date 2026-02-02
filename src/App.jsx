@@ -7,7 +7,6 @@ import Congratulation from "./auth/welcomeback/Congratulation";
 import ForgetPassword from "./auth/ForgetPassword";
 import ResetLink from "./auth/ResetLink";
 import ResetPassword from "./auth/welcomeback/ResetPassword";
-import LearnMore from "./pages/jacob/LearnMore";
 import MainHolder from "./routes/MainHolder";
 import Dashboard from "./pages/kenz/Dashboard";
 import Overview from "./pages/kenz/Overview";
@@ -40,7 +39,6 @@ const routes = createBrowserRouter([
         element: <MainHolder />,
         children: [
           { path: "", element: <Home /> },
-          { path: "/learn-more", element: <LearnMore /> },
           { path: "about-us", element: <AboutUs /> },
           { path: "plans", element: <Plans /> },
         ],
@@ -62,21 +60,24 @@ const routes = createBrowserRouter([
             element: <Dashboard />,
             children: [
               {
-                path: "/dashboard/overview",
+                path: "/overview",
                 element: <Overview />,
                 index: true,
               },
-              { path: "/dashboard/mock-exam", element: <Mockexam /> },
-              { path: "/dashboard/past-questions", element: <PastQuestion /> },
-              { path: "/dashboard/profile", element: <Profile /> },
-              { path: "/dashboard/subscription", element: <Subscription /> },
-              { path: "/dashboard/make-payment", element: <MakePayment /> },
-              { path: "/dashboard/mock-exam/result", element: <MockResult /> },
+              { path: "/mock-exam", element: <Mockexam /> },
+              { path: "/past-questions", element: <PastQuestion /> },
+              { path: "/profile", element: <Profile /> },
+              { path: "/subscription", element: <Subscription /> },
+              { path: "/make-payment", element: <MakePayment /> },
+              { path: "/mock-exam/result", element: <MockResult /> },
               {
-                path: "/dashboard/past-questions/view",
+                path: "/past-questions/view",
                 element: <ViewPastQuestion />,
               },
-              { path: "/dashboard/resultpage", element: <ResultPage /> },
+              {
+                path: "/past-questions/result",
+                element: <ResultPage />,
+              },
             ],
           },
           { path: "mock-exam/:subjectId", element: <ExamBody /> },

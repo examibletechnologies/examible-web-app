@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { getAiResponse } from "../../config/Api";
 import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
+import Latex from "react-latex-next";
+import "katex/dist/katex.min.css";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const ViewPastQuestion = () => {
 
   const calculateScore = () => {
     const correctCount = Object.values(pastQuestionsOption).filter(
-      (entry) => entry?.isCorrect
+      (entry) => entry?.isCorrect,
     ).length;
 
     const total = questions.length;
@@ -44,7 +46,7 @@ const ViewPastQuestion = () => {
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
   const currentQuestions = questions.slice(
     indexOfFirstQuestion,
-    indexOfLastQuestion
+    indexOfLastQuestion,
   );
 
   const { handleShowUserFeedback, setShowAiResponseModal, setAIResponse } =
@@ -73,7 +75,7 @@ const ViewPastQuestion = () => {
     questionIndex,
     selectedOption,
     correctAnswerLetter,
-    options
+    options,
   ) => {
     const correctAnswer = getAnswerText(correctAnswerLetter, options);
 
@@ -83,7 +85,7 @@ const ViewPastQuestion = () => {
         selectedOption,
         isCorrect: String(selectedOption) === String(correctAnswer),
         correctAnswerText: correctAnswer,
-      })
+      }),
     );
   };
 
@@ -121,7 +123,11 @@ const ViewPastQuestion = () => {
     question,
     passage,
     options,
-    id
+    subheadingA,
+    subheadingB,
+    diagramUrlA,
+    diagramUrlB,
+    id,
   ) => {
     setLoading(id);
     try {
@@ -131,7 +137,11 @@ const ViewPastQuestion = () => {
         questionNum,
         question,
         passage,
-        options
+        options,
+        subheadingA,
+        subheadingB,
+        diagramUrlA,
+        diagramUrlB,
       );
       if (res) {
         setLoading(null);
@@ -140,8 +150,7 @@ const ViewPastQuestion = () => {
       }
     } catch (error) {
       setLoading(null);
-      console.log(error);
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "An error occurred");
     }
   };
 
@@ -163,23 +172,26 @@ const ViewPastQuestion = () => {
       {currentQuestions?.length > 0 ? (
         currentQuestions?.map((item, index) => (
           <div className="answerquestiondiv" key={index}>
-            <h1 className="questiontext">
-              <span>{indexOfFirstQuestion + index + 1}</span>.{" "}
-              <span>{item.question}</span>
-            </h1>
             {item?.subheadingA && (
-              <h1 className="subheading">{item?.subheadingA}</h1>
+              <h1 className="subheading">
+                <Latex>{item?.subheadingA}</Latex>
+              </h1>
             )}
             {item?.diagramUrlA && (
               <img src={item?.diagramUrlA} className="question-diagram" />
             )}
             {item?.subheadingB && (
-              <h1 className="subheading">{item?.subheadingB}</h1>
+              <h1 className="subheading">
+                <Latex>{item?.subheadingB}</Latex>
+              </h1>
             )}
             {item?.diagramUrlB && (
               <img src={item?.diagramUrlB} className="question-diagram" />
             )}
-
+            <h1 className="questiontext">
+              <span>{indexOfFirstQuestion + index + 1}</span>.{" "}
+              <span>{<Latex>{item?.question}</Latex>}</span>
+            </h1>
             <ul className="answeroption">
               {item.options.map((option, optionindex) => {
                 const userAnswer =
@@ -208,7 +220,7 @@ const ViewPastQuestion = () => {
                         indexOfFirstQuestion + index,
                         option,
                         item.answer,
-                        item.options || []
+                        item.options || [],
                       )
                     }
                     style={{
@@ -217,9 +229,11 @@ const ViewPastQuestion = () => {
                     }}
                   >
                     <span className="letterdoption">
-                      {String.fromCharCode(65 + optionindex)}.
+                      {`${String.fromCharCode(65 + optionindex)}.`}
                     </span>
-                    {option}
+                    <span>
+                      <Latex>{option}</Latex>
+                    </span>
                   </li>
                 );
               })}
@@ -254,7 +268,11 @@ const ViewPastQuestion = () => {
                         item.question,
                         item.passage,
                         item.options,
-                        index
+                        item.subheadingA,
+                        item.subheadingB,
+                        item.diagramUrlA,
+                        item.diagramUrlB,
+                        index,
                       )
                     }
                   >
@@ -291,7 +309,9 @@ const ViewPastQuestion = () => {
           <button
             onClick={() => {
               const result = calculateScore();
-              navigate("/dashboard/resultpage", { state: result });
+              navigate("/past-questions/result", {
+                state: result,
+              });
             }}
             className="pagination-button1"
           >

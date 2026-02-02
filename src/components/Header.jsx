@@ -3,8 +3,9 @@ import "../styles/header.css";
 import menuBar from "../assets/navBar.json";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderLogo from "../assets/public/logo.png";
-import hambuger from "../assets/public/hambuger.svg";
 import { toast } from "react-toastify";
+import Button from "../shared/Button";
+import { HamburgerIcon } from "../assets/public/svg/common";
 
 const Header = () => {
   const location = useLocation();
@@ -28,12 +29,9 @@ const Header = () => {
               {menuBar.map((item, index) => (
                 <li
                   key={index}
-                  style={{
-                    borderColor:
-                      location.pathname === item.link ? "#804BF2" : "white",
-                  }}
+                  className={location.pathname === item.link ? "active" : ""}
                   onClick={() => {
-                    item.name === "PLANS" &&
+                    item.name === "Plans" &&
                       toast.info("Plans page is currently unavailable");
                   }}
                 >
@@ -48,19 +46,30 @@ const Header = () => {
             </ul>
           </div>
           <aside className="header-holderButton">
-            <button className="header-signup" onClick={() => nav("/signup")}>
-              SIGN UP
-            </button>
-            <button className="header-login" onClick={() => nav("/login")}>
-              LOGIN
-            </button>
+            <Button
+              variant="outline"
+              onClick={() => nav("/signup")}
+              style={{ width: 89 }}
+              size="sm"
+            >
+              Sign Up
+            </Button>
+            <Button
+              onClick={() => nav("/login")}
+              variant="primary-outline"
+              style={{ width: 89 }}
+              size="sm"
+            >
+              Login
+            </Button>
           </aside>
-          <div
-            className="header-menuIcon"
+          <button
+            class="menu-button"
+            aria-label="Open Menu"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <img src={hambuger} />
-          </div>
+            <HamburgerIcon />
+          </button>
         </div>
       </div>
       {showDropdown && (
@@ -77,7 +86,7 @@ const Header = () => {
                 src={HeaderLogo}
                 alt="Examible"
                 onClick={() => {
-                  nav("/"), setShowDropdown(!showDropdown);
+                  (nav("/"), setShowDropdown(!showDropdown));
                 }}
               />
             </div>
@@ -86,12 +95,9 @@ const Header = () => {
                 {menuBar.map((item, index) => (
                   <li
                     key={index}
-                    style={{
-                      borderColor:
-                        location.pathname === item.link ? "#804BF2" : "white",
-                    }}
+                    className={location.pathname === item.link ? "active" : ""}
                     onClick={() => {
-                      item.name === "PLANS" &&
+                      item.name === "Plans" &&
                         toast.info("Plans page is currently unavailable");
                       setShowDropdown(!showDropdown);
                     }}
@@ -105,18 +111,21 @@ const Header = () => {
                   </li>
                 ))}
               </>
-              <button
-                className="headerDropdown-signup"
+              <Button
+                variant="outline"
                 onClick={() => nav("/signup")}
+                style={{ width: 89 }}
+                size="sm"
               >
-                SIGN UP
-              </button>
-              <button
-                className="headerDropdown-login"
+                Sign Up
+              </Button>
+              <Button
                 onClick={() => nav("/login")}
+                style={{ width: 89 }}
+                size="sm"
               >
-                LOGIN
-              </button>
+                Login
+              </Button>
             </div>
           </div>
         </div>

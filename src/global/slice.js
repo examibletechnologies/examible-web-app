@@ -26,7 +26,7 @@ const initialState = {
   chatbotMessages: [
     {
       message:
-        "Hello, I am Examible bot, Feel free to ask me ask me question based on O'level Subjects",
+        "Hello, I am Examible bot, Feel free to ask me question based on O'level Subjects",
       sender: "ChatGPT",
       direction: "Outgoing",
     },
@@ -223,6 +223,10 @@ const slice = createSlice({
       state.timeOut = false;
     },
     theExamTimer: (state) => {
+      if (state.examTimerMins <= 0 && state.examTimerSecs <= 0) {
+        state.timeOut = true;
+        return;
+      }
       if (state.examTimerSecs === 0) {
         state.examTimerMins--;
         state.examTimerSecs = 59;
@@ -235,6 +239,14 @@ const slice = createSlice({
       state.userToken = "";
       state.mockSubject = "";
       state.mockExamQuestions = [];
+      state.chatbotMessages = [
+        {
+          message:
+            "Hello, I am Examible bot, Feel free to ask me question based on O'level Subjects",
+          sender: "ChatGPT",
+          direction: "Outgoing",
+        },
+      ];
     },
 
     setNotEnrolledSubjects: (state, { payload }) => {

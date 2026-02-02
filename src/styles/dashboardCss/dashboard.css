@@ -15,6 +15,7 @@
   @media screen and (max-width: 850px) {
     .dashboard-leftDropdown {
       display: flex;
+      z-index: 15;
     }
   }
 }
@@ -93,7 +94,7 @@
     font-weight: 400;
     font-size: 21px;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     text-decoration: none;
     color: black;
 
@@ -111,6 +112,10 @@
         object-fit: cover;
       }
     }
+  }
+
+  .navbar-active {
+    background-color: #804bf233;
   }
 
   .dashboard-subscription {
@@ -214,7 +219,7 @@
     position: sticky;
     top: 0;
     background-color: white;
-    z-index: 5;
+    z-index: 10;
 
     h3 {
       font-family: "sora", sans-serif;
@@ -246,7 +251,8 @@
       }
     }
 
-    .header-menuIcon {
+    .header-menuIcon,
+    .menu-button {
       display: none;
     }
 
@@ -260,6 +266,9 @@
       }
       nav {
         display: none;
+      }
+      .menu-button {
+        display: flex;
       }
       .header-menuIcon {
         display: flex;
@@ -427,4 +436,43 @@
   100% {
     transform: translateX(0%);
   }
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.icon-bg {
+  fill: white;
+  stroke: #f2ae30; /* Gold */
+  stroke-width: 3;
+  transition: all 0.3s ease;
+}
+
+.line {
+  stroke: #f2ae30; /* Gold */
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-button:hover .icon-bg {
+  fill: #fff9ed;
+  transform: scale(1.02);
+}
+
+@keyframes expandLine {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(1.4);
+  }
+}
+
+.menu-button:hover .line.middle {
+  animation: expandLine 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

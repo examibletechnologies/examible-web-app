@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/overview.css";
 import image1 from "../../assets/public/home-firstlayer.png";
 import { FaBook } from "react-icons/fa6";
@@ -12,12 +12,23 @@ import axios from "axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useExamibleContext } from "../../context/ExamibleContext";
+import { allSubjectsData } from "../../constants/common";
+import { PlusIcon } from "../../assets/public/svg/common";
 
 const Overview = () => {
   const user = useSelector((state) => state.user);
   const [showBin, setShowBin] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  // build a fast lookup for subject -> svg component OR img once
+  const subjectMap = useMemo(
+    () =>
+      Object.fromEntries(
+        allSubjectsData.map((s) => [s.subject, s.svg || s.img]),
+      ),
+    [],
+  );
 
   const { setShowSubjectSelected, showSubjectSelected } = useExamibleContext();
 
@@ -26,8 +37,8 @@ const Overview = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}api/v1/removeSubject/${user?._id}`,
-        { subject }
+        `${import.meta.env.VITE_BASE_URL}api/v1/removeSubject/${user?._id || user?.id}`,
+        { subject },
       );
       setLoading(false);
       if (res?.status === 200) {
@@ -56,28 +67,45 @@ const Overview = () => {
   };
 
   const addMoreSubject = async () => {
-    if (user?.plan === "Freemium" && user?.enrolledSubjects?.length === 4) {
-      toast.error("Upgrade Plan to add more subject");
-    } else {
-      setLoading(true);
-      const id = toast.loading("Please wait ...");
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${
-            user?._id
-          }`
-        );
-        setLoading(false);
-        if (res?.status) {
-          dispatch(setNotEnrolledSubjects(res?.data?.data));
-          toast.dismiss(id);
-          setShowSubjectSelected(true);
-        }
-      } catch (error) {
-        setLoading(false);
-        toast.error(error?.response?.data?.message);
+    // if (user?.plan === "Freemium" && user?.enrolledSubjects?.length === 4) {
+    //   toast.error("Upgrade Plan to add more subject");
+    // } else {
+    //   setLoading(true);
+    //   const id = toast.loading("Please wait ...");
+    //   try {
+    //     const res = await axios.get(
+    //       `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${
+    //         user?._id
+    //       }`
+    //     );
+    //     setLoading(false);
+    //     if (res?.status) {
+    //       dispatch(setNotEnrolledSubjects(res?.data?.data));
+    //       toast.dismiss(id);
+    //       setShowSubjectSelected(true);
+    //     }
+    //   } catch (error) {
+    //     setLoading(false);
+    //     toast.error(error?.response?.data?.message);
+    //     toast.dismiss(id);
+    //   }
+    // }
+    setLoading(true);
+    const id = toast.loading("Please wait ...");
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id || user?.id}`,
+      );
+      setLoading(false);
+      if (res?.status) {
+        dispatch(setNotEnrolledSubjects(res?.data?.data));
         toast.dismiss(id);
+        setShowSubjectSelected(true);
       }
+    } catch (error) {
+      setLoading(false);
+      toast.error(error?.response?.data?.message);
+      toast.dismiss(id);
     }
   };
 
@@ -95,7 +123,7 @@ const Overview = () => {
                     <h5>
                       <span style={{ color: "#F2AE30" }}>Hello,</span>{" "}
                       {user?.fullName
-                        .split(" ")
+                        ?.split(" ")
                         .filter((_, index) => index <= 1)
                         .join(" ")}
                     </h5>
@@ -154,39 +182,18 @@ const Overview = () => {
                       onMouseEnter={() => onMouseEnterToShowBin(index)}
                       onMouseLeave={() => setShowBin("")}
                       key={index}
-                      style={{
-                        background: allSubjectsData.find(
-                          (items) => items.subject === item
-                        )?.cardColor,
-                      }}
                     >
-                      <aside>
-                        <section
-                          style={{
-                            background: allSubjectsData.find(
-                              (items) => items.subject === item
-                            )?.divColor,
-                          }}
-                        >
-                          <FaBook
-                            fontSize={35}
-                            color={
-                              allSubjectsData.find(
-                                (items) => items.subject === item
-                              )?.iconColor
-                            }
-                          />
-                        </section>
-                        <p
-                          style={{
-                            color: allSubjectsData.find(
-                              (items) => items.subject === item
-                            )?.textColor,
-                          }}
-                        >
-                          {item}
-                        </p>
-                      </aside>
+                      {typeof subjectMap[item] === "function" ? (
+                        React.createElement(subjectMap[item])
+                      ) : (
+                        <img
+                          src={subjectMap[item]}
+                          alt={item}
+                          loading="eager"
+                          width={48}
+                          height={48}
+                        />
+                      )}
                       <TbTrashX
                         style={{
                           pointerEvents: loading ? "none" : "auto",
@@ -194,7 +201,7 @@ const Overview = () => {
                         }}
                         className="overview-trashIcon"
                         onClick={(e) => {
-                          e.stopPropagation(), removeSubject(item);
+                          (e.stopPropagation(), removeSubject(item));
                         }}
                       />
                     </nav>
@@ -202,14 +209,17 @@ const Overview = () => {
                   <nav
                     style={{
                       pointerEvents: loading ? "none" : "auto",
-                      backgroundColor: "white",
                       cursor: "pointer",
                     }}
                     onClick={() => addMoreSubject()}
                   >
                     <aside>
-                      <div>+</div>
-                      <h6>Add Subject</h6>
+                      <div className="plus-icon">
+                        <PlusIcon />
+                      </div>
+                      <h6>
+                        Click to <br /> Add Subject
+                      </h6>
                     </aside>
                   </nav>
                 </main>
@@ -231,7 +241,10 @@ const Overview = () => {
                   <PiExamFill color="white" fontSize={35} />
                 </div>
                 <nav>
-                  <h6>{user?.plan === "Freemium" ? "10" : "30"}</h6>
+                  <h6>
+                    {/* {user?.plan === "Freemium" ? "10" : "30"} */}
+                    30
+                  </h6>
                   <p>Minutes Mock Exam</p>
                 </nav>
               </main>
@@ -240,7 +253,10 @@ const Overview = () => {
                   <FaBook color="#F2AE30" fontSize={35} />
                 </div>
                 <nav style={{ color: "white" }}>
-                  <h6>{user?.plan === "Freemium" ? "2" : "All"}</h6>
+                  <h6>
+                    {/* {user?.plan === "Freemium" ? "2" : "All"} */}
+                    All
+                  </h6>
                   <p>Years Pass Questions</p>
                 </nav>
               </main>
@@ -260,7 +276,7 @@ const Overview = () => {
                 <nav></nav>
                 <CircularProgressbar
                   value={user?.totalRating}
-                  text={`${user?.totalRating.toFixed(1)}%`}
+                  text={`${user?.totalRating?.toFixed(1) || 0}%`}
                   styles={{
                     path: {
                       stroke: "#804bf2",
@@ -286,11 +302,11 @@ const Overview = () => {
                   <li>Duration</li>
                   <li>Completed</li>
                 </ul>
-                {user?.myRating.length <= 0 ? (
+                {user?.myRating?.length <= 0 || !user?.myRating ? (
                   <p className="overview-noPerformance">No Performance yet</p>
                 ) : (
                   <>
-                    {user?.myRating.map((item, index) => (
+                    {user?.myRating?.map((item, index) => (
                       <ol key={index}>
                         <li style={{ justifyContent: "left" }}>
                           {item?.subject}
@@ -355,76 +371,3 @@ const Overview = () => {
 };
 
 export default Overview;
-
-const allSubjectsData = [
-  {
-    subject: "Mathematics",
-    cardColor: "#804BF266",
-    divColor: "#FFFFFF",
-    iconColor: "#804BF2",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "English",
-    cardColor: "#1E1E1E",
-    divColor: "#804BF2",
-    iconColor: "#FFFFFF",
-    textColor: "#FFFFFF",
-  },
-  {
-    subject: "Physics",
-    cardColor: "#F2AE30",
-    divColor: "#FFFFFF",
-    iconColor: "#F2AE30",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "Chemistry",
-    cardColor: "#88DDFF",
-    divColor: "#1E1E1E",
-    iconColor: "#FFFFFF",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "Biology",
-    cardColor: "#F2AE3099",
-    divColor: "#1E1E1E",
-    iconColor: "#FFFFFF",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "Literature in English",
-    cardColor: "#F2AE30",
-    divColor: "#804BF2CC",
-    iconColor: "#FFFFFF",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "Economics",
-    cardColor: "#00000040",
-    divColor: "#1E1E1E",
-    iconColor: "#FFFFFF",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "Geography",
-    cardColor: "#FFFFFF",
-    divColor: "#804BF266",
-    iconColor: "#1E1E1E",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "Government",
-    cardColor: "#88DDFF",
-    divColor: "#FFFFFF",
-    iconColor: "#1E1E1E",
-    textColor: "#1E1E1E",
-  },
-  {
-    subject: "History",
-    cardColor: "#17004D",
-    divColor: "#88DDFF",
-    iconColor: "#1E1E1E",
-    textColor: "#FFFFFF",
-  },
-];

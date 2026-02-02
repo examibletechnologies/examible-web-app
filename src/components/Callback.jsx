@@ -14,13 +14,13 @@ const Callback = () => {
   const createUser = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}api/v1/studentInfo/${userId}`
+        `${import.meta.env.VITE_BASE_URL}api/v1/studentInfo/${userId}`,
       );
       if (res?.status === 200) {
         dispatch(setUser(res?.data?.data));
         dispatch(setUserToken(token));
         setTimeout(() => {
-          nav("/dashboard/overview", { replace: true });
+          nav("/overview", { replace: true });
         }, 3000);
       }
     } catch (error) {

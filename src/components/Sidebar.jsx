@@ -13,6 +13,7 @@ import "../styles/dashboardCss/dashboard.css";
 import { useExamibleContext } from "../context/ExamibleContext";
 import { toast } from "react-toastify";
 import { setMockExamQuestion } from "../global/slice";
+import Button from "../shared/Button";
 
 const Sidebar = () => {
   const dashboardIcons = [
@@ -66,13 +67,15 @@ const Sidebar = () => {
             </div>
             <h5>Unlimited Access</h5>
             <p>Explore more with a lifetime members</p>
-            <button
+            <Button
               onClick={() => {
                 toast.info("This feature is coming soon!");
               }}
+              size="sm"
             >
+              {" "}
               Subscribe Now
-            </button>
+            </Button>
           </div>
         </>
         {/* <>

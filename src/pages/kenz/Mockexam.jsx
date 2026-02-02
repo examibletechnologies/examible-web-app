@@ -57,7 +57,7 @@ const Mockexam = () => {
         <>
           {user?.enrolledSubjects?.map((item, index) => (
             <div
-              className="mockExam-holderSubject"
+              className={`mockExam-holderSubject ${mySubject === item ? "" : "inactive"}`}
               key={index}
               onClick={() => dispatch(setMockSubject(item))}
             >

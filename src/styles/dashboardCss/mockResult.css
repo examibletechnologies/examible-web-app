@@ -182,6 +182,15 @@
     border: none;
     outline: none;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
   }
 
   .mockResult-more {
@@ -200,6 +209,15 @@
     outline: none;
     gap: 5px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #f3f4f5;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
   }
 
   @media screen and (max-width: 550px) {

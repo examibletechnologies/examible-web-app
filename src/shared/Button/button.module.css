@@ -163,6 +163,19 @@
   }
 }
 
+.warning {
+  background: #ffc107;
+  color: #212529;
+
+  &:hover:not(.disabled) {
+    background: #e0a800;
+  }
+
+  &:active:not(.disabled) {
+    background: #d39e00;
+  }
+}
+
 .disabled {
   cursor: not-allowed !important;
   pointer-events: none;

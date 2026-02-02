@@ -87,6 +87,15 @@
         cursor: pointer;
         border: none;
         outline: none;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        &:active {
+          transform: translateY(1px);
+        }
       }
     }
 
@@ -104,6 +113,10 @@
       font-weight: 800;
       font-family: "Montserrat", sans-serif;
     }
+  }
+
+  .mockExam-holderSubject.inactive:hover {
+    background-color: #804bf233;
   }
 
   @media screen and (max-width: 550px) {

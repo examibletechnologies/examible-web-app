@@ -5,7 +5,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderLogo from "../assets/public/logo.png";
 import { toast } from "react-toastify";
 import Button from "../shared/Button";
-import { IoReorderThreeOutline } from "react-icons/io5";
 
 const Header = () => {
   const location = useLocation();
@@ -63,10 +62,6 @@ const Header = () => {
               Login
             </Button>
           </aside>
-          {/* <div
-            className="header-menuIcon"
-            onClick={() => setShowDropdown(!showDropdown)}
-          > */}
           <button
             class="menu-button"
             aria-label="Open Menu"
@@ -85,7 +80,6 @@ const Header = () => {
               <line x1="8" y1="28" x2="32" y2="28" class="line bottom" />
             </svg>
           </button>
-          {/* </div> */}
         </div>
       </div>
       {showDropdown && (
@@ -113,7 +107,7 @@ const Header = () => {
                     key={index}
                     className={location.pathname === item.link ? "active" : ""}
                     onClick={() => {
-                      item.name === "Pans" &&
+                      item.name === "Plans" &&
                         toast.info("Plans page is currently unavailable");
                       setShowDropdown(!showDropdown);
                     }}

@@ -56,7 +56,7 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
                 <img
                   src={dashboardIcon}
                   alt=""
-                  onClick={() => nav("/dashboard/overview")}
+                  onClick={() => nav("/overview")}
                   style={{ cursor: "pointer" }}
                 />
               </div>
@@ -79,16 +79,16 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
               {/* <>
                 {user?.plan === "Freemium" ? (
                   <>
-                    {location.pathname === "/dashboard/subscription" ? (
+                    {location.pathname === "/subscription" ? (
                       <Link
-                        to="/dashboard/subscription"
+                        to="/subscription"
                         onClick={() => {
                           setShowDropdown(!showDropdown);
                         }}
                         className="dashboard-leftDropdown-navBar"
                         style={{
                           backgroundColor:
-                            location.pathname === "/dashboard/subscription"
+                            location.pathname === "/subscription"
                               ? "#804BF233"
                               : "white",
                         }}
@@ -105,7 +105,7 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
                         <p>Explore more with a lifetime members</p>
                         <button
                           onClick={() => {
-                            nav("/dashboard/subscription");
+                            nav("/subscription");
                             setShowDropdown(!showDropdown);
                           }}
                         >
@@ -116,14 +116,14 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
                   </>
                 ) : (
                   <Link
-                    to="/dashboard/subscription"
+                    to="/subscription"
                     onClick={() => {
                       setShowDropdown(!showDropdown);
                     }}
                     className="dashboard-leftDropdown-navBar"
                     style={{
                       backgroundColor:
-                        location.pathname === "/dashboard/subscription"
+                        location.pathname === "/subscription"
                           ? "#804BF233"
                           : "white",
                     }}

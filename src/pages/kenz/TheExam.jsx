@@ -40,7 +40,7 @@ const TheExam = () => {
 
   useLayoutEffect(() => {
     if (mockExamQuestions?.length <= 0 || !mockExamQuestions) {
-      location.href = "/dashboard/overview";
+      location.href = "/overview";
     }
   }, [mockExamQuestions]);
 

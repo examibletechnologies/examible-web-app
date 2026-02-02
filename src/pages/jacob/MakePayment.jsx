@@ -22,7 +22,7 @@ const MakePayment = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}api/v1/initializeKoraPay`,
-        { amount, email, name, plan }
+        { amount, email, name, plan },
       );
       if (response?.status === 200) {
         setTimeout(() => {
@@ -46,7 +46,7 @@ const MakePayment = () => {
           <div className="backtosubscription">
             <IoIosArrowRoundBack
               size={40}
-              onClick={() => navigate("/dashboard/subscription")}
+              onClick={() => navigate("/subscription")}
               style={{ cursor: "pointer" }}
             />
           </div>
@@ -91,7 +91,7 @@ const MakePayment = () => {
               amount,
               user?.email,
               user?.fullName,
-              plan
+              plan,
             )
           }
           disabled={disabled}

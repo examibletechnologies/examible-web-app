@@ -20,7 +20,7 @@ const VerifyPayment = () => {
       const res = await axios.get(
         `${
           import.meta.env.VITE_BASE_URL
-        }api/v1/verifyKoraPay?reference=${reference}`
+        }api/v1/verifyKoraPay?reference=${reference}`,
       );
       if (res?.status === 200) {
         dispatch(setUser(res?.data?.data?.student));
@@ -30,7 +30,7 @@ const VerifyPayment = () => {
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setTimeout(() => {
-        nav("/dashboard/overview");
+        nav("/overview");
       }, 3000);
     }
   };

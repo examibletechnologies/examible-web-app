@@ -14,6 +14,7 @@ import { HamburgerIcon } from "../../assets/public/svg/common";
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [showBot, setShowBot] = useState(false);
 

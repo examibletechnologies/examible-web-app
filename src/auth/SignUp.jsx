@@ -184,7 +184,7 @@ const SignUp = () => {
           onClick={googleIcon}
           disabled={loading || googleLoading}
         >
-          Continue with Google
+          {googleLoading ? "please wait" : "Continue with Google"}
         </Button>
         <span className="or-container">
           <div className="line"></div>

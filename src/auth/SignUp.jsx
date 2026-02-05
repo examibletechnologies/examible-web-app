@@ -241,7 +241,6 @@ const SignUp = () => {
             type="submit"
             disabled={disabled || googleLoading}
             fullWidth
-            style={{ marginTop: 12 }}
           >
             {loading ? "loading..." : "Join For Free"}
           </Button>

@@ -186,6 +186,7 @@ const SignUp = () => {
           fullWidth
           onClick={googleIcon}
           disabled={loading || googleLoading}
+          loading={googleLoading}
         >
           {googleLoading ? "please wait..." : "Continue with Google"}
         </Button>

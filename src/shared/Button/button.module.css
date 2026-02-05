@@ -178,7 +178,6 @@
 
 .disabled {
   cursor: not-allowed !important;
-  pointer-events: none;
   background: #d0d5dd !important;
   color: #ffffff !important;
 
@@ -189,11 +188,14 @@
 
 .loading {
   cursor: wait;
-  pointer-events: none;
-
   .content {
     opacity: 0.7;
   }
+}
+
+/* Ensure disabled cursor shows when the native disabled attribute is present */
+.custom_button:disabled {
+  cursor: not-allowed !important;
 }
 
 @media (max-width: 768px) {

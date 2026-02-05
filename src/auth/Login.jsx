@@ -185,7 +185,7 @@ const Login = () => {
           disabled={loading || googleLoading}
           loading={googleLoading}
         >
-          {googleLoading ? "please wait" : "Continue with Google"}
+          {googleLoading ? "please wait..." : "Continue with Google"}
         </Button>
 
         {/* <article className="forgotpassworddiv"> */}

@@ -103,7 +103,10 @@ const Login = () => {
 
   const loginGoogleIcon = async () => {
     setGoogleLoading(true);
-    window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+    setTimeout(() => {
+      window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+      setGoogleLoading(false);
+    }, 1000);
   };
 
   return (
@@ -180,8 +183,9 @@ const Login = () => {
           fullWidth
           onClick={() => loginGoogleIcon()}
           disabled={loading || googleLoading}
+          loading={googleLoading}
         >
-          Continue with Google
+          {googleLoading ? "please wait..." : "Continue with Google"}
         </Button>
 
         {/* <article className="forgotpassworddiv"> */}

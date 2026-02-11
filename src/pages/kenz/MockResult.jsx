@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import { getAiResponse } from "../../config/Api";
 import { useExamibleContext } from "../../context/ExamibleContext";
+import Latex from "react-latex-next";
+import "katex/dist/katex.min.css";
 
 const MockResult = () => {
   const mockExamQuestions = useSelector((state) => state.mockExamQuestions);
@@ -51,7 +53,7 @@ const MockResult = () => {
 
   const retryExam = () => {
     dispatch(cancelExam());
-    nav("/dashboard/mock-exam");
+    nav("/mock-exam");
   };
 
   const handleViewExplanation = async (
@@ -59,19 +61,25 @@ const MockResult = () => {
     question,
     passage,
     options,
-    year,
-    subject,
-    id
+    subheadingA,
+    subheadingB,
+    diagramUrlA,
+    diagramUrlB,
+    id,
   ) => {
     setLoading(id);
     try {
       const res = await getAiResponse(
-        year,
-        subject,
+        mockYear,
+        location.state.subject,
         questionNum,
         question,
         passage,
-        options
+        options,
+        subheadingA,
+        subheadingB,
+        diagramUrlA,
+        diagramUrlB,
       );
       if (res) {
         setLoading(null);
@@ -90,108 +98,167 @@ const MockResult = () => {
         <span style={{ color: "#804bf2" }}>Mock Exam</span> (Jamb CBT Practice)
       </h2>
       <h2>Questions & Answers </h2>
-      <h5>You Scored {performance.toFixed(2)} out of 100</h5>
+      <h5>You Scored {performance.toFixed(0)} out of 100</h5>
       <div className="mockResult-holder">
         {mockExamQuestions
           ?.slice(intialCount, finalCount)
           .map((item, index) => (
             <main key={index}>
-              {item?.subheadingA && <h2>{item?.subheadingA}</h2>}
+              {item?.subheadingA && (
+                <h2>
+                  <Latex>{item?.subheadingA}</Latex>
+                </h2>
+              )}
               {item?.diagramUrlA && (
                 <img src={item?.diagramUrlA} alt="Diagram loading..." />
               )}
-              {item?.subheadingB && <h3>{item?.subheadingB}</h3>}
+              {item?.subheadingB && (
+                <h3>
+                  <Latex>{item?.subheadingB}</Latex>
+                </h3>
+              )}
               {item?.diagramUrlB && (
                 <img src={item?.diagramUrlB} alt="Diagram loading..." />
               )}
-              <header
-                dangerouslySetInnerHTML={{ __html: item?.question }}
-              ></header>
+              <header>
+                <Latex>{item?.question}</Latex>
+              </header>
               <ul>
-                <li>
-                  {item?.options[0]?.startsWith("A.")
-                    ? item?.options[0]
-                    : "A. " + item?.options[0]}
-                  <nav
-                    style={{
-                      display:
-                        exam.slice(intialCount, finalCount)?.[index]?.option ===
-                        "A"
-                          ? "flex"
-                          : "none",
-                    }}
-                  >
-                    {exam.slice(intialCount, finalCount)?.[index]?.score ===
-                    0 ? (
-                      <GiCancel fontSize={25} color="red" />
-                    ) : (
-                      <GrStatusGood fontSize={25} color="green" />
-                    )}
-                  </nav>
-                </li>
-                <li>
-                  {item?.options[1]?.startsWith("B.")
-                    ? item?.options[1]
-                    : "B. " + item?.options[1]}
-                  <nav
-                    style={{
-                      display:
-                        exam.slice(intialCount, finalCount)?.[index]?.option ===
-                        "B"
-                          ? "flex"
-                          : "none",
-                    }}
-                  >
-                    {exam.slice(intialCount, finalCount)?.[index]?.score ===
-                    0 ? (
-                      <GiCancel fontSize={25} color="red" />
-                    ) : (
-                      <GrStatusGood fontSize={25} color="green" />
-                    )}
-                  </nav>
-                </li>
-                <li>
-                  {item?.options[2]?.startsWith("C.")
-                    ? item?.options[2]
-                    : "C. " + item?.options[2]}
-                  <nav
-                    style={{
-                      display:
-                        exam.slice(intialCount, finalCount)?.[index]?.option ===
-                        "C"
-                          ? "flex"
-                          : "none",
-                    }}
-                  >
-                    {exam.slice(intialCount, finalCount)?.[index]?.score ===
-                    0 ? (
-                      <GiCancel fontSize={25} color="red" />
-                    ) : (
-                      <GrStatusGood fontSize={25} color="green" />
-                    )}
-                  </nav>
-                </li>
-                <li>
-                  {item?.options[3]?.startsWith("D.")
-                    ? item?.options[3]
-                    : "D. " + item?.options[3]}
-                  <nav
-                    style={{
-                      display:
-                        exam.slice(intialCount, finalCount)?.[index]?.option ===
-                        "D"
-                          ? "flex"
-                          : "none",
-                    }}
-                  >
-                    {exam.slice(intialCount, finalCount)?.[index]?.score ===
-                    0 ? (
-                      <GiCancel fontSize={25} color="red" />
-                    ) : (
-                      <GrStatusGood fontSize={25} color="green" />
-                    )}
-                  </nav>
-                </li>
+                {item?.options[0] && (
+                  <li>
+                    <p>
+                      <Latex>
+                        {item?.options[0]?.startsWith("A.")
+                          ? item?.options[0]
+                          : "A. " + item?.options[0]}
+                      </Latex>
+                    </p>
+                    <nav
+                      style={{
+                        display:
+                          exam.slice(intialCount, finalCount)?.[index]
+                            ?.option === "A"
+                            ? "flex"
+                            : "none",
+                      }}
+                    >
+                      {exam.slice(intialCount, finalCount)?.[index]?.score ===
+                      0 ? (
+                        <GiCancel fontSize={25} color="red" />
+                      ) : (
+                        <GrStatusGood fontSize={25} color="green" />
+                      )}
+                    </nav>
+                  </li>
+                )}
+                {item?.options[1] && (
+                  <li>
+                    <p>
+                      <Latex>
+                        {item?.options[1]?.startsWith("B.")
+                          ? item?.options[1]
+                          : "B. " + item?.options[1]}
+                      </Latex>
+                    </p>
+                    <nav
+                      style={{
+                        display:
+                          exam.slice(intialCount, finalCount)?.[index]
+                            ?.option === "B"
+                            ? "flex"
+                            : "none",
+                      }}
+                    >
+                      {exam.slice(intialCount, finalCount)?.[index]?.score ===
+                      0 ? (
+                        <GiCancel fontSize={25} color="red" />
+                      ) : (
+                        <GrStatusGood fontSize={25} color="green" />
+                      )}
+                    </nav>
+                  </li>
+                )}
+                {item?.options[2] && (
+                  <li>
+                    <p>
+                      <Latex>
+                        {item?.options[2]?.startsWith("C.")
+                          ? item?.options[2]
+                          : "C. " + item?.options[2]}
+                      </Latex>
+                    </p>
+                    <nav
+                      style={{
+                        display:
+                          exam.slice(intialCount, finalCount)?.[index]
+                            ?.option === "C"
+                            ? "flex"
+                            : "none",
+                      }}
+                    >
+                      {exam.slice(intialCount, finalCount)?.[index]?.score ===
+                      0 ? (
+                        <GiCancel fontSize={25} color="red" />
+                      ) : (
+                        <GrStatusGood fontSize={25} color="green" />
+                      )}
+                    </nav>
+                  </li>
+                )}
+                {item?.options[3] && (
+                  <li>
+                    <p>
+                      <Latex>
+                        {item?.options[3]?.startsWith("D.")
+                          ? item?.options[3]
+                          : "D. " + item?.options[3]}
+                      </Latex>
+                    </p>
+                    <nav
+                      style={{
+                        display:
+                          exam.slice(intialCount, finalCount)?.[index]
+                            ?.option === "D"
+                            ? "flex"
+                            : "none",
+                      }}
+                    >
+                      {exam.slice(intialCount, finalCount)?.[index]?.score ===
+                      0 ? (
+                        <GiCancel fontSize={25} color="red" />
+                      ) : (
+                        <GrStatusGood fontSize={25} color="green" />
+                      )}
+                    </nav>
+                  </li>
+                )}
+                {item?.options[4] && (
+                  <li>
+                    <p>
+                      <Latex>
+                        {item?.options[4]?.startsWith("E.")
+                          ? item?.options[3]
+                          : "E. " + item?.options[4]}
+                      </Latex>
+                    </p>
+                    <nav
+                      style={{
+                        display:
+                          exam.slice(intialCount, finalCount)?.[index]
+                            ?.option === "E"
+                            ? "flex"
+                            : "none",
+                      }}
+                    >
+                      {exam.slice(intialCount, finalCount)?.[index]?.score ===
+                      0 ? (
+                        <GiCancel fontSize={25} color="red" />
+                      ) : (
+                        <GrStatusGood fontSize={25} color="green" />
+                      )}
+                    </nav>
+                  </li>
+                )}
               </ul>
               <>
                 <div className="mockResult-scores">
@@ -208,9 +275,11 @@ const MockResult = () => {
                         item.question,
                         item.passage,
                         item.options,
-                        mockYear,
-                        location.state.subject,
-                        index
+                        item.subheadingA,
+                        item.subheadingB,
+                        item.diagramUrlA,
+                        item.diagramUrlB,
+                        index,
                       );
                     }}
                     disabled={loading}

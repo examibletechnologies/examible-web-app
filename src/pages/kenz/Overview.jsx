@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/overview.css";
 import image1 from "../../assets/public/home-firstlayer.png";
 import { FaBook } from "react-icons/fa6";
@@ -13,12 +13,22 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import { allSubjectsData } from "../../constants/common";
+import { PlusIcon } from "../../assets/public/svg/common";
 
 const Overview = () => {
   const user = useSelector((state) => state.user);
   const [showBin, setShowBin] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  // build a fast lookup for subject -> svg component OR img once
+  const subjectMap = useMemo(
+    () =>
+      Object.fromEntries(
+        allSubjectsData.map((s) => [s.subject, s.svg || s.img]),
+      ),
+    [],
+  );
 
   const { setShowSubjectSelected, showSubjectSelected } = useExamibleContext();
 
@@ -27,8 +37,8 @@ const Overview = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}api/v1/removeSubject/${user?._id}`,
-        { subject }
+        `${import.meta.env.VITE_BASE_URL}api/v1/removeSubject/${user?._id || user?.id}`,
+        { subject },
       );
       setLoading(false);
       if (res?.status === 200) {
@@ -84,7 +94,7 @@ const Overview = () => {
     const id = toast.loading("Please wait ...");
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id}`
+        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id || user?.id}`,
       );
       setLoading(false);
       if (res?.status) {
@@ -113,7 +123,7 @@ const Overview = () => {
                     <h5>
                       <span style={{ color: "#F2AE30" }}>Hello,</span>{" "}
                       {user?.fullName
-                        .split(" ")
+                        ?.split(" ")
                         .filter((_, index) => index <= 1)
                         .join(" ")}
                     </h5>
@@ -173,18 +183,17 @@ const Overview = () => {
                       onMouseLeave={() => setShowBin("")}
                       key={index}
                     >
-                      <img
-                        src={
-                          allSubjectsData.find(
-                            (items) => items.subject === item
-                          )?.img
-                        }
-                        alt={
-                          allSubjectsData.find(
-                            (items) => items.subject === item
-                          )?.subject
-                        }
-                      />
+                      {typeof subjectMap[item] === "function" ? (
+                        React.createElement(subjectMap[item])
+                      ) : (
+                        <img
+                          src={subjectMap[item]}
+                          alt={item}
+                          loading="eager"
+                          width={48}
+                          height={48}
+                        />
+                      )}
                       <TbTrashX
                         style={{
                           pointerEvents: loading ? "none" : "auto",
@@ -192,7 +201,7 @@ const Overview = () => {
                         }}
                         className="overview-trashIcon"
                         onClick={(e) => {
-                          e.stopPropagation(), removeSubject(item);
+                          (e.stopPropagation(), removeSubject(item));
                         }}
                       />
                     </nav>
@@ -200,14 +209,17 @@ const Overview = () => {
                   <nav
                     style={{
                       pointerEvents: loading ? "none" : "auto",
-                      backgroundColor: "white",
                       cursor: "pointer",
                     }}
                     onClick={() => addMoreSubject()}
                   >
                     <aside>
-                      <div>+</div>
-                      <h6>Add Subject</h6>
+                      <div className="plus-icon">
+                        <PlusIcon />
+                      </div>
+                      <h6>
+                        Click to <br /> Add Subject
+                      </h6>
                     </aside>
                   </nav>
                 </main>
@@ -264,7 +276,7 @@ const Overview = () => {
                 <nav></nav>
                 <CircularProgressbar
                   value={user?.totalRating}
-                  text={`${user?.totalRating.toFixed(1)}%`}
+                  text={`${user?.totalRating?.toFixed(1) || 0}%`}
                   styles={{
                     path: {
                       stroke: "#804bf2",
@@ -290,11 +302,11 @@ const Overview = () => {
                   <li>Duration</li>
                   <li>Completed</li>
                 </ul>
-                {user?.myRating.length <= 0 ? (
+                {user?.myRating?.length <= 0 || !user?.myRating ? (
                   <p className="overview-noPerformance">No Performance yet</p>
                 ) : (
                   <>
-                    {user?.myRating.map((item, index) => (
+                    {user?.myRating?.map((item, index) => (
                       <ol key={index}>
                         <li style={{ justifyContent: "left" }}>
                           {item?.subject}

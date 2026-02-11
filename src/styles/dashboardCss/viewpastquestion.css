@@ -60,7 +60,7 @@
     width: auto;
     height: auto;
     max-width: 400px;
-    max-height: 500px;
+    max-height: 200px;
     border-radius: 5px;
     margin-left: 20px;
   }
@@ -372,6 +372,10 @@
 
     & h1 {
       font-size: 20px;
+    }
+
+    .question-diagram {
+      max-width: 90%;
     }
 
     .answeroption {

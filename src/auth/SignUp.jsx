@@ -2,19 +2,17 @@ import { useState, useEffect } from "react";
 import "../styles/authCss/auth.css";
 import { FcGoogle } from "react-icons/fc";
 import logo from "../assets/public/logo.png";
-import { FaRegEye } from "react-icons/fa";
-import { FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import Button from "../shared/Button";
+import Input from "../shared/Input";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((prev) => !prev);
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
     fullName: "",
     email: "",
@@ -82,14 +80,10 @@ const SignUp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputValue((prev) => ({ ...prev, [name]: value }));
-    validateField(name, value);
     if (name === "password") {
       setErrorMessage({ ...errorMessage, password: "" });
     }
   };
-
-  const handleShowConfirmPassword = () =>
-    setShowConfirmPassword((prev) => !prev);
 
   const validateEmail = (inputValue) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -114,21 +108,30 @@ const SignUp = () => {
   }, [inputValue]);
 
   useEffect(() => {
-    if (loading) {
+    const { fullName, email, password, confirmPassword } = inputValue;
+    const isFormValid =
+      fullName.trim() !== "" &&
+      validateEmail(email) &&
+      password.trim() !== "" &&
+      password.length >= 8 &&
+      password.length <= 60 &&
+      confirmPassword.trim() !== "" &&
+      password === confirmPassword;
+    if (loading || googleLoading) {
       setDisabled(true);
     } else {
-      setDisabled(false);
+      setDisabled(!isFormValid);
     }
-  }, [loading, setDisabled]);
+  }, [loading, googleLoading, inputValue]);
 
   const handleSubmit = async (e, data) => {
     e.preventDefault();
-    if (!disabled) {
+    if (!disabled && !googleLoading) {
       setLoading(true);
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_BASE_URL}api/v1/student`,
-          data
+          data,
         );
         if (res?.status === 201) {
           toast.success("Signup Successful, Please check your email to verify");
@@ -151,7 +154,11 @@ const SignUp = () => {
   };
 
   const googleIcon = async () => {
-    window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+    setGoogleLoading(true);
+    setTimeout(() => {
+      window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+      setGoogleLoading(false);
+    }, 1000);
   };
 
   return (
@@ -169,113 +176,85 @@ const SignUp = () => {
       </div>
       <div className="signupForm">
         <div className="signheader">
-          <h1>Sign Up</h1>
+          <h1>Sign Up for Examible</h1>
           <p>Beat jamb with good grades at one sitting </p>
         </div>
-        <form className="form" onSubmit={(e) => handleSubmit(e, inputValue)}>
-          <div className="signinput">
-            <label className="signuplabel">Full Name</label>
-            <input
-              name="fullName"
-              onChange={handleChange}
-              value={inputValue.fullName}
-              type="text"
-              onBlur={(e) => validateField(e.target.name, e.target.value)}
-              placeholder="Enter Your Full Name"
-              required
-              className="signinputmain"
-            />
-            {errorMessage.fullName && (
-              <p className="error">{errorMessage.fullName}</p>
-            )}
-          </div>
-          <div className="signinput">
-            <label className="signuplabel">Email</label>
-            <input
-              name="email"
-              onChange={handleChange}
-              value={inputValue.email}
-              type="email"
-              onBlur={(e) => validateField(e.target.name, e.target.value)}
-              placeholder="Enter Your Email"
-              required
-              className="signinputmain"
-            />
-            {errorMessage.email && (
-              <p className="error">{errorMessage.email}</p>
-            )}
-          </div>
-          <div className="signinput">
-            <label className="signuplabel">Password</label>
-            <div className="inputwrapper">
-              <input
-                name="password"
-                onChange={handleChange}
-                value={inputValue.password}
-                type={showPassword ? "text" : "password"}
-                onBlur={(e) => validateField(e.target.name, e.target.value)}
-                placeholder="Enter Your Password"
-                required
-                className="signinputmain1"
-              />
-              <div className="eyeIcon2" onClick={handleShowPassword}>
-                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
-            {errorMessage.password && (
-              <p className="error">{errorMessage.password}</p>
-            )}
-          </div>
-          <div className="signinput">
-            <label className="signuplabel">Confirm Password</label>
-            <div className="inputwrapper">
-              <input
-                name="confirmPassword"
-                onChange={handleChange}
-                value={inputValue.confirmPassword}
-                type={showConfirmPassword ? "text" : "password"}
-                onBlur={(e) => validateField(e.target.name, e.target.value)}
-                placeholder="Confirm Password"
-                required
-                className="signinputmain2"
-              />
-              <div className="eyeIcon1" onClick={handleShowConfirmPassword}>
-                {showConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
-            {errorMessage.confirmPassword && (
-              <p className="error">{errorMessage.confirmPassword}</p>
-            )}
-          </div>
-          <div className="alreadyhaveaccount">
-            <h1>
-              Already have an account?{" "}
-              <em onClick={() => navigate("/login")}>
-                click here to login now
-              </em>
-            </h1>
-          </div>
-          <button
-            type="submit"
-            className="signupbtn"
-            disabled={disabled}
-            style={{
-              backgroundColor: disabled ? "#dbd2f0d2" : "#804bf2",
-              cursor: disabled ? "not-allowed" : "pointer",
-            }}
-          >
-            {loading ? "loading..." : "Join For Free"}
-          </button>
-        </form>
+        <Button
+          IconComponent={FcGoogle}
+          iconProps={{ className: "googleIcon" }}
+          variant="secondary"
+          fullWidth
+          onClick={googleIcon}
+          disabled={loading || googleLoading}
+          loading={googleLoading}
+        >
+          {googleLoading ? "please wait..." : "Continue with Google"}
+        </Button>
         <span className="or-container">
           <div className="line"></div>
           <span className="or">or</span>
           <div className="line"></div>
         </span>
-        <button className="signup-authBtn" onClick={googleIcon}>
-          <FcGoogle className="googleIcon" />
-          <span>Continue with Google</span>
-        </button>
+        <form className="form" onSubmit={(e) => handleSubmit(e, inputValue)}>
+          <Input
+            label="Full Name"
+            name="fullName"
+            onChange={handleChange}
+            required
+            placeholder="Enter your full name"
+            value={inputValue.fullName}
+            error={errorMessage.fullName}
+            type="text"
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+          />
+          <Input
+            label="Email"
+            name="email"
+            onChange={handleChange}
+            required
+            placeholder="Enter your email"
+            value={inputValue.email}
+            error={errorMessage.email}
+            type="email"
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+          />
+          <Input
+            label="Password"
+            name="password"
+            onChange={handleChange}
+            required
+            placeholder="Enter your password"
+            value={inputValue.password}
+            error={errorMessage.password}
+            isPassword
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+          />
+          <Input
+            label="Confirm Password"
+            name="confirmPassword"
+            onChange={handleChange}
+            required
+            placeholder="Confirm your password"
+            value={inputValue.confirmPassword}
+            error={errorMessage.confirmPassword}
+            isPassword
+            onBlur={(e) => validateField(e.target.name, e.target.value)}
+          />
+          <Button
+            loading={loading}
+            type="submit"
+            disabled={disabled || googleLoading}
+            fullWidth
+          >
+            {loading ? "loading..." : "Join For Free"}
+          </Button>
+        </form>
+        <div className="alreadyhaveaccount">
+          <h1>
+            Already have an account?{" "}
+            <em onClick={() => navigate("/login")}>click here to login now</em>
+          </h1>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/dashboardCss/paymentSuccessful.css";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +14,7 @@ const PaymentSuccessfull = ({ plan }) => {
               You have been upgraded to {plan}! <br />
               Explore more with Examible.
             </p>
-            <button onClick={() => nav("/dashboard/overview")}>
+            <button onClick={() => nav("/overview")}>
               Return to Dashboard
             </button>
           </section>

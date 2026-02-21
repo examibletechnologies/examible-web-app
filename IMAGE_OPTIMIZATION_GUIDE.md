@@ -1,24 +1,71 @@
 # Image Optimization Guide
 
-Your app has **43MB of unoptimized images**. This is the single biggest performance bottleneck. Here's how to fix it:
+## 🎯 Lighthouse Finding: "Improve Image Delivery"
 
-## 📊 Current Status
+**Est savings: 178 KiB** from a single image file
+
+```
+home-firstlayer.png
+├─ Current size: 189.0 KiB
+├─ Display dimensions: 218 × 300 px
+├─ Actual dimensions: 726 × 1000 px (3.3x oversized!)
+├─ Format: PNG (uncompressed)
+└─ Savings potential: 178.3 KiB (94% reduction)
+```
+
+---
+
+## 🚀 Bare Minimum Solution (5 minutes)
+
+### Step 1: Convert PNG to WebP
+
+```bash
+# Install cwebp (one-time)
+brew install webp
+
+# Convert the problematic image
+cwebp -q 85 src/assets/public/home-firstlayer.png -o src/assets/public/home-firstlayer.webp
+
+# Result: 189 KiB → ~30 KiB (80% reduction!)
+```
+
+### Step 2: Update 3 React Files
+
+Replace `.png` with `.webp` in imports:
+
+- src/pages/kenz/Home.jsx (line 2)
+- src/pages/kenz/Overview.jsx
+- src/pages/kenz/SubjectSelected.jsx
+
+### Step 3: Add Image Dimensions
+
+In src/pages/kenz/Home.jsx line 74:
+
+```jsx
+// BEFORE
+<img src={home1} alt="Educational aspirant" />
+
+// AFTER
+<img src={home1} alt="Educational aspirant" width="218" height="300" />
+```
+
+**Done!** Saves 178 KiB, fixes Lighthouse audit. Takes 5 minutes. ✅
+
+---
+
+## 📊 Current Status (Full App)
 
 - Total images: 60+ files
-- Total size: 43MB
-- Estimated impact: 30-40% of load time
+- Total size: 43MB (already partially optimized to 29MB)
+- Lighthouse finding: 178 KiB specific issue in home-firstlayer.png
 
 ## ✅ Quick Wins (Do These First)
 
-### 1. Install ImageOptim (macOS) or ImageMagick
+### Complete Image Optimization (Optional)
 
-```bash
-# macOS - Install ImageOptim
-brew install imageoptim
-
-# Or use ImageMagick for batch processing
+````bash
+# Install ImageMagick for batch processing
 brew install imagemagick
-```
 
 ### 2. Batch Optimize All Images
 
@@ -44,7 +91,7 @@ for file in *.png; do
 done
 
 echo "Image optimization complete!"
-```
+````
 
 ### 3. Or Use Online Tools (Easiest - No Installation)
 

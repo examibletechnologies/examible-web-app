@@ -4,33 +4,40 @@ import { Suspense, lazy } from "react";
 const Dashboard = lazy(() => import("./pages/kenz/Dashboard"));
 const Overview = lazy(() => import("./pages/kenz/Overview"));
 const Home = lazy(() => import("./pages/kenz/Home"));
-import Login from "../src/auth/Login";
-import SignUp from "../src/auth/SignUp";
-import Welcome from "./auth/welcomeback/Welcome";
-import Congratulation from "./auth/welcomeback/Congratulation";
-import ForgetPassword from "./auth/ForgetPassword";
-import ResetLink from "./auth/ResetLink";
-import ResetPassword from "./auth/welcomeback/ResetPassword";
+const Login = lazy(() => import("./auth/Login"));
+const SignUp = lazy(() => import("./auth/SignUp"));
+const Welcome = lazy(() => import("./auth/welcomeback/Welcome"));
+const Congratulation = lazy(() => import("./auth/welcomeback/Congratulation"));
+const ForgetPassword = lazy(() => import("./auth/ForgetPassword"));
+const ResetLink = lazy(() => import("./auth/ResetLink"));
+const ResetPassword = lazy(() => import("./auth/welcomeback/ResetPassword"));
+const Mockexam = lazy(() => import("./pages/kenz/Mockexam"));
+const PastQuestion = lazy(() => import("./pages/jacob/PastQuestion"));
+const Profile = lazy(() => import("./pages/kenz/Profile"));
+const Subscription = lazy(() => import("./pages/jacob/Subscription"));
+const AboutUs = lazy(() => import("./pages/jacob/AboutUs"));
+const Verify = lazy(() => import("./auth/Verify"));
+const ExamBody = lazy(() => import("./pages/kenz/ExamBody"));
+const MakePayment = lazy(() => import("./pages/jacob/MakePayment"));
+const ViewPastQuestion = lazy(() => import("./pages/jacob/ViewPastQuestion"));
+const Callback = lazy(() => import("./components/Callback"));
+const VerifyPayment = lazy(() => import("./pages/kenz/VerifyPayment"));
+const MockResult = lazy(() => import("./pages/kenz/MockResult"));
+const Facebookredirect = lazy(() => import("./auth/Facebookredirect"));
+const ErrorPgae = lazy(() => import("./pages/jacob/ErrorPgae"));
+const ResultPage = lazy(() => import("./pages/jacob/ResultPage"));
+const Plans = lazy(() => import("./pages/jacob/Plans"));
+
+// These MUST be eager imports (needed for the layout/routing to work)
 import MainHolder from "./routes/MainHolder";
-import Mockexam from "./pages/kenz/Mockexam";
-import PastQuestion from "./pages/jacob/PastQuestion";
-import Profile from "./pages/kenz/Profile";
-import Subscription from "./pages/jacob/Subscription";
-import AboutUs from "./pages/jacob/AboutUs";
-import Verify from "./auth/Verify";
-import ExamBody from "./pages/kenz/ExamBody";
-import MakePayment from "./pages/jacob/MakePayment";
-import ViewPastQuestion from "./pages/jacob/ViewPastQuestion";
-import Callback from "./components/Callback";
 import PrivateRoute from "./routes/PrivateRoute";
-import VerifyPayment from "./pages/kenz/VerifyPayment";
-import MockResult from "./pages/kenz/MockResult";
-import Facebookredirect from "./auth/Facebookredirect";
 import AppWrapper from "./components/AppWrapper";
-import ErrorPgae from "./pages/jacob/ErrorPgae";
-import ResultPage from "./pages/jacob/ResultPage";
-import Plans from "./pages/jacob/Plans";
+import InvisibleFallback from "./components/InvisibleFallback";
+import { prefetchCommonRoutes } from "./utils/routePrefetch";
 import Loading from "./components/Loading";
+
+// Prefetch common routes on app load
+prefetchCommonRoutes();
 
 const routes = createBrowserRouter([
   {
@@ -49,23 +56,107 @@ const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-          { path: "about-us", element: <AboutUs /> },
-          { path: "plans", element: <Plans /> },
+          {
+            path: "about-us",
+            element: (
+              <Suspense fallback={<InvisibleFallback />}>
+                <AboutUs />
+              </Suspense>
+            ),
+          },
+          {
+            path: "plans",
+            element: (
+              <Suspense fallback={<InvisibleFallback />}>
+                <Plans />
+              </Suspense>
+            ),
+          },
         ],
       },
-      { path: "/signup", element: <SignUp /> },
-      { path: "/login", element: <Login /> },
-      { path: "/welcome", element: <Welcome /> },
-      { path: "/congratulation", element: <Congratulation /> },
-      { path: "/forgetpassword", element: <ForgetPassword /> },
-      { path: "/resetlink", element: <ResetLink /> },
-      { path: "/resetpassword/:token", element: <ResetPassword /> },
-      { path: "/verify/:token", element: <Verify /> },
-      { path: "/callback/:token/:userId", element: <Callback /> },
+      {
+        path: "/signup",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <SignUp />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/login",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <Login />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/welcome",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <Welcome />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/congratulation",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <Congratulation />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/forgetpassword",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <ForgetPassword />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/resetlink",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <ResetLink />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/resetpassword/:token",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <ResetPassword />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/verify/:token",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <Verify />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/callback/:token/:userId",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <Callback />
+          </Suspense>
+        ),
+      },
       {
         element: <PrivateRoute />,
         children: [
-          { path: "verifyingPayment", element: <VerifyPayment /> },
+          {
+            path: "verifyingPayment",
+            element: (
+              <Suspense fallback={<InvisibleFallback />}>
+                <VerifyPayment />
+              </Suspense>
+            ),
+          },
           {
             element: <Dashboard />,
             children: [
@@ -78,26 +169,90 @@ const routes = createBrowserRouter([
                 ),
                 index: true,
               },
-              { path: "/mock-exam", element: <Mockexam /> },
-              { path: "/past-questions", element: <PastQuestion /> },
-              { path: "/profile", element: <Profile /> },
-              { path: "/subscription", element: <Subscription /> },
-              { path: "/make-payment", element: <MakePayment /> },
-              { path: "/mock-exam/result", element: <MockResult /> },
+              {
+                path: "/mock-exam",
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <Mockexam />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "/past-questions",
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <PastQuestion />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "/profile",
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <Profile />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "/subscription",
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <Subscription />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "/make-payment",
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <MakePayment />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "/mock-exam/result",
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <MockResult />
+                  </Suspense>
+                ),
+              },
               {
                 path: "/past-questions/view",
-                element: <ViewPastQuestion />,
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <ViewPastQuestion />
+                  </Suspense>
+                ),
               },
               {
                 path: "/past-questions/result",
-                element: <ResultPage />,
+                element: (
+                  <Suspense fallback={<InvisibleFallback />}>
+                    <ResultPage />
+                  </Suspense>
+                ),
               },
             ],
           },
-          { path: "mock-exam/:subjectId", element: <ExamBody /> },
+          {
+            path: "mock-exam/:subjectId",
+            element: (
+              <Suspense fallback={<InvisibleFallback />}>
+                <ExamBody />
+              </Suspense>
+            ),
+          },
         ],
       },
-      { path: "/data-deletion", element: <Facebookredirect /> },
+      {
+        path: "/data-deletion",
+        element: (
+          <Suspense fallback={<InvisibleFallback />}>
+            <Facebookredirect />
+          </Suspense>
+        ),
+      },
     ],
   },
 ]);

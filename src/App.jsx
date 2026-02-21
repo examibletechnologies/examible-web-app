@@ -1,5 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/kenz/Home";
+import { Suspense, lazy } from "react";
+
+const Dashboard = lazy(() => import("./pages/kenz/Dashboard"));
+const Overview = lazy(() => import("./pages/kenz/Overview"));
+const Home = lazy(() => import("./pages/kenz/Home"));
 import Login from "../src/auth/Login";
 import SignUp from "../src/auth/SignUp";
 import Welcome from "./auth/welcomeback/Welcome";
@@ -8,8 +12,6 @@ import ForgetPassword from "./auth/ForgetPassword";
 import ResetLink from "./auth/ResetLink";
 import ResetPassword from "./auth/welcomeback/ResetPassword";
 import MainHolder from "./routes/MainHolder";
-import Dashboard from "./pages/kenz/Dashboard";
-import Overview from "./pages/kenz/Overview";
 import Mockexam from "./pages/kenz/Mockexam";
 import PastQuestion from "./pages/jacob/PastQuestion";
 import Profile from "./pages/kenz/Profile";
@@ -28,6 +30,7 @@ import AppWrapper from "./components/AppWrapper";
 import ErrorPgae from "./pages/jacob/ErrorPgae";
 import ResultPage from "./pages/jacob/ResultPage";
 import Plans from "./pages/jacob/Plans";
+import Loading from "./components/Loading";
 
 const routes = createBrowserRouter([
   {
@@ -38,7 +41,14 @@ const routes = createBrowserRouter([
         path: "",
         element: <MainHolder />,
         children: [
-          { path: "", element: <Home /> },
+          {
+            path: "",
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Home />
+              </Suspense>
+            ),
+          },
           { path: "about-us", element: <AboutUs /> },
           { path: "plans", element: <Plans /> },
         ],
@@ -61,7 +71,11 @@ const routes = createBrowserRouter([
             children: [
               {
                 path: "/overview",
-                element: <Overview />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <Overview />
+                  </Suspense>
+                ),
                 index: true,
               },
               { path: "/mock-exam", element: <Mockexam /> },

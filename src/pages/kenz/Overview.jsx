@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/overview.css";
-import image1 from "../../assets/public/home-firstlayer.png";
+import image1 from "../../assets/public/home-firstlayer.webp";
 import { FaBook } from "react-icons/fa6";
 import { PiExamFill } from "react-icons/pi";
 import SubjectSelected from "./SubjectSelected";

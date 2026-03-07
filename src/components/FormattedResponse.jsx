@@ -1,13 +1,14 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeSanitize from "rehype-sanitize";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
+import React, { Suspense, lazy } from "react";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 
+// Lazy load react-markdown and plugins to reduce initial bundle size
+// Markdown is only used when AI responses are displayed
+const ReactMarkdown = lazy(() => import("react-markdown"));
+
 const FormattedResponse = ({ response }) => {
   const lineBreakRes = response?.split("\n");
+
   return (
     <div>
       {lineBreakRes.map((item, index) => (
@@ -16,21 +17,31 @@ const FormattedResponse = ({ response }) => {
             <br />
           ) : (
             <div key={index} className="chat-markdown">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm, remarkMath]}
-                rehypePlugins={[rehypeSanitize, rehypeKatex]}
-                components={{
-                  code({ children, ...props }) {
-                    return (
-                      <code {...props}>
-                        <Latex>{children}</Latex>
-                      </code>
-                    );
-                  },
-                }}
+              <Suspense
+                fallback={<div style={{ padding: "10px" }}>Loading...</div>}
               >
-                {item}
-              </ReactMarkdown>
+                <ReactMarkdown
+                  remarkPlugins={[
+                    require("remark-gfm"),
+                    require("remark-math"),
+                  ]}
+                  rehypePlugins={[
+                    require("rehype-sanitize"),
+                    require("rehype-katex"),
+                  ]}
+                  components={{
+                    code({ children, ...props }) {
+                      return (
+                        <code {...props}>
+                          <Latex>{children}</Latex>
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {item}
+                </ReactMarkdown>
+              </Suspense>
             </div>
           )}
         </div>

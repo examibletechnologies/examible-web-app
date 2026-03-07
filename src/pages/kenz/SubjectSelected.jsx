@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/subjectSelected.css";
-import image1 from "../../assets/public/home-firstlayer.png";
+import image1 from "../../assets/public/home-firstlayer.webp";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../global/slice";

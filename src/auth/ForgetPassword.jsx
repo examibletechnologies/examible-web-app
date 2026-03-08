@@ -50,7 +50,7 @@ const ForgetPassword = () => {
         );
         if (res?.status === 200) {
           toast.info("Password reset link sent to your email!");
-          navigate("/resetlink", { state: { email: data.email } });
+          // navigate("/resetlink", { state: { email: data.email } });
         }
         setLoading(false);
       } catch (error) {

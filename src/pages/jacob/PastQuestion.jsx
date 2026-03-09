@@ -35,7 +35,7 @@ const PastQuestion = () => {
   const [disabled, setDisabled] = useState(true);
 
   // Base URL for fetching subjects and years
-  const baseUrl = "https://examiblequestionbank.onrender.com/subjects";
+  const baseUrl = import.meta.env.VITE_QUESTION_URL;
   const getYears = async () => {
     try {
       const response = await axios.get(baseUrl);

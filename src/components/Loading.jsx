@@ -1,4 +1,3 @@
-import React from "react";
 import "../../src/styles/authCss/loading.css";
 import { DotLoader } from "react-spinners";
 const Loading = () => {

@@ -13,7 +13,7 @@ const routePrefetches = {
   "/profile": () => import("../pages/kenz/Profile"),
   "/past-questions": () => import("../pages/jacob/PastQuestion"),
   "/subscription": () => import("../pages/jacob/Subscription"),
-  "/make-payment": () => import("../pages/jacob/MakePayment"),
+  "/subscription/make-payment": () => import("../pages/jacob/MakePayment"),
   "/about-us": () => import("../pages/jacob/AboutUs"),
   "/plans": () => import("../pages/jacob/Plans"),
 };

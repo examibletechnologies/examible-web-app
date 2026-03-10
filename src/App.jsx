@@ -6,8 +6,6 @@ const Overview = lazy(() => import("./pages/kenz/Overview"));
 const Home = lazy(() => import("./pages/kenz/Home"));
 const Login = lazy(() => import("./auth/Login"));
 const SignUp = lazy(() => import("./auth/SignUp"));
-const Welcome = lazy(() => import("./auth/welcomeback/Welcome"));
-const Congratulation = lazy(() => import("./auth/welcomeback/Congratulation"));
 const ForgetPassword = lazy(() => import("./auth/ForgetPassword"));
 const ResetLink = lazy(() => import("./auth/ResetLink"));
 const ResetPassword = lazy(() => import("./auth/welcomeback/ResetPassword"));
@@ -91,22 +89,6 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/welcome",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <Welcome />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/congratulation",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <Congratulation />
-          </Suspense>
-        ),
-      },
-      {
         path: "/forgetpassword",
         element: (
           <Suspense fallback={<InvisibleFallback />}>
@@ -123,7 +105,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/resetpassword/:token",
+        path: "/reset-password/:token",
         element: (
           <Suspense fallback={<InvisibleFallback />}>
             <ResetPassword />
@@ -202,7 +184,7 @@ const routes = createBrowserRouter([
                 ),
               },
               {
-                path: "/make-payment",
+                path: "/subscription/make-payment",
                 element: (
                   <Suspense fallback={<InvisibleFallback />}>
                     <MakePayment />

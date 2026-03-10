@@ -248,8 +248,10 @@
       }
 
       h3 {
-        font-size: 22px;
-        line-height: 25px;
+        font-size: 17px;
+        color: #464242;
+        font-style: italic;
+        line-height: 22px;
         font-weight: 500;
         font-family: "Montserrat", sans-serif;
         margin-bottom: 19.5px;
@@ -318,7 +320,7 @@
           font-size: 20px;
         }
         h3 {
-          font-size: 18px;
+          font-size: 15px;
         }
       }
     }
@@ -337,7 +339,7 @@
         }
 
         h3 {
-          font-size: 14px;
+          font-size: 13px;
         }
 
         h5,

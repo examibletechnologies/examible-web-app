@@ -58,7 +58,7 @@ const Login = () => {
           setLoading(false);
           setTimeout(() => {
             if (location.state?.selectedPlan) {
-              navigate("/make-payment", {
+              navigate("/subscription/make-payment", {
                 state: {
                   selectedPlan: location.state?.selectedPlan,
                   amount: location.state?.amount,

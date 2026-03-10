@@ -11,6 +11,7 @@ import Sidebar from "../../components/Sidebar";
 import ResponsiveSidebar from "../../components/ResponsiveSidebar";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import { HamburgerIcon } from "../../assets/public/svg/common";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user);
@@ -22,11 +23,11 @@ const Dashboard = () => {
 
   const showMyBot = () => {
     setShowBot(true);
-    // if (user?.plan === "Freemium") {
-    //   toast.error("Please Subscribe before you can access this feature");
-    // } else {
-    //   setShowBot(true);
-    // }
+    if (user?.plan === "Freemium") {
+      toast.error("Please Subscribe before you can access this feature");
+    } else {
+      setShowBot(true);
+    }
   };
 
   return (
@@ -73,7 +74,7 @@ const Dashboard = () => {
             )}
           </nav>
           <button
-            class="menu-button"
+            className="menu-button"
             aria-label="Open Menu"
             onClick={() => setShowDropdown(!showDropdown)}
           >

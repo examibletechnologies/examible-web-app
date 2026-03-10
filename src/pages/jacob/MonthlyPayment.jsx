@@ -11,7 +11,7 @@ const MonthlyPayment = () => {
   const currentPlan = user?.plan;
 
   const handleChoosePlan = (amount, plan) => {
-    navigate("/make-payment", { state: { amount, plan } });
+    navigate("/subscription/make-payment", { state: { amount, plan } });
   };
   return (
     <>

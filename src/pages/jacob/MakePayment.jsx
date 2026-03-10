@@ -14,7 +14,7 @@ const MakePayment = () => {
   const user = useSelector((state) => state.user);
 
   const location = useLocation();
-  const { amount, selectedPlan: plan } = location.state || {};
+  const { amount, plan } = location.state || {};
 
   const koraPayPaymentIntegration = async (e, amount, email, name) => {
     e.preventDefault();

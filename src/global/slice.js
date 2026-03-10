@@ -209,15 +209,13 @@ const slice = createSlice({
     },
     setExamTimer: (state, { payload }) => {
       state.examMeter = 0;
-      // if (payload === "Freemium") {
-      //   state.examTimerMins = 9;
-      //   state.examTimerSecs = 59;
-      // } else {
-      //   state.examTimerMins = 29;
-      //   state.examTimerSecs = 59;
-      // }
-      state.examTimerMins = 29;
-      state.examTimerSecs = 59;
+      if (payload === "Freemium") {
+        state.examTimerMins = 9;
+        state.examTimerSecs = 59;
+      } else {
+        state.examTimerMins = 29;
+        state.examTimerSecs = 59;
+      }
       state.exam = [];
       state.FinishedExam = false;
       state.timeOut = false;

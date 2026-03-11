@@ -132,7 +132,7 @@ const routes = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: "verifyingPayment",
+            path: "verifying-payment",
             element: (
               <Suspense fallback={<InvisibleFallback />}>
                 <VerifyPayment />

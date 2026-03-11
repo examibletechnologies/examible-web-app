@@ -22,7 +22,6 @@ const Dashboard = () => {
     useExamibleContext();
 
   const showMyBot = () => {
-    setShowBot(true);
     if (user?.plan === "Freemium") {
       toast.error("Please Subscribe before you can access this feature");
     } else {

@@ -214,7 +214,7 @@ const ViewPastQuestion = () => {
                 <img src={item?.diagramUrlA} className="question-diagram" />
               )}
               {newItem?.subheadingB && (
-                <h1 className="subheading" style={{ fontWeight }}>
+                <h1 className="subheading">
                   <Latex>{item?.subheadingB}</Latex>
                 </h1>
               )}

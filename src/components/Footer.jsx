@@ -80,7 +80,7 @@ const Footer = () => {
                     cursor={"pointer"}
                     onClick={() =>
                       (window.location.href =
-                        "https://www.facebook.com/profile.php?id=61575196836508&mibextid=LQQJ4d&mibextid=LQQJ4d")
+                        "https://web.facebook.com/Examible?mibextid=wwXIfr&rdid=isjFTYNmRlIOBirr&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1GsqJnCB1A%2F%3Fmibextid%3DwwXIfr%26_rdc%3D1%26_rdr")
                     }
                   />
                   <AiFillTwitterCircle fontSize={24} cursor={"pointer"} />

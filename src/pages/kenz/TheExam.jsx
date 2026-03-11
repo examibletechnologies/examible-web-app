@@ -110,7 +110,8 @@ const TheExam = () => {
           </aside>
           <section>
             <LuClock2 fontSize={30} />
-            {examTimerMins}:{examTimerSecs}
+            {String(examTimerMins)?.padStart(2, "0")}:
+            {String(examTimerSecs)?.padStart(2, "0")}
           </section>
         </article>
       </div>
@@ -122,7 +123,8 @@ const TheExam = () => {
         </aside>
         <section>
           <LuClock2 fontSize={30} />
-          {examTimerMins}:{examTimerSecs}
+          {String(examTimerMins)?.padStart(2, "0")}:
+          {String(examTimerSecs)?.padStart(2, "0")}
         </section>
         <button onClick={() => setShowLeavingNow(true)}>x</button>
       </div>
@@ -153,9 +155,11 @@ const TheExam = () => {
                 alt="Diagram loading..."
               />
             )}
-            <h5>
-              <Latex>{currentQuestion?.question}</Latex>
-            </h5>
+            {currentQuestion?.question && (
+              <h5>
+                <Latex>{currentQuestion?.question}</Latex>
+              </h5>
+            )}
             {currentQuestion?.options[0] && (
               <nav
                 style={{ cursor: "pointer" }}
@@ -193,7 +197,11 @@ const TheExam = () => {
                       : currentQuestion?.options[1]}
                   </Latex>
                 </p>
-                <input type="radio" checked={mockExamOptions.optionB} />
+                <input
+                  type="radio"
+                  checked={mockExamOptions.optionB}
+                  readOnly
+                />
               </nav>
             )}
             {currentQuestion?.options[2] && (
@@ -211,7 +219,11 @@ const TheExam = () => {
                       : currentQuestion?.options[2]}
                   </Latex>
                 </p>
-                <input type="radio" checked={mockExamOptions.optionC} />
+                <input
+                  type="radio"
+                  checked={mockExamOptions.optionC}
+                  readOnly
+                />
               </nav>
             )}
             {currentQuestion?.options[3] && (
@@ -229,7 +241,11 @@ const TheExam = () => {
                       : currentQuestion?.options[3]}
                   </Latex>
                 </p>
-                <input type="radio" checked={mockExamOptions.optionD} />
+                <input
+                  type="radio"
+                  checked={mockExamOptions.optionD}
+                  readOnly
+                />
               </nav>
             )}
             {currentQuestion?.options[4] && (

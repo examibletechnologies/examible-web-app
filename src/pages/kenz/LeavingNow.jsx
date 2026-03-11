@@ -38,9 +38,9 @@ const LeavingNow = () => {
         2 /
         mockExamQuestions?.length) *
       100;
+    setLoading(true);
+    const id = toast.loading("Please wait ...");
     try {
-      setLoading(true);
-      const id = toast.loading("Please wait ...");
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}api/v1/myRating/${user._id || user.id}`,
         { duration, completed, subject: mockSelectedSubject, performance },

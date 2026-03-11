@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import "../../styles/dashboardCss/overview.css";
-import image1 from "../../assets/public/home-firstlayer.png";
+import image1 from "../../assets/public/home-firstlayer.webp";
 import { FaBook } from "react-icons/fa6";
 import { PiExamFill } from "react-icons/pi";
 import SubjectSelected from "./SubjectSelected";
@@ -20,6 +20,7 @@ const Overview = () => {
   const [showBin, setShowBin] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  console.log(user);
 
   // build a fast lookup for subject -> svg component OR img once
   const subjectMap = useMemo(
@@ -58,54 +59,37 @@ const Overview = () => {
   };
 
   const onMouseEnterToShowBin = (index) => {
-    // if (user?.plan !== "Freemium") {
-    //   setShowBin(index);
-    //   return;
-    // }
-    // setShowBin("");
-    setShowBin(index);
+    if (user?.plan !== "Freemium") {
+      setShowBin(index);
+      return;
+    }
+    setShowBin("");
   };
 
   const addMoreSubject = async () => {
-    // if (user?.plan === "Freemium" && user?.enrolledSubjects?.length === 4) {
-    //   toast.error("Upgrade Plan to add more subject");
-    // } else {
-    //   setLoading(true);
-    //   const id = toast.loading("Please wait ...");
-    //   try {
-    //     const res = await axios.get(
-    //       `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${
-    //         user?._id
-    //       }`
-    //     );
-    //     setLoading(false);
-    //     if (res?.status) {
-    //       dispatch(setNotEnrolledSubjects(res?.data?.data));
-    //       toast.dismiss(id);
-    //       setShowSubjectSelected(true);
-    //     }
-    //   } catch (error) {
-    //     setLoading(false);
-    //     toast.error(error?.response?.data?.message);
-    //     toast.dismiss(id);
-    //   }
-    // }
-    setLoading(true);
-    const id = toast.loading("Please wait ...");
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${user?._id || user?.id}`,
-      );
-      setLoading(false);
-      if (res?.status) {
-        dispatch(setNotEnrolledSubjects(res?.data?.data));
+    if (user?.plan === "Freemium" && user?.enrolledSubjects?.length === 4) {
+      toast.error("Upgrade Plan to add more subject");
+      return;
+    } else {
+      setLoading(true);
+      const id = toast.loading("Please wait ...");
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}api/v1/studentNotSubjects/${
+            user?._id
+          }`,
+        );
+        setLoading(false);
+        if (res?.status) {
+          dispatch(setNotEnrolledSubjects(res?.data?.data));
+          toast.dismiss(id);
+          setShowSubjectSelected(true);
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.error(error?.response?.data?.message);
         toast.dismiss(id);
-        setShowSubjectSelected(true);
       }
-    } catch (error) {
-      setLoading(false);
-      toast.error(error?.response?.data?.message);
-      toast.dismiss(id);
     }
   };
 
@@ -154,10 +138,7 @@ const Overview = () => {
                     <PiExamFill color="white" fontSize={35} />
                   </div>
                   <nav>
-                    <h6>
-                      {/* {user?.plan === "Freemium" ? "10" : "30"} */}
-                      30
-                    </h6>
+                    <h6>{user?.plan === "Freemium" ? "10" : "30"}</h6>
                     <p>Minutes Mock Exam</p>
                   </nav>
                 </main>
@@ -166,10 +147,7 @@ const Overview = () => {
                     <FaBook color="#F2AE30" fontSize={35} />
                   </div>
                   <nav style={{ color: "white" }}>
-                    <h6>
-                      {/* {user?.plan === "Freemium" ? "2" : "All"} */}
-                      All
-                    </h6>
+                    <h6>{user?.plan === "Freemium" ? "4" : "All"}</h6>
                     <p>Years Pass Questions</p>
                   </nav>
                 </main>
@@ -241,10 +219,7 @@ const Overview = () => {
                   <PiExamFill color="white" fontSize={35} />
                 </div>
                 <nav>
-                  <h6>
-                    {/* {user?.plan === "Freemium" ? "10" : "30"} */}
-                    30
-                  </h6>
+                  <h6>{user?.plan === "Freemium" ? "10" : "30"}</h6>
                   <p>Minutes Mock Exam</p>
                 </nav>
               </main>
@@ -253,10 +228,7 @@ const Overview = () => {
                   <FaBook color="#F2AE30" fontSize={35} />
                 </div>
                 <nav style={{ color: "white" }}>
-                  <h6>
-                    {/* {user?.plan === "Freemium" ? "2" : "All"} */}
-                    All
-                  </h6>
+                  <h6>{user?.plan === "Freemium" ? "4" : "All"}</h6>
                   <p>Years Pass Questions</p>
                 </nav>
               </main>

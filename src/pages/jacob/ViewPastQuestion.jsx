@@ -174,10 +174,10 @@ const ViewPastQuestion = () => {
       {currentQuestions?.length > 0 ? (
         currentQuestions?.map((item, index) => {
           let newItem = {
-            subheadingA: item?.subheadingA,
-            subheadingB: item?.subheadingB,
-            diagramUrlA: item?.diagramUrlA,
-            diagramUrlB: item?.diagramUrlB,
+            subheadingA: item?.subheadingA || "",
+            subheadingB: item?.subheadingB || "",
+            diagramUrlA: item?.diagramUrlA || "",
+            diagramUrlB: item?.diagramUrlB || "",
           };
           if (index === 0) {
             questionDetails = item;
@@ -185,23 +185,24 @@ const ViewPastQuestion = () => {
             if (questionDetails.subheadingA === item.subheadingA) {
               newItem.subheadingA = "";
             } else {
-              questionDetails = item;
+              newItem.subheadingA = item.subheadingA;
             }
             if (questionDetails.subheadingB === item.subheadingB) {
               newItem.subheadingB = "";
             } else {
-              questionDetails = item;
+              newItem.subheadingB = item.subheadingB;
             }
             if (questionDetails.diagramUrlA === item.diagramUrlA) {
               newItem.diagramUrlA = "";
             } else {
-              questionDetails = item;
+              newItem.diagramUrlA = item.diagramUrlA;
             }
             if (questionDetails.diagramUrlB === item.diagramUrlB) {
               newItem.diagramUrlB = "";
             } else {
-              questionDetails = item;
+              newItem.diagramUrlB = item.diagramUrlB;
             }
+            questionDetails = item;
           }
           return (
             <div className="answerquestiondiv" key={index}>

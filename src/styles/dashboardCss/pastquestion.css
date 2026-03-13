@@ -258,6 +258,10 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
   text-align: left;
+
+  &:hover {
+    background-color: #804bf233;
+  }
 }
 
 .dropdownitem::before {

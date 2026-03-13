@@ -50,11 +50,7 @@ const Footer = () => {
           </div>
           <div className="footer-contactUs">
             <h3>Contact us</h3>
-            <p>
-              163, Muyibi Street,
-              <br />
-              Olodi-Apapa, Lagos
-            </p>
+            <p>12, Oshodi APAPA expressway, Umunze house, Coconut, Lagos</p>
             <h5>
               +234 913 1701630 <br />
               +234 815 8882242
@@ -83,7 +79,6 @@ const Footer = () => {
                         "https://web.facebook.com/Examible?mibextid=wwXIfr&rdid=isjFTYNmRlIOBirr&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1GsqJnCB1A%2F%3Fmibextid%3DwwXIfr%26_rdc%3D1%26_rdr")
                     }
                   />
-                  <AiFillTwitterCircle fontSize={24} cursor={"pointer"} />
                   <FaLinkedin
                     fontSize={24}
                     cursor={"pointer"}

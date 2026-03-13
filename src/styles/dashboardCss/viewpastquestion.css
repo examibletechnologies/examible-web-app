@@ -55,6 +55,7 @@
     line-height: 25px;
     display: flex;
     gap: 3px;
+    padding-left: 8px;
   }
   .question-diagram {
     width: auto;
@@ -66,7 +67,7 @@
   }
   .subheading {
     color: #464242;
-    padding-left: 20px;
+    padding-left: 8px;
     font-family: Montserrat;
     font-size: 16px;
     font-style: italic;
@@ -89,14 +90,15 @@
       font-size: 16px;
       font-style: normal;
       /* font-weight: 400; */
-      line-height: 35px;
+      line-height: 25px;
       max-width: 500px;
       white-space: normal;
       word-break: break-word;
       width: auto;
       border: none;
       cursor: default;
-      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      box-shadow:
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
         rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     }
   }
@@ -107,6 +109,17 @@
     font-style: normal;
     font-weight: 600;
     line-height: 35px;
+  }
+
+  @media screen and (max-width: 550px) {
+    .subheading {
+      padding-left: 0px;
+      line-height: 25px;
+    }
+    .questiontext {
+      padding-left: 0px;
+      line-height: 20px;
+    }
   }
 }
 .pastquestionanswer {
@@ -134,6 +147,7 @@
     font-weight: 700;
     line-height: 103%; /* 49.44px */
     letter-spacing: -0.912px;
+    padding-left: 6px;
   }
 
   & em {

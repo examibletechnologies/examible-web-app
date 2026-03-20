@@ -42,7 +42,14 @@ export function prefetchRoutes(paths) {
  */
 export function prefetchCommonRoutes() {
   // Prefetch routes users are likely to visit
-  prefetchRoutes(["/login", "/signup", "/overview", "/mock-exam", "/profile"]);
+  prefetchRoutes([
+    "/login",
+    "/signup",
+    "/overview",
+    "/mock-exam",
+    "/past-questions",
+    "/profile",
+  ]);
 }
 
 export default { prefetchRoute, prefetchRoutes, prefetchCommonRoutes };

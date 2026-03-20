@@ -15,6 +15,7 @@ import "katex/dist/katex.min.css";
 
 const MockResult = () => {
   const mockExamQuestions = useSelector((state) => state.mockExamQuestions);
+  const user = useSelector((state) => state.user);
   const exam = useSelector((state) => state.exam);
   const mockYear = useSelector((state) => state.mockYear);
   const [intialCount, setIntialCount] = useState(0);
@@ -67,6 +68,10 @@ const MockResult = () => {
     diagramUrlB,
     id,
   ) => {
+    if (questionNum > 5 && user?.plan === "Freemium") {
+      toast.error("Please Subscribe before you can access this feature");
+      return;
+    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -89,6 +94,8 @@ const MockResult = () => {
     } catch (error) {
       setLoading(null);
       toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(null);
     }
   };
 

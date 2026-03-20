@@ -16,6 +16,7 @@ import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
+import { toast } from "react-toastify";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const ViewPastQuestion = () => {
 
   const year = useSelector((state) => state.year);
   const subject = useSelector((state) => state.exam);
+  const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.pastQuestions) || [];
   const pastQuestionsOption = useSelector((state) => state.pastQuestionsOption);
   const [count, setCount] = useState(0);
@@ -129,6 +131,10 @@ const ViewPastQuestion = () => {
     diagramUrlB,
     id,
   ) => {
+    if (questionNum > 5 && user?.plan === "Freemium") {
+      toast.error("Please Subscribe before you can access this feature");
+      return;
+    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -149,8 +155,11 @@ const ViewPastQuestion = () => {
         setShowAiResponseModal(true);
       }
     } catch (error) {
+      console.log(error);
       setLoading(null);
       toast.error(error?.response?.data?.message || "An error occurred");
+    } finally {
+      setLoading(null);
     }
   };
 

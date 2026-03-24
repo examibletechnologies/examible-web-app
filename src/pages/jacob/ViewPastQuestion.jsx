@@ -16,6 +16,7 @@ import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
+import Calculator from "../../components/Calculator";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
@@ -103,12 +104,6 @@ const ViewPastQuestion = () => {
       window.scrollTo(0, 0);
     }
   };
-
-  useEffect(() => {
-    if (questions.length > 0) {
-      dispatch(clearPastQuestionsOption());
-    }
-  }, [dispatch, questions]);
 
   useEffect(() => {
     if (count === 1) {
@@ -346,6 +341,7 @@ const ViewPastQuestion = () => {
           <button
             onClick={() => {
               const result = calculateScore();
+              dispatch(clearPastQuestionsOption());
               navigate("/past-questions/result", {
                 state: result,
               });
@@ -361,6 +357,7 @@ const ViewPastQuestion = () => {
           </button>
         )}
       </div>
+      <Calculator />
     </main>
   );
 };

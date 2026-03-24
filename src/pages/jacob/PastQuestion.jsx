@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/pastquestion.css";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setExam, setYear, setPastQuestions } from "../../global/slice";
+import {
+  setExam,
+  setYear,
+  setPastQuestions,
+  clearPastQuestionsOption,
+} from "../../global/slice";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -65,6 +70,7 @@ const PastQuestion = () => {
       );
       toast.dismiss(toastId);
       dispatch(setPastQuestions(response.data.data));
+      dispatch(clearPastQuestionsOption());
       navigate("/past-questions/view");
       setLoading(false);
       setDisabled(true);

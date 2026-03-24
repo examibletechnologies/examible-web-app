@@ -20,7 +20,6 @@ const Overview = () => {
   const [showBin, setShowBin] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  console.log(user);
 
   // build a fast lookup for subject -> svg component OR img once
   const subjectMap = useMemo(

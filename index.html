@@ -31,9 +31,6 @@ environment"
       "
     />
     <noscript><link rel="stylesheet" href="/assets/index.css" /></noscript>
-
-    <!-- Google Fonts loaded immediately (not deferred) for critical path optimization -->
-    <!-- Only load weights 400 and 700 (bare minimum needed) -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
@@ -41,8 +38,6 @@ environment"
   </head>
   <body>
     <div id="root"></div>
-    <!-- defer: Prevents 11.4MB JS from blocking page render -->
-    <!-- Page renders immediately, JS loads and runs after -->
     <script type="module" src="/src/main.jsx" defer></script>
   </body>
 </html>

@@ -35,6 +35,7 @@ const ViewPastQuestion = () => {
 
   const year = useSelector((state) => state.year);
   const subject = useSelector((state) => state.exam);
+  const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.pastQuestions) || [];
   const pastQuestionsOption = useSelector((state) => state.pastQuestionsOption);
   const [count, setCount] = useState(0);
@@ -124,6 +125,10 @@ const ViewPastQuestion = () => {
     diagramUrlB,
     id,
   ) => {
+    if (questionNum > 5 && user?.plan === "Freemium") {
+      toast.error("Please Subscribe before you can access this feature");
+      return;
+    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -144,8 +149,11 @@ const ViewPastQuestion = () => {
         setShowAiResponseModal(true);
       }
     } catch (error) {
+      console.log(error);
       setLoading(null);
       toast.error(error?.response?.data?.message || "An error occurred");
+    } finally {
+      setLoading(null);
     }
   };
 
@@ -169,10 +177,10 @@ const ViewPastQuestion = () => {
       {currentQuestions?.length > 0 ? (
         currentQuestions?.map((item, index) => {
           let newItem = {
-            subheadingA: item?.subheadingA,
-            subheadingB: item?.subheadingB,
-            diagramUrlA: item?.diagramUrlA,
-            diagramUrlB: item?.diagramUrlB,
+            subheadingA: item?.subheadingA || "",
+            subheadingB: item?.subheadingB || "",
+            diagramUrlA: item?.diagramUrlA || "",
+            diagramUrlB: item?.diagramUrlB || "",
           };
           if (index === 0) {
             questionDetails = item;
@@ -180,23 +188,24 @@ const ViewPastQuestion = () => {
             if (questionDetails.subheadingA === item.subheadingA) {
               newItem.subheadingA = "";
             } else {
-              questionDetails = item;
+              newItem.subheadingA = item.subheadingA;
             }
             if (questionDetails.subheadingB === item.subheadingB) {
               newItem.subheadingB = "";
             } else {
-              questionDetails = item;
+              newItem.subheadingB = item.subheadingB;
             }
             if (questionDetails.diagramUrlA === item.diagramUrlA) {
               newItem.diagramUrlA = "";
             } else {
-              questionDetails = item;
+              newItem.diagramUrlA = item.diagramUrlA;
             }
             if (questionDetails.diagramUrlB === item.diagramUrlB) {
               newItem.diagramUrlB = "";
             } else {
-              questionDetails = item;
+              newItem.diagramUrlB = item.diagramUrlB;
             }
+            questionDetails = item;
           }
           return (
             <div className="answerquestiondiv" key={index}>

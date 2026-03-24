@@ -48,6 +48,7 @@ export function prefetchCommonRoutes() {
     "/overview",
     "/mock-exam",
     "/past-questions",
+    "/past-questions/view",
     "/profile",
   ]);
 }

@@ -52,6 +52,16 @@ const MockResult = () => {
       mockExamQuestions?.length) *
     100;
 
+  const totalScore =
+    exam?.reduce((acc, item, index) => {
+      if (!item?.score) {
+        acc = acc + 0;
+      } else {
+        acc = acc + item?.score;
+      }
+      return acc;
+    }, 0) / 2;
+
   const retryExam = () => {
     dispatch(cancelExam());
     nav("/mock-exam");
@@ -107,7 +117,10 @@ const MockResult = () => {
         <span style={{ color: "#804bf2" }}>Mock Exam</span> (Jamb CBT Practice)
       </h2>
       <h2>Questions & Answers </h2>
-      <h5>You Scored {performance.toFixed(0)} out of 100</h5>
+      <h5>
+        You Scored {totalScore.toFixed(0)} out of {mockExamQuestions?.length} (
+        {performance.toFixed(0)}%)
+      </h5>
       <div className="mockResult-holder">
         {mockExamQuestions
           ?.slice(intialCount, finalCount)

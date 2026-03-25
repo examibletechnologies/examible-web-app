@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/viewpastquestion.css";
-import {
-  IoIosArrowRoundBack,
-  IoIosArrowBack,
-  IoIosArrowForward,
-} from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPastQuestionsOption,
@@ -162,11 +158,12 @@ const ViewPastQuestion = () => {
   return (
     <main className="viewpastquestionmain">
       <div className="viewpastquestionheader">
-        <IoIosArrowRoundBack
-          size={40}
-          onClick={() => navigate(-1)}
-          style={{ cursor: "pointer" }}
-        />
+        <button
+          onClick={() => navigate("/past-questions")}
+          className="back-selection-btn"
+        >
+          Back to Selection
+        </button>
         <span>Jamb UTME Question</span>
       </div>
       <div className="viewpastquestionmainheader">

@@ -12,8 +12,8 @@ const plans = [
       "Start for free: explore Examible core features without PAYING A DIME. Upgrade anytime for full access.",
     link: "FREEMIUM PLAN HERE",
     benefits: [
-      "Limited access to past Jamb Questions (e.g. 2022 - 2023 past questions)",
-      "25 minutes free mock exam",
+      "Limited access to past Jamb Questions (e.g. 2015 - 2017 past questions)",
+      "10 minutes free mock exam",
       "Can't remove chosen subject",
     ],
   },
@@ -218,34 +218,3 @@ const Plans = () => {
 };
 
 export default Plans;
-
-// import "../../styles/dashboardCss/subscription.css";
-// import YearlyPayment from "../jacob/YearlyPayment";
-// const Subscription = () => {
-//   return (
-//     <main className="subscriptionmain">
-//       <div className="sebcontainer">
-//         <div className="subdivheader">
-//           <h1>Payment Plan</h1>
-//           <span>
-//             Your Path to <em>300+</em> Starts Here: <br /> Select a Plan
-//           </span>
-//         </div>
-// <YearlyPayment />
-
-//         <div className="subfootercontainer">
-//           <div className="subfooter">
-//             <span>
-//               Try our Basic Plan at no cost, or upgrade to our Exam Ready Plan
-//               for the ultimate JAMB prep experience. Get full access to past
-//               questions, mock exams, and smart study tools – all at the best
-//               value for your money.
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-//     </main>
-//   );
-// };
-
-// export default Subscription;

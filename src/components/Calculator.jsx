@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { FaCalculator, FaTimes } from "react-icons/fa";
 import "../styles/calculator.css";
 
@@ -11,6 +11,7 @@ const Calculator = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
   const dragStart = useRef({ x: 0, y: 0 });
+  const wrapperRef = useRef(null);
 
   const handlePointerDown = (e) => {
     // Only allow left click for mouse events
@@ -29,22 +30,41 @@ const Calculator = () => {
   };
 
   useEffect(() => {
-    const startPosition = position;
-
     const handlePointerMove = (e) => {
       if (!isDragging) return;
 
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
       const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
 
-      const newX = clientX - dragStart.current.x;
-      const newY = clientY - dragStart.current.y;
+      const rawX = clientX - dragStart.current.x;
+      const rawY = clientY - dragStart.current.y;
+      let newX = rawX;
+      let newY = rawY;
+
+      if (wrapperRef.current) {
+        const width = wrapperRef.current.offsetWidth;
+        const height = wrapperRef.current.offsetHeight;
+        const offsetLeft = wrapperRef.current.offsetLeft;
+        const offsetTop = wrapperRef.current.offsetTop;
+        const padding = 10;
+
+        let minX = padding - offsetLeft;
+        let maxX = window.innerWidth - padding - width - offsetLeft;
+
+        let minY = padding - offsetTop;
+        let maxY = window.innerHeight - padding - height - offsetTop;
+
+        if (minX > maxX) minX = maxX;
+        if (minY > maxY) minY = maxY;
+
+        if (newX > maxX) newX = maxX;
+        if (newX < minX) newX = minX;
+        if (newY > maxY) newY = maxY;
+        if (newY < minY) newY = minY;
+      }
 
       // Only consider it a drag if moved more than 3px
-      if (
-        Math.abs(newX - startPosition.x) > 3 ||
-        Math.abs(newY - startPosition.y) > 3
-      ) {
+      if (Math.abs(rawX - position.x) > 3 || Math.abs(rawY - position.y) > 3) {
         setHasMoved(true);
       }
 
@@ -74,6 +94,44 @@ const Calculator = () => {
       window.removeEventListener("touchend", handlePointerUp);
     };
   }, [isDragging]);
+
+  useLayoutEffect(() => {
+    const adjustBounds = () => {
+      if (!wrapperRef.current) return;
+      const width = wrapperRef.current.offsetWidth;
+      const height = wrapperRef.current.offsetHeight;
+      const offsetLeft = wrapperRef.current.offsetLeft;
+      const offsetTop = wrapperRef.current.offsetTop;
+      const padding = 10;
+
+      let minX = padding - offsetLeft;
+      let maxX = window.innerWidth - padding - width - offsetLeft;
+
+      let minY = padding - offsetTop;
+      let maxY = window.innerHeight - padding - height - offsetTop;
+
+      if (minX > maxX) minX = maxX;
+      if (minY > maxY) minY = maxY;
+
+      setPosition((prev) => {
+        let newX = prev.x;
+        let newY = prev.y;
+        if (newX > maxX) newX = maxX;
+        if (newX < minX) newX = minX;
+        if (newY > maxY) newY = maxY;
+        if (newY < minY) newY = minY;
+
+        if (newX !== prev.x || newY !== prev.y) {
+          return { x: newX, y: newY };
+        }
+        return prev;
+      });
+    };
+
+    adjustBounds();
+    window.addEventListener("resize", adjustBounds);
+    return () => window.removeEventListener("resize", adjustBounds);
+  }, [isOpen]);
 
   const toggleOpen = () => {
     if (!hasMoved) {
@@ -109,6 +167,7 @@ const Calculator = () => {
 
   return (
     <div
+      ref={wrapperRef}
       className={`calculator-wrapper ${isOpen ? "open" : ""}`}
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
     >

@@ -87,21 +87,6 @@ const ViewPastQuestion = () => {
     );
   };
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(questions.length / questionsPerPage)) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo(0, 0);
-      setCount((prev) => prev + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo(0, 0);
-    }
-  };
-
   useEffect(() => {
     if (count === 1) {
       setTimeout(() => {
@@ -109,6 +94,10 @@ const ViewPastQuestion = () => {
       }, 20000);
     }
   }, [count]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   const handleViewExplanation = async (
     questionNum,
@@ -205,7 +194,11 @@ const ViewPastQuestion = () => {
             questionDetails = item;
           }
           return (
-            <div className="answerquestiondiv" key={index}>
+            <div
+              id={`question-${indexOfFirstQuestion + index + 1}`}
+              className="answerquestiondiv"
+              key={index}
+            >
               {newItem?.subheadingA && (
                 <h1 className="subheading">
                   <Latex>{item?.subheadingA}</Latex>
@@ -331,18 +324,122 @@ const ViewPastQuestion = () => {
         </p>
       )}
 
-      <div className="pagination-controls">
+      <div className="question-navigator">
         <button
-          onClick={handlePreviousPage}
+          onClick={() => {
+            setCurrentPage(Math.max(1, currentPage - 1));
+            window.scrollTo(0, 0);
+          }}
           disabled={currentPage === 1}
-          className="pagination-button"
+          className="nav-arrow nav-arrow-prev"
         >
           <IoIosArrowBack size={25} />
-          Previous
         </button>
-        <span className="pagination-info">
-          page {currentPage} of {Math.ceil(questions.length / questionsPerPage)}
-        </span>
+
+        <div className="question-numbers">
+          {(() => {
+            const totalPages = Math.ceil(questions.length / questionsPerPage);
+            const pages = [];
+            const pagesToShow = 3;
+
+            // If 5 or fewer pages, show all
+            if (totalPages <= 5) {
+              for (let i = 1; i <= totalPages; i++) {
+                pages.push(i);
+              }
+            } else {
+              // More than 5 pages - use dynamic display
+              // Always show first page
+              pages.push(1);
+
+              // If current page is in the first group (1-3), show 1,2,3
+              if (currentPage <= 3) {
+                pages.push(2);
+                pages.push(3);
+              } else {
+                // Show dots after page 1
+                pages.push("...");
+              }
+
+              // If current page is in the middle (not in first 3)
+              if (currentPage > 3 && currentPage < totalPages - 1) {
+                // Remove the dots if we added it
+                if (pages[pages.length - 1] === "...") {
+                  pages.pop();
+                }
+                pages.push(currentPage);
+              }
+
+              // If current page is near the end but not already showing last pages
+              if (
+                currentPage >= totalPages - 2 &&
+                !pages.includes(totalPages - 1)
+              ) {
+                // Remove dots if present
+                while (pages[pages.length - 1] === "...") {
+                  pages.pop();
+                }
+                pages.push(totalPages - 1);
+              }
+
+              // Add dots before last pages if needed
+              if (
+                pages[pages.length - 1] !== "..." &&
+                pages[pages.length - 1] < totalPages - 1
+              ) {
+                pages.push("...");
+              }
+
+              // Always show last 2 pages
+              if (!pages.includes(totalPages - 1)) {
+                pages.push(totalPages - 1);
+              }
+              if (!pages.includes(totalPages)) {
+                pages.push(totalPages);
+              }
+            }
+
+            return pages.map((pageNum) => {
+              if (pageNum === "...") {
+                return (
+                  <span key="dots" className="page-indicator">
+                    ...
+                  </span>
+                );
+              }
+              const isCurrentPage = pageNum === currentPage;
+              return (
+                <button
+                  key={pageNum}
+                  className={`question-number ${isCurrentPage ? "active" : ""}`}
+                  onClick={() => {
+                    setCurrentPage(pageNum);
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  {pageNum}
+                </button>
+              );
+            });
+          })()}
+        </div>
+
+        <button
+          onClick={() => {
+            const totalPages = Math.ceil(questions.length / questionsPerPage);
+            setCurrentPage(Math.min(totalPages, currentPage + 1));
+            window.scrollTo(0, 0);
+          }}
+          disabled={
+            currentPage >= Math.ceil(questions.length / questionsPerPage)
+          }
+          className="nav-arrow nav-arrow-next"
+        >
+          <IoIosArrowForward size={25} />
+        </button>
+      </div>
+
+      <div className="finish-button-container">
         {currentPage === Math.ceil(questions.length / questionsPerPage) ? (
           <button
             onClick={() => {
@@ -352,17 +449,13 @@ const ViewPastQuestion = () => {
                 state: result,
               });
             }}
-            className="pagination-button1"
+            className="finish-btn"
           >
             Finish
           </button>
-        ) : (
-          <button onClick={handleNextPage} className="pagination-button1">
-            Next
-            <IoIosArrowForward size={25} />
-          </button>
-        )}
+        ) : null}
       </div>
+
       <Calculator />
     </main>
   );

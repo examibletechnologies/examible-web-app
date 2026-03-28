@@ -18,26 +18,20 @@ const MockResult = () => {
   const user = useSelector((state) => state.user);
   const exam = useSelector((state) => state.exam);
   const mockYear = useSelector((state) => state.mockYear);
-  const [intialCount, setIntialCount] = useState(0);
-  const [finalCount, setFinalCount] = useState(5);
   const dispatch = useDispatch();
   const nav = useNavigate();
   const [loading, setLoading] = useState(null);
   const location = useLocation();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 5;
+
   const { setShowAiResponseModal, setAIResponse } = useExamibleContext();
 
-  const nextSeries = () => {
-    setIntialCount(intialCount + 5);
-    setFinalCount(finalCount + 5);
-    window.scrollTo(0, 0);
-  };
-
-  const previousSeries = () => {
-    setIntialCount(intialCount - 5);
-    setFinalCount(finalCount - 5);
-    window.scrollTo(0, 0);
-  };
+  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+  const intialCount = indexOfFirstQuestion;
+  const finalCount = indexOfLastQuestion;
 
   const performance =
     (exam?.reduce((acc, item, index) => {
@@ -337,36 +331,118 @@ const MockResult = () => {
             );
           })}
       </div>
-      <div className="mockResult-button">
-        <button
-          style={{ display: intialCount > 0 ? "flex" : "none" }}
-          className="mockResult-more"
-          onClick={() => previousSeries()}
-        >
-          <IoIosArrowBack color="#88DDFF" fontSize={25} /> Previous
-        </button>
-        <button
-          className="mockResult-retry"
-          style={{
-            display:
-              intialCount === 0 || finalCount === mockExamQuestions?.length
-                ? "flex"
-                : "none",
-          }}
-          onClick={() => retryExam()}
-        >
+      <div className="mock-result-navigator">
+        <button className="mockResult-retry" onClick={() => retryExam()}>
           Retry Quiz
         </button>
-        <button
-          className="mockResult-more"
-          style={{
-            display: finalCount < mockExamQuestions?.length ? "flex" : "none",
-          }}
-          onClick={() => nextSeries()}
-        >
-          See More
-          <IoIosArrowForward color="#88DDFF" fontSize={25} />
-        </button>
+
+        <div className="question-navigator">
+          <button
+            onClick={() => {
+              setCurrentPage(Math.max(1, currentPage - 1));
+              window.scrollTo(0, 0);
+            }}
+            disabled={currentPage === 1}
+            className="nav-arrow nav-arrow-prev"
+          >
+            <IoIosArrowBack size={25} />
+          </button>
+
+          <div className="question-numbers">
+            {(() => {
+              const totalPages = Math.ceil(
+                mockExamQuestions.length / questionsPerPage,
+              );
+              const pages = [];
+
+              if (totalPages <= 5) {
+                for (let i = 1; i <= totalPages; i++) {
+                  pages.push(i);
+                }
+              } else {
+                pages.push(1);
+
+                if (currentPage <= 3) {
+                  pages.push(2);
+                  pages.push(3);
+                } else {
+                  pages.push("...");
+                }
+
+                if (currentPage > 3 && currentPage < totalPages - 1) {
+                  if (pages[pages.length - 1] === "...") {
+                    pages.pop();
+                  }
+                  pages.push(currentPage);
+                }
+
+                if (
+                  currentPage >= totalPages - 2 &&
+                  !pages.includes(totalPages - 1)
+                ) {
+                  while (pages[pages.length - 1] === "...") {
+                    pages.pop();
+                  }
+                  pages.push(totalPages - 1);
+                }
+
+                if (
+                  pages[pages.length - 1] !== "..." &&
+                  pages[pages.length - 1] < totalPages - 1
+                ) {
+                  pages.push("...");
+                }
+
+                if (!pages.includes(totalPages - 1)) {
+                  pages.push(totalPages - 1);
+                }
+                if (!pages.includes(totalPages)) {
+                  pages.push(totalPages);
+                }
+              }
+
+              return pages.map((pageNum) => {
+                if (pageNum === "...") {
+                  return (
+                    <span key="dots" className="page-indicator">
+                      ...
+                    </span>
+                  );
+                }
+                const isCurrentPage = pageNum === currentPage;
+                return (
+                  <button
+                    key={pageNum}
+                    className={`question-number ${isCurrentPage ? "active" : ""}`}
+                    onClick={() => {
+                      setCurrentPage(pageNum);
+                      window.scrollTo(0, 0);
+                    }}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              });
+            })()}
+          </div>
+
+          <button
+            onClick={() => {
+              const totalPages = Math.ceil(
+                mockExamQuestions.length / questionsPerPage,
+              );
+              setCurrentPage(Math.min(totalPages, currentPage + 1));
+              window.scrollTo(0, 0);
+            }}
+            disabled={
+              currentPage >=
+              Math.ceil(mockExamQuestions.length / questionsPerPage)
+            }
+            className="nav-arrow nav-arrow-next"
+          >
+            <IoIosArrowForward size={25} />
+          </button>
+        </div>
       </div>
     </div>
   );

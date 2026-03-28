@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/viewpastquestion.css";
-import {
-  IoIosArrowRoundBack,
-  IoIosArrowBack,
-  IoIosArrowForward,
-} from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPastQuestionsOption,
@@ -16,7 +12,8 @@ import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
-import { toast } from "react-toastify";
+import Calculator from "../../components/Calculator";
+import Pagination from "../../shared/Pagination";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
@@ -91,27 +88,6 @@ const ViewPastQuestion = () => {
     );
   };
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(questions.length / questionsPerPage)) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo(0, 0);
-      setCount((prev) => prev + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo(0, 0);
-    }
-  };
-
-  useEffect(() => {
-    if (questions.length > 0) {
-      dispatch(clearPastQuestionsOption());
-    }
-  }, [dispatch, questions]);
-
   useEffect(() => {
     if (count === 1) {
       setTimeout(() => {
@@ -119,6 +95,10 @@ const ViewPastQuestion = () => {
       }, 20000);
     }
   }, [count]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   const handleViewExplanation = async (
     questionNum,
@@ -168,11 +148,12 @@ const ViewPastQuestion = () => {
   return (
     <main className="viewpastquestionmain">
       <div className="viewpastquestionheader">
-        <IoIosArrowRoundBack
-          size={40}
-          onClick={() => navigate(-1)}
-          style={{ cursor: "pointer" }}
-        />
+        <button
+          onClick={() => navigate("/past-questions")}
+          className="back-selection-btn"
+        >
+          Back to Selection
+        </button>
         <span>Jamb UTME Question</span>
       </div>
       <div className="viewpastquestionmainheader">
@@ -214,7 +195,11 @@ const ViewPastQuestion = () => {
             questionDetails = item;
           }
           return (
-            <div className="answerquestiondiv" key={index}>
+            <div
+              id={`question-${indexOfFirstQuestion + index + 1}`}
+              className="answerquestiondiv"
+              key={index}
+            >
               {newItem?.subheadingA && (
                 <h1 className="subheading">
                   <Latex>{item?.subheadingA}</Latex>
@@ -340,37 +325,30 @@ const ViewPastQuestion = () => {
         </p>
       )}
 
-      <div className="pagination-controls">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          className="pagination-button"
-        >
-          <IoIosArrowBack size={25} />
-          Previous
-        </button>
-        <span className="pagination-info">
-          page {currentPage} of {Math.ceil(questions.length / questionsPerPage)}
-        </span>
+      <Pagination
+        totalPages={Math.ceil(questions.length / questionsPerPage)}
+        page={currentPage}
+        setPage={setCurrentPage}
+      />
+
+      <div className="finish-button-container">
         {currentPage === Math.ceil(questions.length / questionsPerPage) ? (
           <button
             onClick={() => {
               const result = calculateScore();
+              dispatch(clearPastQuestionsOption());
               navigate("/past-questions/result", {
                 state: result,
               });
             }}
-            className="pagination-button1"
+            className="finish-btn"
           >
             Finish
           </button>
-        ) : (
-          <button onClick={handleNextPage} className="pagination-button1">
-            Next
-            <IoIosArrowForward size={25} />
-          </button>
-        )}
+        ) : null}
       </div>
+
+      <Calculator />
     </main>
   );
 };

@@ -13,6 +13,7 @@ import {
 } from "../../global/slice";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
+import Calculator from "../../components/Calculator";
 
 const TheExam = () => {
   const mockExamQuestions = useSelector((state) => state.mockExamQuestions);
@@ -345,6 +346,7 @@ const TheExam = () => {
           </div>
         </div>
       </div>
+      <Calculator />
     </div>
   );
 };

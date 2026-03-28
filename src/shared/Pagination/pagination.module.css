@@ -1,0 +1,100 @@
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+
+  @media screen and (max-width: 550px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 350px) {
+    padding-left: 45px;
+    width: 100%;
+  }
+}
+
+.paginationContainer::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+/* Numbers wrapper */
+.questionNumbers {
+  display: flex;
+  gap: 5px;
+  padding: 6px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* Nav arrows */
+.navArrow {
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid #804bf2;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #804bf2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.navArrow:hover {
+  background-color: #804bf2;
+  color: #fff;
+}
+
+.navArrow:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Page buttons */
+.questionNumber {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  border: 1px solid #804bf2;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #804bf2;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.questionNumber:hover {
+  background-color: #804bf2;
+  color: #fff;
+}
+
+.active {
+  background-color: #804bf2;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Dots */
+.pageIndicator {
+  min-width: 24px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #804bf2;
+  font-weight: 600;
+  flex-shrink: 0;
+}

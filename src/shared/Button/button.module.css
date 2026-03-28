@@ -177,10 +177,9 @@
 }
 
 .disabled {
-  cursor: not-allowed !important;
   pointer-events: none;
-  background: #d0d5dd !important;
-  color: #ffffff !important;
+  background: #d0d5dd;
+  color: #ffffff;
 
   &:hover {
     transform: none;

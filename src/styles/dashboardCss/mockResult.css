@@ -307,184 +307,20 @@
 
   @media screen and (max-width: 850px) {
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 15px;
   }
 
   @media screen and (max-width: 550px) {
     width: 100%;
     flex-direction: column;
-    gap: 15px;
+    align-items: flex-start;
+    margin: 0px;
+    gap: 0px;
 
     .mockResult-retry {
-      width: 100%;
+      width: fit-content;
+      margin-bottom: 12px;
     }
-  }
-}
-
-.question-navigator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  min-width: fit-content;
-
-  @media screen and (max-width: 1200px) {
-    gap: 6px;
-  }
-
-  @media screen and (max-width: 850px) {
-    width: 100%;
-    gap: 6px;
-  }
-
-  @media screen and (max-width: 550px) {
-    width: 100%;
-    gap: 5px;
-  }
-}
-
-.nav-arrow {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #804bf2;
-  border-radius: 8px;
-  background-color: #fff;
-  color: #804bf2;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  flex-shrink: 0;
-
-  &:hover:not(:disabled) {
-    background-color: #804bf2;
-    color: #fff;
-  }
-
-  &:disabled {
-    background-color: #e0e0e0;
-    color: #aaa;
-    cursor: not-allowed;
-    border-color: #e0e0e0;
-  }
-
-  &:disabled:hover {
-    background-color: #e0e0e0;
-    color: #aaa;
-  }
-
-  @media screen and (max-width: 1200px) {
-    width: 36px;
-    height: 36px;
-  }
-
-  @media screen and (max-width: 850px) {
-    width: 34px;
-    height: 34px;
-  }
-
-  @media screen and (max-width: 550px) {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-.question-numbers {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-
-  @media screen and (max-width: 1200px) {
-    gap: 6px;
-  }
-
-  @media screen and (max-width: 850px) {
-    gap: 5px;
-  }
-
-  @media screen and (max-width: 550px) {
-    gap: 4px;
-  }
-}
-
-.question-number {
-  width: 35px;
-  height: 35px;
-  border: 1px solid #804bf2;
-  border-radius: 50%;
-  background-color: #fff;
-  color: #804bf2;
-  font-family: Montserrat;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  &:hover {
-    background-color: #804bf2;
-    color: #fff;
-  }
-
-  &.active {
-    background-color: #804bf2;
-    color: #fff;
-  }
-
-  @media screen and (max-width: 1200px) {
-    width: 33px;
-    height: 33px;
-    font-size: 13px;
-  }
-
-  @media screen and (max-width: 850px) {
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
-  }
-
-  @media screen and (max-width: 550px) {
-    width: 30px;
-    height: 30px;
-    font-size: 11px;
-  }
-}
-
-.page-indicator {
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 600;
-  color: #804bf2;
-  flex-shrink: 0;
-
-  @media screen and (max-width: 1200px) {
-    width: 33px;
-    height: 33px;
-    font-size: 14px;
-  }
-
-  @media screen and (max-width: 850px) {
-    width: 32px;
-    height: 32px;
-    font-size: 13px;
-  }
-
-  @media screen and (max-width: 550px) {
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
   }
 }

@@ -39,7 +39,6 @@ const ViewPastQuestion = () => {
   const [loading, setLoading] = useState(null);
 
   const searchParams = new URLSearchParams(window.location.search);
-  console.log(searchParams.get("page"));
   const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
   const questionsPerPage = 5;
 
@@ -323,7 +322,10 @@ const ViewPastQuestion = () => {
       <Pagination
         totalPages={Math.ceil(questions.length / questionsPerPage)}
         page={currentPage}
-        setPage={setCurrentPage}
+        setPage={(page) => {
+          setCount(count + 1);
+          setCurrentPage(page);
+        }}
       />
 
       <div className="finish-button-container">

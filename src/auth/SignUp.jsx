@@ -12,6 +12,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
     fullName: "",
     email: "",
@@ -107,16 +108,25 @@ const SignUp = () => {
   }, [inputValue]);
 
   useEffect(() => {
-    if (loading) {
+    const { fullName, email, password, confirmPassword } = inputValue;
+    const isFormValid =
+      fullName.trim() !== "" &&
+      validateEmail(email) &&
+      password.trim() !== "" &&
+      password.length >= 8 &&
+      password.length <= 60 &&
+      confirmPassword.trim() !== "" &&
+      password === confirmPassword;
+    if (loading || googleLoading) {
       setDisabled(true);
     } else {
-      setDisabled(false);
+      setDisabled(!isFormValid);
     }
-  }, [loading, setDisabled]);
+  }, [loading, googleLoading, inputValue]);
 
   const handleSubmit = async (e, data) => {
     e.preventDefault();
-    if (!disabled) {
+    if (!disabled && !googleLoading) {
       setLoading(true);
       try {
         const res = await axios.post(
@@ -144,7 +154,11 @@ const SignUp = () => {
   };
 
   const googleIcon = async () => {
-    window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+    setGoogleLoading(true);
+    setTimeout(() => {
+      window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+      setGoogleLoading(false);
+    }, 1000);
   };
 
   return (
@@ -171,8 +185,10 @@ const SignUp = () => {
           variant="secondary"
           fullWidth
           onClick={googleIcon}
+          disabled={loading || googleLoading}
+          loading={googleLoading}
         >
-          Continue with Google
+          {googleLoading ? "please wait..." : "Continue with Google"}
         </Button>
         <span className="or-container">
           <div className="line"></div>
@@ -227,9 +243,8 @@ const SignUp = () => {
           <Button
             loading={loading}
             type="submit"
-            disabled={disabled}
+            disabled={disabled || googleLoading}
             fullWidth
-            style={{ marginTop: 12 }}
           >
             {loading ? "loading..." : "Join For Free"}
           </Button>

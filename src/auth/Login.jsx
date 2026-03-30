@@ -15,6 +15,7 @@ const Login = () => {
   const location = useLocation();
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -43,9 +44,9 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const handleSubmit = async (e, data) => {
-    e.preventDefault();
-    setLoading(true);
-    if (!disabled) {
+    if (!disabled && !googleLoading) {
+      e.preventDefault();
+      setLoading(true);
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_BASE_URL}api/v1/student/login`,
@@ -91,15 +92,21 @@ const Login = () => {
   }, [inputValue]);
 
   useEffect(() => {
-    if (loading) {
+    const { email, password } = inputValue;
+    const isFormValid = email && password.trim() !== "";
+    if (loading || googleLoading) {
       setDisabled(true);
     } else {
-      setDisabled(false);
+      setDisabled(!isFormValid);
     }
-  }, [loading, setDisabled]);
+  }, [loading, googleLoading, inputValue]);
 
   const loginGoogleIcon = async () => {
-    window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+    setGoogleLoading(true);
+    setTimeout(() => {
+      window.location.href = `${import.meta.env.VITE_BASE_URL}googleAuthenticate`;
+      setGoogleLoading(false);
+    }, 1000);
   };
 
   return (
@@ -155,7 +162,12 @@ const Login = () => {
             </div>
             <label className="rememberlabel">Remember Me</label>
           </div>
-          <Button type="submit" loading={loading} disabled={disabled} fullWidth>
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={disabled || googleLoading}
+            fullWidth
+          >
             {loading ? "logging in..." : "Login"}
           </Button>
         </form>
@@ -170,8 +182,10 @@ const Login = () => {
           variant="secondary"
           fullWidth
           onClick={() => loginGoogleIcon()}
+          disabled={loading || googleLoading}
+          loading={googleLoading}
         >
-          Continue with Google
+          {googleLoading ? "please wait..." : "Continue with Google"}
         </Button>
 
         {/* <article className="forgotpassworddiv"> */}

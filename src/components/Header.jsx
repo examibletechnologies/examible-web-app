@@ -114,6 +114,7 @@ const Header = () => {
                 onClick={() => nav("/login")}
                 style={{ width: 89 }}
                 size="sm"
+                variant="primary-outline"
               >
                 Login
               </Button>

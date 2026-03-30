@@ -6,7 +6,7 @@ import {
   setPastQuestionsOption,
   clearPastQuestionsOption,
 } from "../../global/slice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAiResponse } from "../../config/Api";
 import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
@@ -18,6 +18,7 @@ import Pagination from "../../shared/Pagination";
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const calculateScore = () => {
     const correctCount = Object.values(pastQuestionsOption).filter(
@@ -38,11 +39,12 @@ const ViewPastQuestion = () => {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(null);
 
-  const searchParams = new URLSearchParams(window.location.search);
-  const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
+  const searchParams = new URLSearchParams(location.search);
+  const [currentPage, setCurrentPage] = useState(1);
+  const page = searchParams.get("page") || currentPage || 1;
   const questionsPerPage = 5;
 
-  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfLastQuestion = page * questionsPerPage;
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
   const currentQuestions = questions.slice(
     indexOfFirstQuestion,
@@ -321,7 +323,7 @@ const ViewPastQuestion = () => {
 
       <Pagination
         totalPages={Math.ceil(questions.length / questionsPerPage)}
-        page={currentPage}
+        page={page}
         setPage={(page) => {
           setCount(count + 1);
           setCurrentPage(page);
@@ -329,7 +331,7 @@ const ViewPastQuestion = () => {
       />
 
       <div className="finish-button-container">
-        {currentPage === Math.ceil(questions.length / questionsPerPage) ? (
+        {page === Math.ceil(questions.length / questionsPerPage) ? (
           <button
             onClick={() => {
               const result = calculateScore();

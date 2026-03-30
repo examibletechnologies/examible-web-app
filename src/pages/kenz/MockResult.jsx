@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../../styles/dashboardCss/mockResult.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelExam } from "../../global/slice";
 import { useLocation, useNavigate } from "react-router-dom";

@@ -12,7 +12,6 @@ import { GrStatusGood } from "react-icons/gr";
 import "../styles/dashboardCss/dashboard.css";
 import { useEffect } from "react";
 import { useExamibleContext } from "../context/ExamibleContext";
-import { toast } from "react-toastify";
 
 const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
   const location = useLocation();

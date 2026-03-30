@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/viewpastquestion.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPastQuestionsOption,

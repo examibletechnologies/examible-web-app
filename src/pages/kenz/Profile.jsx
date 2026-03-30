@@ -73,7 +73,7 @@ const Profile = () => {
     const toastId = toast.loading("Please wait ...");
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}api/v1/upload-profileImage/${
+        `https://examible-technologies-backend.onrender.com/api/v1/upload-profileImage/${
           user?._id || user?.id
         }`,
         formDatas,

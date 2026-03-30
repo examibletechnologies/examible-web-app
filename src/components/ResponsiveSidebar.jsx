@@ -79,7 +79,7 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
               <>
                 {user?.plan === "Freemium" ? (
                   <>
-                    {location.pathname === "/subscription" ? (
+                    {location.pathname.startsWith("/subscription") ? (
                       <Link
                         to="/subscription"
                         onClick={() => {
@@ -87,10 +87,11 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
                         }}
                         className="dashboard-leftDropdown-navBar"
                         style={{
-                          backgroundColor:
-                            location.pathname === "/subscription"
-                              ? "#804BF233"
-                              : "white",
+                          backgroundColor: location.pathname.startsWith(
+                            "/subscription",
+                          )
+                            ? "#804BF233"
+                            : "white",
                         }}
                       >
                         <SiMoneygram color="#804BF266" fontSize={35} />
@@ -122,10 +123,11 @@ const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
                     }}
                     className="dashboard-leftDropdown-navBar"
                     style={{
-                      backgroundColor:
-                        location.pathname === "/subscription"
-                          ? "#804BF233"
-                          : "white",
+                      backgroundColor: location.pathname.startsWith(
+                        "/subscription",
+                      )
+                        ? "#804BF233"
+                        : "white",
                     }}
                   >
                     <SiMoneygram color="#804BF266" fontSize={35} />

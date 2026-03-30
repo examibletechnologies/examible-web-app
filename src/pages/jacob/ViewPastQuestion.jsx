@@ -35,9 +35,9 @@ const ViewPastQuestion = () => {
 
   const year = useSelector((state) => state.year);
   const subject = useSelector((state) => state.exam);
-  const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.pastQuestions) || [];
   const pastQuestionsOption = useSelector((state) => state.pastQuestionsOption);
+  const userToken = useSelector((state) => state.userToken);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(null);
 
@@ -131,10 +131,6 @@ const ViewPastQuestion = () => {
     diagramUrlB,
     id,
   ) => {
-    if (questionNum > 5 && user?.plan === "Freemium") {
-      toast.error("Please Subscribe before you can access this feature");
-      return;
-    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -148,6 +144,7 @@ const ViewPastQuestion = () => {
         subheadingB,
         diagramUrlA,
         diagramUrlB,
+        userToken,
       );
       if (res) {
         setLoading(null);

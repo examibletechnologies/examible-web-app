@@ -237,9 +237,16 @@ const Profile = () => {
             <LiaSave />
           </label>
         ) : (
-          <label htmlFor="la"> + </label>
+          <>
+            <label htmlFor="la"> + </label>
+            <input
+              type="file"
+              id="la"
+              hidden
+              onChange={(e) => onchangeFile(e)}
+            />
+          </>
         )}
-        <input type="file" id="la" hidden onChange={(e) => onchangeFile(e)} />
       </div>
       <form className="profile-thirdLayer" onSubmit={changePassword}>
         <main>

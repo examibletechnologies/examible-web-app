@@ -1,5 +1,7 @@
 import styles from "./pagination.module.css";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useLocation, useNavigate } from "react-router-dom";
+import ErrorPgae from "../../pages/jacob/ErrorPgae";
 
 const getPagination = (currentPage, totalPages) => {
   const pages = [];
@@ -41,18 +43,39 @@ const getPagination = (currentPage, totalPages) => {
 };
 
 const Pagination = ({ page, setPage, totalPages }) => {
-  const pages = getPagination(page, totalPages);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const currentPage = Number(searchParams.get("page")) || page || 1;
+  const pages = getPagination(currentPage, totalPages);
+  const navigate = useNavigate();
 
   const handlePageChange = (newPage) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", newPage.toString());
+
+    navigate({
+      pathname: location.pathname,
+      search: `?${searchParams.toString()}`,
+    });
+
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // smoother scroll
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (currentPage > totalPages) {
+    return (
+      <div className={styles.pageNotFound}>
+        <ErrorPgae />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.paginationContainer}>
       <button
-        onClick={() => handlePageChange(Math.max(1, page - 1))}
-        disabled={page === 1}
+        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+        disabled={currentPage === 1}
         className={styles.navArrow}
       >
         <IoIosArrowBack />
@@ -69,7 +92,7 @@ const Pagination = ({ page, setPage, totalPages }) => {
               key={`page-${item}-${i}`}
               onClick={() => handlePageChange(item)}
               className={`${styles.questionNumber} ${
-                item === page ? styles.active : ""
+                item === currentPage ? styles.active : ""
               }`}
             >
               {item}
@@ -79,8 +102,8 @@ const Pagination = ({ page, setPage, totalPages }) => {
       </div>
 
       <button
-        onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
-        disabled={page === totalPages}
+        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+        disabled={currentPage === totalPages}
         className={styles.navArrow}
       >
         <IoIosArrowForward />

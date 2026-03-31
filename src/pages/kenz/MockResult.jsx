@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../../styles/dashboardCss/mockResult.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelExam } from "../../global/slice";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,20 +16,22 @@ import Pagination from "../../shared/Pagination";
 
 const MockResult = () => {
   const mockExamQuestions = useSelector((state) => state.mockExamQuestions);
-  const user = useSelector((state) => state.user);
   const exam = useSelector((state) => state.exam);
   const mockYear = useSelector((state) => state.mockYear);
+  const userToken = useSelector((state) => state.userToken);
   const dispatch = useDispatch();
   const nav = useNavigate();
   const [loading, setLoading] = useState(null);
   const location = useLocation();
 
+  const searchParams = new URLSearchParams(location.search);
   const [currentPage, setCurrentPage] = useState(1);
+  const page = searchParams.get("page") || currentPage || 1;
   const questionsPerPage = 5;
 
   const { setShowAiResponseModal, setAIResponse } = useExamibleContext();
 
-  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfLastQuestion = page * questionsPerPage;
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
   const intialCount = indexOfFirstQuestion;
   const finalCount = indexOfLastQuestion;
@@ -48,6 +49,16 @@ const MockResult = () => {
       mockExamQuestions?.length) *
     100;
 
+  const totalScore =
+    exam?.reduce((acc, item, index) => {
+      if (!item?.score) {
+        acc = acc + 0;
+      } else {
+        acc = acc + item?.score;
+      }
+      return acc;
+    }, 0) / 2;
+
   const retryExam = () => {
     dispatch(cancelExam());
     nav("/mock-exam");
@@ -64,10 +75,6 @@ const MockResult = () => {
     diagramUrlB,
     id,
   ) => {
-    if (questionNum > 5 && user?.plan === "Freemium") {
-      toast.error("Please Subscribe before you can access this feature");
-      return;
-    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -81,6 +88,7 @@ const MockResult = () => {
         subheadingB,
         diagramUrlA,
         diagramUrlB,
+        userToken,
       );
       if (res) {
         setLoading(null);
@@ -105,7 +113,11 @@ const MockResult = () => {
           Practice)
         </h2>
         <h2>Questions & Answers </h2>
-        <h5>You Scored {performance.toFixed(0)} out of 100</h5>
+        <h5>
+          {" "}
+          You Scored {totalScore.toFixed(0)} out of {mockExamQuestions?.length}{" "}
+          ({performance.toFixed(0)}%)
+        </h5>
         <div className="mockResult-holder">
           {mockExamQuestions
             ?.slice(intialCount, finalCount)
@@ -341,7 +353,7 @@ const MockResult = () => {
           </button>
 
           <Pagination
-            page={currentPage}
+            page={page}
             setPage={setCurrentPage}
             totalPages={Math.ceil(mockExamQuestions.length / questionsPerPage)}
           />

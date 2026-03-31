@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/viewpastquestion.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPastQuestionsOption,
   clearPastQuestionsOption,
 } from "../../global/slice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAiResponse } from "../../config/Api";
 import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
@@ -18,6 +17,7 @@ import Pagination from "../../shared/Pagination";
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const calculateScore = () => {
     const correctCount = Object.values(pastQuestionsOption).filter(
@@ -32,16 +32,18 @@ const ViewPastQuestion = () => {
 
   const year = useSelector((state) => state.year);
   const subject = useSelector((state) => state.exam);
-  const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.pastQuestions) || [];
   const pastQuestionsOption = useSelector((state) => state.pastQuestionsOption);
+  const userToken = useSelector((state) => state.userToken);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(null);
 
+  const searchParams = new URLSearchParams(location.search);
   const [currentPage, setCurrentPage] = useState(1);
+  const page = searchParams.get("page") || currentPage || 1;
   const questionsPerPage = 5;
 
-  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfLastQuestion = page * questionsPerPage;
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
   const currentQuestions = questions.slice(
     indexOfFirstQuestion,
@@ -96,10 +98,6 @@ const ViewPastQuestion = () => {
     }
   }, [count]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
-
   const handleViewExplanation = async (
     questionNum,
     question,
@@ -111,10 +109,6 @@ const ViewPastQuestion = () => {
     diagramUrlB,
     id,
   ) => {
-    if (questionNum > 5 && user?.plan === "Freemium") {
-      toast.error("Please Subscribe before you can access this feature");
-      return;
-    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -128,6 +122,7 @@ const ViewPastQuestion = () => {
         subheadingB,
         diagramUrlA,
         diagramUrlB,
+        userToken,
       );
       if (res) {
         setLoading(null);
@@ -327,12 +322,15 @@ const ViewPastQuestion = () => {
 
       <Pagination
         totalPages={Math.ceil(questions.length / questionsPerPage)}
-        page={currentPage}
-        setPage={setCurrentPage}
+        page={page}
+        setPage={(page) => {
+          setCount(count + 1);
+          setCurrentPage(page);
+        }}
       />
 
       <div className="finish-button-container">
-        {currentPage === Math.ceil(questions.length / questionsPerPage) ? (
+        {page === Math.ceil(questions.length / questionsPerPage) ? (
           <button
             onClick={() => {
               const result = calculateScore();

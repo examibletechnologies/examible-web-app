@@ -98,3 +98,16 @@
   font-weight: 600;
   flex-shrink: 0;
 }
+
+.pageNotFound {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  overflow: hidden;
+}

@@ -13,6 +13,7 @@ import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
 import Calculator from "../../components/Calculator";
 import Pagination from "../../shared/Pagination";
+import { toast } from "react-toastify";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();

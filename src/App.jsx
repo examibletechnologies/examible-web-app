@@ -1,38 +1,44 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 
-const Dashboard = lazy(() => import("./pages/kenz/Dashboard"));
-const Overview = lazy(() => import("./pages/kenz/Overview"));
-const Home = lazy(() => import("./pages/kenz/Home"));
-const Login = lazy(() => import("./auth/Login"));
-const SignUp = lazy(() => import("./auth/SignUp"));
-const ForgetPassword = lazy(() => import("./auth/ForgetPassword"));
-const ResetLink = lazy(() => import("./auth/ResetLink"));
-const ResetPassword = lazy(() => import("./auth/welcomeback/ResetPassword"));
-const Mockexam = lazy(() => import("./pages/kenz/Mockexam"));
-const PastQuestion = lazy(() => import("./pages/jacob/PastQuestion"));
-const Profile = lazy(() => import("./pages/kenz/Profile"));
-const Subscription = lazy(() => import("./pages/jacob/Subscription"));
-const AboutUs = lazy(() => import("./pages/jacob/AboutUs"));
-const Verify = lazy(() => import("./auth/Verify"));
-const ExamBody = lazy(() => import("./pages/kenz/ExamBody"));
-const MakePayment = lazy(() => import("./pages/jacob/MakePayment"));
-const ViewPastQuestion = lazy(() => import("./pages/jacob/ViewPastQuestion"));
-const Callback = lazy(() => import("./components/Callback"));
-const VerifyPayment = lazy(() => import("./pages/kenz/VerifyPayment"));
-const MockResult = lazy(() => import("./pages/kenz/MockResult"));
-const Facebookredirect = lazy(() => import("./auth/Facebookredirect"));
-const ErrorPgae = lazy(() => import("./pages/jacob/ErrorPgae"));
-const ResultPage = lazy(() => import("./pages/jacob/ResultPage"));
-const Plans = lazy(() => import("./pages/jacob/Plans"));
+const Dashboard = safeLazy(() => import("./pages/kenz/Dashboard"));
+const Overview = safeLazy(() => import("./pages/kenz/Overview"));
+const Home = safeLazy(() => import("./pages/kenz/Home"));
+const Login = safeLazy(() => import("./auth/Login"));
+const SignUp = safeLazy(() => import("./auth/SignUp"));
+const ForgetPassword = safeLazy(() => import("./auth/ForgetPassword"));
+const ResetLink = safeLazy(() => import("./auth/ResetLink"));
+const ResetPassword = safeLazy(
+  () => import("./auth/welcomeback/ResetPassword"),
+);
+const Mockexam = safeLazy(() => import("./pages/kenz/Mockexam"));
+const PastQuestion = safeLazy(() => import("./pages/jacob/PastQuestion"));
+const Profile = safeLazy(() => import("./pages/kenz/Profile"));
+const Subscription = safeLazy(() => import("./pages/jacob/Subscription"));
+const AboutUs = safeLazy(() => import("./pages/jacob/AboutUs"));
+const Verify = safeLazy(() => import("./auth/Verify"));
+const ExamBody = safeLazy(() => import("./pages/kenz/ExamBody"));
+const MakePayment = safeLazy(() => import("./pages/jacob/MakePayment"));
+const ViewPastQuestion = safeLazy(
+  () => import("./pages/jacob/ViewPastQuestion"),
+);
+const Callback = safeLazy(() => import("./components/Callback"));
+const VerifyPayment = safeLazy(() => import("./pages/kenz/VerifyPayment"));
+const MockResult = safeLazy(() => import("./pages/kenz/MockResult"));
+const Facebookredirect = safeLazy(() => import("./auth/Facebookredirect"));
+const ErrorPgae = safeLazy(() => import("./pages/jacob/ErrorPgae"));
+const ResultPage = safeLazy(() => import("./pages/jacob/ResultPage"));
+const Plans = safeLazy(() => import("./pages/jacob/Plans"));
 
 // These MUST be eager imports (needed for the layout/routing to work)
 import MainHolder from "./routes/MainHolder";
 import PrivateRoute from "./routes/PrivateRoute";
 import AppWrapper from "./components/AppWrapper";
 import InvisibleFallback from "./components/InvisibleFallback";
-import { prefetchCommonRoutes } from "./utils/routePrefetch";
+import { prefetchCommonRoutes, safeLazy } from "./utils/routePrefetch";
 import Loading from "./components/Loading";
+import GenericError from "./components/GenericError";
+import { GlobalErrorBoundary } from "./utils";
 
 // Prefetch common routes on app load
 prefetchCommonRoutes();
@@ -40,8 +46,8 @@ prefetchCommonRoutes();
 const routes = createBrowserRouter([
   {
     element: <AppWrapper />,
+    errorElement: <GenericError />,
     children: [
-      { path: "*", element: <ErrorPgae /> },
       {
         path: "",
         element: <MainHolder />,
@@ -56,88 +62,48 @@ const routes = createBrowserRouter([
           },
           {
             path: "about-us",
-            element: (
-              <Suspense fallback={<InvisibleFallback />}>
-                <AboutUs />
-              </Suspense>
-            ),
+            element: <AboutUs />,
           },
           {
             path: "plans",
-            element: (
-              <Suspense fallback={<InvisibleFallback />}>
-                <Plans />
-              </Suspense>
-            ),
+            element: <Plans />,
           },
         ],
       },
       {
         path: "/signup",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <SignUp />
-          </Suspense>
-        ),
+        element: <SignUp />,
       },
       {
         path: "/login",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <Login />
-          </Suspense>
-        ),
+        element: <Login />,
       },
       {
         path: "/forgetpassword",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <ForgetPassword />
-          </Suspense>
-        ),
+        element: <ForgetPassword />,
       },
       {
         path: "/resetlink",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <ResetLink />
-          </Suspense>
-        ),
+        element: <ResetLink />,
       },
       {
         path: "/reset-password/:token",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <ResetPassword />
-          </Suspense>
-        ),
+        element: <ResetPassword />,
       },
       {
         path: "/verify/:token",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <Verify />
-          </Suspense>
-        ),
+        element: <Verify />,
       },
       {
         path: "/callback/:token/:userId",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <Callback />
-          </Suspense>
-        ),
+        element: <Callback />,
       },
       {
         element: <PrivateRoute />,
         children: [
           {
-            path: "verifying-payment",
-            element: (
-              <Suspense fallback={<InvisibleFallback />}>
-                <VerifyPayment />
-              </Suspense>
-            ),
+            path: "/verifying-payment",
+            element: <VerifyPayment />,
           },
           {
             element: <Dashboard />,
@@ -149,98 +115,64 @@ const routes = createBrowserRouter([
                     <Overview />
                   </Suspense>
                 ),
-                index: true,
               },
               {
                 path: "/mock-exam",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <Mockexam />
-                  </Suspense>
-                ),
+                element: <Mockexam />,
               },
               {
                 path: "/past-questions",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <PastQuestion />
-                  </Suspense>
-                ),
+                element: <PastQuestion />,
               },
               {
                 path: "/profile",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <Profile />
-                  </Suspense>
-                ),
+                element: <Profile />,
               },
               {
                 path: "/subscription",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <Subscription />
-                  </Suspense>
-                ),
+                element: <Subscription />,
               },
               {
                 path: "/subscription/make-payment",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <MakePayment />
-                  </Suspense>
-                ),
+                element: <MakePayment />,
               },
               {
                 path: "/mock-exam/result",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <MockResult />
-                  </Suspense>
-                ),
+                element: <MockResult />,
               },
               {
                 path: "/past-questions/view",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <ViewPastQuestion />
-                  </Suspense>
-                ),
+                element: <ViewPastQuestion />,
               },
               {
                 path: "/past-questions/result",
-                element: (
-                  <Suspense fallback={<InvisibleFallback />}>
-                    <ResultPage />
-                  </Suspense>
-                ),
+                element: <ResultPage />,
               },
             ],
           },
           {
             path: "mock-exam/:subjectId",
-            element: (
-              <Suspense fallback={<InvisibleFallback />}>
-                <ExamBody />
-              </Suspense>
-            ),
+            element: <ExamBody />,
           },
         ],
       },
       {
         path: "/data-deletion",
-        element: (
-          <Suspense fallback={<InvisibleFallback />}>
-            <Facebookredirect />
-          </Suspense>
-        ),
+        element: <Facebookredirect />,
       },
+      { path: "*", element: <ErrorPgae /> },
     ],
   },
 ]);
 
 const App = () => {
-  return <RouterProvider router={routes} />;
+  return (
+    <GlobalErrorBoundary>
+      <Suspense fallback={<InvisibleFallback />}>
+        <RouterProvider router={routes} />
+      </Suspense>
+    </GlobalErrorBoundary>
+  );
 };
 
 export default App;

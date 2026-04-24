@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/pastquestion.css";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +35,7 @@ const PastQuestion = () => {
   const [disabled, setDisabled] = useState(true);
 
   // Base URL for fetching subjects and years
-  const baseUrl = "https://examiblequestionbank.onrender.com/subjects";
+  const baseUrl = import.meta.env.VITE_QUESTION_URL;
   const getYears = async () => {
     try {
       const response = await axios.get(baseUrl);

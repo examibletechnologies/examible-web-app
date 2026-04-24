@@ -1,6 +1,6 @@
 import "../../styles/home.css";
-import home1 from "../../assets/public/home-firstlayer.png";
-import home2 from "../../assets/public/home-secondLeft.png";
+import home1 from "../../assets/public/home-firstlayer.webp";
+import home2 from "../../assets/public/home-secondLeft.webp";
 import home3 from "../../assets/public/home-jamb-syllabus.png";
 import home4 from "../../assets/public/home-question.png";
 import home5 from "../../assets/public/home-badges.png";
@@ -71,14 +71,19 @@ const Home = () => {
               <div />
             </aside>
             <article />
-            <img src={home1} alt="Educational aspirant" />
+            <img
+              src={home1}
+              alt="Educational aspirant"
+              width="218"
+              height="300"
+            />
           </nav>
         </div>
       </div>
       <div className="home-secondLayer">
         <div className="home-secondLayerLeft">
           <div className="home-secondLayerLeftCircle"></div>
-          <img src={home2} alt="" />
+          <img src={home2} alt="" width="200" height="200" />
           <aside />
         </div>
         <div className="home-secondLayerRight">

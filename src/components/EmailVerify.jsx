@@ -1,4 +1,3 @@
-import React from "react";
 import mail from "../assets/public/mail.png";
 import "../styles/authCss/emailverify.css";
 import { useNavigate } from "react-router";

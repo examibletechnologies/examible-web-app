@@ -37,10 +37,10 @@ export const HamburgerIcon = () => (
     viewBox="0 0 40 40"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect x="2" y="2" width="36" height="36" rx="4" class="icon-bg" />
+    <rect x="2" y="2" width="36" height="36" rx="4" className="icon-bg" />
 
-    <line x1="8" y1="12" x2="32" y2="12" class="line top" />
-    <line x1="8" y1="20" x2="24" y2="20" class="line middle" />
-    <line x1="8" y1="28" x2="32" y2="28" class="line bottom" />
+    <line x1="8" y1="12" x2="32" y2="12" className="line top" />
+    <line x1="8" y1="20" x2="24" y2="20" className="line middle" />
+    <line x1="8" y1="28" x2="32" y2="28" className="line bottom" />
   </svg>
 );

@@ -13,12 +13,15 @@ import Loading from "./components/Loading.jsx";
 let persistor = persistStore(store);
 
 createRoot(document.getElementById("root")).render(
-  <PersistGate loading={<Loading />} persistor={persistor}>
-    <Provider store={store}>
-      <ExamibleContext>
-        <ToastContainer />
-        <App />
-      </ExamibleContext>
-    </Provider>
-  </PersistGate>,
+  <StrictMode>
+    <PersistGate loading={<Loading />} persistor={persistor}>
+      <Provider store={store}>
+        <ExamibleContext>
+          <ToastContainer />
+          <App />
+        </ExamibleContext>
+      </Provider>
+    </PersistGate>
+    ,
+  </StrictMode>,
 );

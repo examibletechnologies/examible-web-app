@@ -91,6 +91,7 @@ const Header = () => {
                   <li
                     key={index}
                     className={location.pathname === item.link ? "active" : ""}
+                    onClick={() => setShowDropdown(!showDropdown)}
                   >
                     <Link
                       to={item.link}

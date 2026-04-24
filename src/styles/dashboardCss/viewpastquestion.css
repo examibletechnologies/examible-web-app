@@ -19,9 +19,10 @@
   width: 100%;
   height: 10vh;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 16px;
 
   & span {
     color: #1e1e1e;
@@ -34,6 +35,24 @@
     letter-spacing: -0.456px;
     text-transform: uppercase;
   }
+}
+
+.back-selection-btn {
+  padding: 10px 16px;
+  background-color: #804bf2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(128, 75, 242, 0.3);
+  transition: all 0.3s ease;
+}
+
+.back-selection-btn:hover {
+  background-color: #6a3add;
+  box-shadow: 0 6px 12px rgba(128, 75, 242, 0.4);
 }
 
 .answerquestiondiv {
@@ -55,7 +74,6 @@
     line-height: 25px;
     display: flex;
     gap: 3px;
-    padding-left: 8px;
   }
   .question-diagram {
     width: auto;
@@ -67,7 +85,7 @@
   }
   .subheading {
     color: #464242;
-    padding-left: 8px;
+    padding-left: 20px;
     font-family: Montserrat;
     font-size: 16px;
     font-style: italic;
@@ -90,7 +108,7 @@
       font-size: 16px;
       font-style: normal;
       /* font-weight: 400; */
-      line-height: 25px;
+      line-height: 35px;
       max-width: 500px;
       white-space: normal;
       word-break: break-word;
@@ -109,17 +127,6 @@
     font-style: normal;
     font-weight: 600;
     line-height: 35px;
-  }
-
-  @media screen and (max-width: 550px) {
-    .subheading {
-      padding-left: 0px;
-      line-height: 25px;
-    }
-    .questiontext {
-      padding-left: 0px;
-      line-height: 20px;
-    }
   }
 }
 .pastquestionanswer {
@@ -147,7 +154,6 @@
     font-weight: 700;
     line-height: 103%; /* 49.44px */
     letter-spacing: -0.912px;
-    padding-left: 6px;
   }
 
   & em {
@@ -239,80 +245,6 @@
   justify-content: space-between;
   margin-top: 12px;
 }
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 60%;
-  height: 100px;
-}
-
-.pagination-button1 {
-  padding-left: 20px;
-  padding-right: 10px;
-  width: 140px;
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f2ae30;
-  color: #1e1e1e;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 700;
-  font-family: Montserrat;
-  border: none;
-}
-.pagination-button1:hover {
-  background-color: #ffcb77;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-  color: #1e1e1e;
-}
-
-.pagination-button:disabled {
-  background-color: #e0e0e0;
-  color: #aaa;
-  cursor: not-allowed;
-  pointer-events: none;
-  border: none;
-  opacity: 0.7;
-}
-
-.pagination-button:disabled:hover {
-  background-color: #e0e0e0;
-  color: #aaa;
-}
-.pagination-button {
-  padding-right: 20px;
-  padding-left: 10px;
-  width: 140px;
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f2ae30;
-  color: #1e1e1e;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 700;
-  font-family: Montserrat;
-  border: none;
-}
-.pagination-button:hover {
-  background-color: #ffcb77;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-  color: #1e1e1e;
-}
-
-.pagination-info {
-  font-size: 16px;
-  line-height: 30px;
-  font-family: Montserrat;
-  font-weight: 500;
-}
 
 @media screen and (min-width: 0px) and (max-width: 550px) {
   .viewpastquestionheader {
@@ -352,28 +284,6 @@
 
   .letterdoption {
     font-size: 14px;
-  }
-
-  .pagination-controls {
-    gap: 10px;
-    width: 100%;
-    height: 100px;
-  }
-
-  .pagination-button1 {
-    width: 120px;
-    height: 40px;
-  }
-
-  .pagination-button {
-    width: 120px;
-    height: 40px;
-  }
-
-  .pagination-info {
-    font-size: 10px;
-    font-family: Montserrat;
-    font-weight: 500;
   }
 
   .viewmore-btn {
@@ -437,31 +347,6 @@
 
   .letterdoption {
     font-size: 14px;
-  }
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    height: 10vh;
-  }
-
-  .pagination-button1 {
-    width: 150px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .pagination-button {
-    width: 150px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .pagination-info {
-    font-size: 20px;
-    line-height: 30px;
   }
 
   .answerquestiondiv {
@@ -566,37 +451,6 @@
   .letterdoption {
     font-size: 14px;
   }
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    height: 100px;
-  }
-
-  .pagination-button1 {
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 150px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .pagination-button {
-    padding-right: 10px;
-    padding-left: 10px;
-    width: 150px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .pagination-info {
-    font-size: 20px;
-    line-height: 30px;
-    font-family: Montserrat;
-    font-weight: 500;
-  }
 
   .answerquestiondiv {
     width: 100%;
@@ -622,11 +476,36 @@
     }
   }
 }
-@media screen and (max-width: 320px) {
-  .pagination-info {
-    font-size: 7px;
-    line-height: 20px;
-    font-family: Montserrat;
-    font-weight: 500;
+
+.finish-button-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.finish-btn {
+  padding: 12px 40px;
+  background-color: #f2ae30;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: Montserrat;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.finish-btn:hover {
+  background-color: #ffcb77;
+  transform: scale(1.05);
+}
+
+@media screen and (max-width: 550px) {
+  .finish-button-container {
+    /* justify-content: center; */
+    padding-left: 0;
   }
 }

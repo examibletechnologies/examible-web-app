@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 import "../../styles/dashboardCss/viewpastquestion.css";
-import {
-  IoIosArrowRoundBack,
-  IoIosArrowBack,
-  IoIosArrowForward,
-} from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPastQuestionsOption,
   clearPastQuestionsOption,
+  logoutTheUser,
 } from "../../global/slice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAiResponse } from "../../config/Api";
 import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
+import Calculator from "../../components/Calculator";
+import Pagination from "../../shared/Pagination";
 import { toast } from "react-toastify";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const calculateScore = () => {
     const correctCount = Object.values(pastQuestionsOption).filter(
@@ -35,16 +34,18 @@ const ViewPastQuestion = () => {
 
   const year = useSelector((state) => state.year);
   const subject = useSelector((state) => state.exam);
-  const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.pastQuestions) || [];
   const pastQuestionsOption = useSelector((state) => state.pastQuestionsOption);
+  const userToken = useSelector((state) => state.userToken);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(null);
 
+  const searchParams = new URLSearchParams(location.search);
   const [currentPage, setCurrentPage] = useState(1);
+  const page = searchParams.get("page") || currentPage || 1;
   const questionsPerPage = 5;
 
-  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfLastQuestion = page * questionsPerPage;
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
   const currentQuestions = questions.slice(
     indexOfFirstQuestion,
@@ -91,27 +92,6 @@ const ViewPastQuestion = () => {
     );
   };
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(questions.length / questionsPerPage)) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo(0, 0);
-      setCount((prev) => prev + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo(0, 0);
-    }
-  };
-
-  useEffect(() => {
-    if (questions.length > 0) {
-      dispatch(clearPastQuestionsOption());
-    }
-  }, [dispatch, questions]);
-
   useEffect(() => {
     if (count === 1) {
       setTimeout(() => {
@@ -131,10 +111,6 @@ const ViewPastQuestion = () => {
     diagramUrlB,
     id,
   ) => {
-    if (questionNum > 5 && user?.plan === "Freemium") {
-      toast.error("Please Subscribe before you can access this feature");
-      return;
-    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -148,6 +124,7 @@ const ViewPastQuestion = () => {
         subheadingB,
         diagramUrlA,
         diagramUrlB,
+        userToken,
       );
       if (res) {
         setLoading(null);
@@ -155,9 +132,19 @@ const ViewPastQuestion = () => {
         setShowAiResponseModal(true);
       }
     } catch (error) {
-      console.log(error);
       setLoading(null);
       toast.error(error?.response?.data?.message || "An error occurred");
+      if (
+        error?.response?.data?.message ===
+        "Session timed-out: Please login to continue"
+      ) {
+        setTimeout(() => {
+          nav("/");
+        }, 500);
+        setTimeout(() => {
+          dispatch(logoutTheUser());
+        }, 550);
+      }
     } finally {
       setLoading(null);
     }
@@ -168,11 +155,12 @@ const ViewPastQuestion = () => {
   return (
     <main className="viewpastquestionmain">
       <div className="viewpastquestionheader">
-        <IoIosArrowRoundBack
-          size={40}
-          onClick={() => navigate(-1)}
-          style={{ cursor: "pointer" }}
-        />
+        <button
+          onClick={() => navigate("/past-questions")}
+          className="back-selection-btn"
+        >
+          Back to Selection
+        </button>
         <span>Jamb UTME Question</span>
       </div>
       <div className="viewpastquestionmainheader">
@@ -214,7 +202,11 @@ const ViewPastQuestion = () => {
             questionDetails = item;
           }
           return (
-            <div className="answerquestiondiv" key={index}>
+            <div
+              id={`question-${indexOfFirstQuestion + index + 1}`}
+              className="answerquestiondiv"
+              key={index}
+            >
               {newItem?.subheadingA && (
                 <h1 className="subheading">
                   <Latex>{item?.subheadingA}</Latex>
@@ -340,37 +332,33 @@ const ViewPastQuestion = () => {
         </p>
       )}
 
-      <div className="pagination-controls">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          className="pagination-button"
-        >
-          <IoIosArrowBack size={25} />
-          Previous
-        </button>
-        <span className="pagination-info">
-          page {currentPage} of {Math.ceil(questions.length / questionsPerPage)}
-        </span>
-        {currentPage === Math.ceil(questions.length / questionsPerPage) ? (
+      <Pagination
+        totalPages={Math.ceil(questions.length / questionsPerPage)}
+        page={page}
+        setPage={(page) => {
+          setCount(count + 1);
+          setCurrentPage(page);
+        }}
+      />
+
+      <div className="finish-button-container">
+        {page == Math.ceil(questions.length / questionsPerPage) ? (
           <button
             onClick={() => {
               const result = calculateScore();
+              dispatch(clearPastQuestionsOption());
               navigate("/past-questions/result", {
                 state: result,
               });
             }}
-            className="pagination-button1"
+            className="finish-btn"
           >
             Finish
           </button>
-        ) : (
-          <button onClick={handleNextPage} className="pagination-button1">
-            Next
-            <IoIosArrowForward size={25} />
-          </button>
-        )}
+        ) : null}
       </div>
+
+      <Calculator />
     </main>
   );
 };

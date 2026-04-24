@@ -3,6 +3,8 @@
  * Call this when hovering over links or on page load for anticipated routes
  */
 
+import { lazy } from "react";
+
 // Map of route paths to their dynamic imports
 const routePrefetches = {
   "/login": () => import("../auth/Login"),
@@ -48,8 +50,24 @@ export function prefetchCommonRoutes() {
     "/overview",
     "/mock-exam",
     "/past-questions",
+    "/past-questions/view",
     "/profile",
   ]);
 }
 
-export default { prefetchRoute, prefetchRoutes, prefetchCommonRoutes };
+let hasRefreshed = false;
+
+export function safeLazy(importFn) {
+  return lazy(() =>
+    importFn().catch((error) => {
+      if (!hasRefreshed) {
+        hasRefreshed = true;
+        window.location.reload();
+      }
+
+      return {
+        default: () => <div>Something went wrong.</div>,
+      };
+    }),
+  );
+}

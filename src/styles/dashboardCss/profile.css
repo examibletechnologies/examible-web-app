@@ -154,7 +154,11 @@
   }
 
   @media screen and (max-width: 550px) {
-    width: 90%;
+    width: 95%;
+
+    .profile-inputWrapper {
+      width: 100%;
+    }
   }
 }
 

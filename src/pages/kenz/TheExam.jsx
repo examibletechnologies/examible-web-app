@@ -13,6 +13,8 @@ import {
 } from "../../global/slice";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
+import Calculator from "../../components/Calculator";
+import ErrorPgae from "../jacob/ErrorPgae";
 
 const TheExam = () => {
   const mockExamQuestions = useSelector((state) => state.mockExamQuestions);
@@ -98,6 +100,11 @@ const TheExam = () => {
       setIsNext(false);
     }
   }, [mockExamOptions]);
+
+  if (num > mockExamQuestions?.length) {
+    return <ErrorPgae />;
+  }
+
   return (
     <div className="examBody">
       <div className="examBody-mobile">
@@ -345,6 +352,7 @@ const TheExam = () => {
           </div>
         </div>
       </div>
+      <Calculator />
     </div>
   );
 };

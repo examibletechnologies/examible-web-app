@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/dashboardCss/mockResult.css";
 import { useDispatch, useSelector } from "react-redux";
-import { cancelExam } from "../../global/slice";
+import { cancelExam, logoutTheUser } from "../../global/slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GrStatusGood } from "react-icons/gr";
 import { GiCancel } from "react-icons/gi";
@@ -98,6 +98,17 @@ const MockResult = () => {
     } catch (error) {
       setLoading(null);
       toast.error(error?.response?.data?.message);
+      if (
+        error?.response?.data?.message ===
+        "Session timed-out: Please login to continue"
+      ) {
+        setTimeout(() => {
+          nav("/");
+        }, 500);
+        setTimeout(() => {
+          dispatch(logoutTheUser());
+        }, 550);
+      }
     } finally {
       setLoading(null);
     }

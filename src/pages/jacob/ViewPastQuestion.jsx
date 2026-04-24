@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setPastQuestionsOption,
   clearPastQuestionsOption,
+  logoutTheUser,
 } from "../../global/slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAiResponse } from "../../config/Api";
@@ -131,9 +132,19 @@ const ViewPastQuestion = () => {
         setShowAiResponseModal(true);
       }
     } catch (error) {
-      console.log(error);
       setLoading(null);
       toast.error(error?.response?.data?.message || "An error occurred");
+      if (
+        error?.response?.data?.message ===
+        "Session timed-out: Please login to continue"
+      ) {
+        setTimeout(() => {
+          nav("/");
+        }, 500);
+        setTimeout(() => {
+          dispatch(logoutTheUser());
+        }, 550);
+      }
     } finally {
       setLoading(null);
     }
@@ -331,7 +342,7 @@ const ViewPastQuestion = () => {
       />
 
       <div className="finish-button-container">
-        {page === Math.ceil(questions.length / questionsPerPage) ? (
+        {page == Math.ceil(questions.length / questionsPerPage) ? (
           <button
             onClick={() => {
               const result = calculateScore();

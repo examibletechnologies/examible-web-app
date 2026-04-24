@@ -3,7 +3,6 @@ import "../styles/header.css";
 import menuBar from "../assets/navBar.json";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderLogo from "../assets/public/logo.png";
-import { toast } from "react-toastify";
 import Button from "../shared/Button";
 import { HamburgerIcon } from "../assets/public/svg/common";
 
@@ -30,10 +29,6 @@ const Header = () => {
                 <li
                   key={index}
                   className={location.pathname === item.link ? "active" : ""}
-                  onClick={() => {
-                    item.name === "Plans" &&
-                      toast.info("Plans page is currently unavailable");
-                  }}
                 >
                   <Link
                     to={item?.link}
@@ -64,7 +59,7 @@ const Header = () => {
             </Button>
           </aside>
           <button
-            class="menu-button"
+            className="menu-button"
             aria-label="Open Menu"
             onClick={() => setShowDropdown(!showDropdown)}
           >
@@ -96,11 +91,6 @@ const Header = () => {
                   <li
                     key={index}
                     className={location.pathname === item.link ? "active" : ""}
-                    onClick={() => {
-                      item.name === "Plans" &&
-                        toast.info("Plans page is currently unavailable");
-                      setShowDropdown(!showDropdown);
-                    }}
                   >
                     <Link
                       to={item.link}

@@ -13,6 +13,8 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    // Split CSS into separate files for better caching and parallel downloads
+    cssCodeSplit: true,
     // Optimize chunk splitting
     rollupOptions: {
       output: {

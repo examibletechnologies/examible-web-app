@@ -1,4 +1,3 @@
-import React from "react";
 import "../../styles/errorpage.css";
 import { useNavigate } from "react-router";
 const ErrorPgae = () => {

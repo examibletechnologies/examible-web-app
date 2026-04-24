@@ -16,6 +16,7 @@ import { ClipLoader } from "react-spinners";
 import { useExamibleContext } from "../../context/ExamibleContext";
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
+import { toast } from "react-toastify";
 
 const ViewPastQuestion = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const ViewPastQuestion = () => {
 
   const year = useSelector((state) => state.year);
   const subject = useSelector((state) => state.exam);
+  const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.pastQuestions) || [];
   const pastQuestionsOption = useSelector((state) => state.pastQuestionsOption);
   const [count, setCount] = useState(0);
@@ -129,6 +131,10 @@ const ViewPastQuestion = () => {
     diagramUrlB,
     id,
   ) => {
+    if (questionNum > 5 && user?.plan === "Freemium") {
+      toast.error("Please Subscribe before you can access this feature");
+      return;
+    }
     setLoading(id);
     try {
       const res = await getAiResponse(
@@ -149,10 +155,15 @@ const ViewPastQuestion = () => {
         setShowAiResponseModal(true);
       }
     } catch (error) {
+      console.log(error);
       setLoading(null);
       toast.error(error?.response?.data?.message || "An error occurred");
+    } finally {
+      setLoading(null);
     }
   };
+
+  let questionDetails;
 
   return (
     <main className="viewpastquestionmain">
@@ -170,123 +181,159 @@ const ViewPastQuestion = () => {
         </h1>
       </div>
       {currentQuestions?.length > 0 ? (
-        currentQuestions?.map((item, index) => (
-          <div className="answerquestiondiv" key={index}>
-            {item?.subheadingA && (
-              <h1 className="subheading">
-                <Latex>{item?.subheadingA}</Latex>
+        currentQuestions?.map((item, index) => {
+          let newItem = {
+            subheadingA: item?.subheadingA || "",
+            subheadingB: item?.subheadingB || "",
+            diagramUrlA: item?.diagramUrlA || "",
+            diagramUrlB: item?.diagramUrlB || "",
+          };
+          if (index === 0) {
+            questionDetails = item;
+          } else {
+            if (questionDetails.subheadingA === item.subheadingA) {
+              newItem.subheadingA = "";
+            } else {
+              newItem.subheadingA = item.subheadingA;
+            }
+            if (questionDetails.subheadingB === item.subheadingB) {
+              newItem.subheadingB = "";
+            } else {
+              newItem.subheadingB = item.subheadingB;
+            }
+            if (questionDetails.diagramUrlA === item.diagramUrlA) {
+              newItem.diagramUrlA = "";
+            } else {
+              newItem.diagramUrlA = item.diagramUrlA;
+            }
+            if (questionDetails.diagramUrlB === item.diagramUrlB) {
+              newItem.diagramUrlB = "";
+            } else {
+              newItem.diagramUrlB = item.diagramUrlB;
+            }
+            questionDetails = item;
+          }
+          return (
+            <div className="answerquestiondiv" key={index}>
+              {newItem?.subheadingA && (
+                <h1 className="subheading">
+                  <Latex>{item?.subheadingA}</Latex>
+                </h1>
+              )}
+              {newItem?.diagramUrlA && (
+                <img src={item?.diagramUrlA} className="question-diagram" />
+              )}
+              {newItem?.subheadingB && (
+                <h1 className="subheading">
+                  <Latex>{item?.subheadingB}</Latex>
+                </h1>
+              )}
+              {newItem?.diagramUrlB && (
+                <img src={item?.diagramUrlB} className="question-diagram" />
+              )}
+              <h1 className="questiontext">
+                <span>{indexOfFirstQuestion + index + 1}</span>.{" "}
+                <span>{<Latex>{item?.question}</Latex>}</span>
               </h1>
-            )}
-            {item?.diagramUrlA && (
-              <img src={item?.diagramUrlA} className="question-diagram" />
-            )}
-            {item?.subheadingB && (
-              <h1 className="subheading">
-                <Latex>{item?.subheadingB}</Latex>
-              </h1>
-            )}
-            {item?.diagramUrlB && (
-              <img src={item?.diagramUrlB} className="question-diagram" />
-            )}
-            <h1 className="questiontext">
-              <span>{indexOfFirstQuestion + index + 1}</span>.{" "}
-              <span>{<Latex>{item?.question}</Latex>}</span>
-            </h1>
-            <ul className="answeroption">
-              {item.options.map((option, optionindex) => {
-                const userAnswer =
-                  pastQuestionsOption[indexOfFirstQuestion + index];
-                const correctAnswer = getAnswerText(item.answer, item.options);
+              <ul className="answeroption">
+                {item.options.map((option, optionindex) => {
+                  const userAnswer =
+                    pastQuestionsOption[indexOfFirstQuestion + index];
+                  const correctAnswer = getAnswerText(
+                    item.answer,
+                    item.options,
+                  );
 
-                let optionClass = "";
-                if (userAnswer) {
-                  if (option === userAnswer.selectedOption) {
-                    optionClass = userAnswer.isCorrect
-                      ? "correct-option"
-                      : "wrong-option";
-                  } else if (
-                    !userAnswer.isCorrect &&
-                    option === correctAnswer
-                  ) {
-                    optionClass = "correct-answer";
-                  }
-                }
-                return (
-                  <li
-                    key={optionindex}
-                    className={optionClass}
-                    onClick={() =>
-                      handleOptionClick(
-                        indexOfFirstQuestion + index,
-                        option,
-                        item.answer,
-                        item.options || [],
-                      )
+                  let optionClass = "";
+                  if (userAnswer) {
+                    if (option === userAnswer.selectedOption) {
+                      optionClass = userAnswer.isCorrect
+                        ? "correct-option"
+                        : "wrong-option";
+                    } else if (
+                      !userAnswer.isCorrect &&
+                      option === correctAnswer
+                    ) {
+                      optionClass = "correct-answer";
                     }
+                  }
+                  return (
+                    <li
+                      key={optionindex}
+                      className={optionClass}
+                      onClick={() =>
+                        handleOptionClick(
+                          indexOfFirstQuestion + index,
+                          option,
+                          item.answer,
+                          item.options || [],
+                        )
+                      }
+                      style={{
+                        pointerEvents: userAnswer ? "none" : "auto",
+                        cursor: userAnswer ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      <span className="letterdoption">
+                        {`${String.fromCharCode(65 + optionindex)}.`}
+                      </span>
+                      <span>
+                        <Latex>{option}</Latex>
+                      </span>
+                    </li>
+                  );
+                })}
+                <div className="aswer-airesponse">
+                  <p
+                    className="pastanswer"
                     style={{
-                      pointerEvents: userAnswer ? "none" : "auto",
-                      cursor: userAnswer ? "not-allowed" : "pointer",
+                      color: pastQuestionsOption[indexOfFirstQuestion + index]
+                        ?.isCorrect
+                        ? "green"
+                        : "red",
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
                     }}
                   >
-                    <span className="letterdoption">
-                      {`${String.fromCharCode(65 + optionindex)}.`}
-                    </span>
-                    <span>
-                      <Latex>{option}</Latex>
-                    </span>
-                  </li>
-                );
-              })}
-              <div className="aswer-airesponse">
-                <p
-                  className="pastanswer"
-                  style={{
-                    color: pastQuestionsOption[indexOfFirstQuestion + index]
-                      ?.isCorrect
-                      ? "green"
-                      : "red",
-                    fontWeight: "bold",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  {pastQuestionsOption[indexOfFirstQuestion + index]
-                    ? pastQuestionsOption[indexOfFirstQuestion + index]
-                        .isCorrect
-                      ? "✅ Correct!"
-                      : "❌ Wrong! "
-                    : ""}
-                </p>
-                {pastQuestionsOption[indexOfFirstQuestion + index] && (
-                  <button
-                    className="viewmore-btn"
-                    disabled={loading}
-                    onClick={() =>
-                      handleViewExplanation(
-                        item.number,
-                        item.question,
-                        item.passage,
-                        item.options,
-                        item.subheadingA,
-                        item.subheadingB,
-                        item.diagramUrlA,
-                        item.diagramUrlB,
-                        index,
-                      )
-                    }
-                  >
-                    {loading === index ? (
-                      <ClipLoader color="black" size={16} />
-                    ) : (
-                      "view explanation"
-                    )}
-                  </button>
-                )}
-              </div>
-            </ul>
-          </div>
-        ))
+                    {pastQuestionsOption[indexOfFirstQuestion + index]
+                      ? pastQuestionsOption[indexOfFirstQuestion + index]
+                          .isCorrect
+                        ? "✅ Correct!"
+                        : "❌ Wrong! "
+                      : ""}
+                  </p>
+                  {pastQuestionsOption[indexOfFirstQuestion + index] && (
+                    <button
+                      className="viewmore-btn"
+                      disabled={loading}
+                      onClick={() =>
+                        handleViewExplanation(
+                          item.number,
+                          item.question,
+                          item.passage,
+                          item.options,
+                          item.subheadingA,
+                          item.subheadingB,
+                          item.diagramUrlA,
+                          item.diagramUrlB,
+                          index,
+                        )
+                      }
+                    >
+                      {loading === index ? (
+                        <ClipLoader color="black" size={16} />
+                      ) : (
+                        "view explanation"
+                      )}
+                    </button>
+                  )}
+                </div>
+              </ul>
+            </div>
+          );
+        })
       ) : (
         <p className="pastquestionanswer">
           No questions available. please try again

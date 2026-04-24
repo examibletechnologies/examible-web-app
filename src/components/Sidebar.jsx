@@ -61,35 +61,18 @@ const Sidebar = () => {
           </Link>
         ))}
         <>
-          <div className="dashboard-subscription">
-            <div className="dashboard-markIcon">
-              <GrStatusGood />
-            </div>
-            <h5>Unlimited Access</h5>
-            <p>Explore more with a lifetime members</p>
-            <Button
-              onClick={() => {
-                toast.info("This feature is coming soon!");
-              }}
-              size="sm"
-            >
-              {" "}
-              Subscribe Now
-            </Button>
-          </div>
-        </>
-        {/* <>
           {user?.plan === "Freemium" ? (
             <>
-              {location.pathname === "/subscription" ? (
+              {location.pathname.startsWith("/subscription") ? (
                 <Link
                   to="/subscription"
                   className="dashboard-navBar"
                   style={{
-                    backgroundColor:
-                      location.pathname === "/subscription"
-                        ? "#804BF233"
-                        : "white",
+                    backgroundColor: location.pathname.startsWith(
+                      "/subscription",
+                    )
+                      ? "#804BF233"
+                      : "white",
                   }}
                 >
                   <SiMoneygram color="#804BF266" fontSize={35} />
@@ -104,7 +87,7 @@ const Sidebar = () => {
                   <p>Explore more with a lifetime members</p>
                   <button
                     onClick={() => {
-                      toast.info("This feature is coming soon!");
+                      nav("/subscription");
                     }}
                   >
                     Subscribe Now
@@ -117,17 +100,16 @@ const Sidebar = () => {
               to="/subscription"
               className="dashboard-navBar"
               style={{
-                backgroundColor:
-                  location.pathname === "/subscription"
-                    ? "#804BF233"
-                    : "white",
+                backgroundColor: location.pathname.startsWith("/subscription")
+                  ? "#804BF233"
+                  : "white",
               }}
             >
               <SiMoneygram color="#804BF266" fontSize={35} />
               Subscription
             </Link>
           )}
-        </> */}
+        </>
       </div>
       <div
         className="dashboard-navBar"

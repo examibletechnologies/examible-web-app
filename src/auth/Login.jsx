@@ -3,7 +3,8 @@ import { Helmet } from "react-helmet-async";
 import "../styles/auth.css";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
-import logo from "../assets/public/logo.png";
+import logoLight from "../assets/public/logo.png";
+import logoDark from "../assets/public/logo-dark.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import { studentApi } from "../config/studentApi";
 import { useDispatch } from "react-redux";
@@ -12,10 +13,13 @@ import Input from "../shared/Input";
 import Button from "../shared/Button";
 import { FiArrowLeft } from "react-icons/fi";
 import { getGAClientId } from "../utils/analytics";
+import { useTheme } from "../context/ThemeContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useTheme();
+  const logo = theme === "dark" ? logoDark : logoLight;
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [inputValue, setInputValue] = useState({

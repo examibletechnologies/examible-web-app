@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import dashboardNavBar from "../assets/dashboardNavBar.json";
-import dashboardIcon from "../assets/public/logo.png";
+import dashboardIconLight from "../assets/public/logo.png";
+import dashboardIconDark from "../assets/public/logo-dark.png";
 import { MdDashboard, MdKeyboardArrowDown } from "react-icons/md";
 import { PiExamFill } from "react-icons/pi";
 import img2 from "../assets/public/pastquestion.svg";
@@ -12,11 +13,14 @@ import { GrStatusGood } from "react-icons/gr";
 import "../styles/dashboardCss/dashboard.css";
 import { useEffect, useState } from "react";
 import { useExamibleContext } from "../context/ExamibleContext";
+import { useTheme } from "../context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ResponsiveSidebar = ({ showDropdown, setShowDropdown }) => {
   const location = useLocation();
   const { setIsLogout } = useExamibleContext();
+  const { theme } = useTheme();
+  const dashboardIcon = theme === "dark" ? dashboardIconDark : dashboardIconLight;
   const dashboardIcons = [
     <MdDashboard color="#804BF266" fontSize={35} />,
     <PiExamFill color="#804BF266" fontSize={35} />,

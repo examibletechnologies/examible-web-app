@@ -1,10 +1,14 @@
 import mail from "../assets/public/mail.png";
-import logo from "../assets/public/logo.png";
+import logoLight from "../assets/public/logo.png";
+import logoDark from "../assets/public/logo-dark.png";
 import "../styles/authCss/emailverify.css";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 const EmailVerify = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const logo = theme === "dark" ? logoDark : logoLight;
   return (
     <div className="ex-scope email-verify-wrapper">
       {/* LEFT SIDE: Brand Experience */}

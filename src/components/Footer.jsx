@@ -1,8 +1,10 @@
 import "../styles/footer.css";
 import { MdEmail } from "react-icons/md";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
-import FooterLogo from "../assets/public/logo.png";
+import FooterLogoLight from "../assets/public/logo.png";
+import FooterLogoDark from "../assets/public/logo-dark.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 const productLinks = [
   { label: "Mock Exam", to: "/mock-exam" },
@@ -38,6 +40,8 @@ const socials = [
 
 const Footer = () => {
   const nav = useNavigate();
+  const { theme } = useTheme();
+  const FooterLogo = theme === "dark" ? FooterLogoDark : FooterLogoLight;
 
   return (
     <footer className="ex-footer">

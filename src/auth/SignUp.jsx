@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import "../styles/auth.css";
 import { FcGoogle } from "react-icons/fc";
-import logo from "../assets/public/logo.png";
+import logoLight from "../assets/public/logo.png";
+import logoDark from "../assets/public/logo-dark.png";
 import { toast } from "react-toastify";
 import { studentApi } from "../config/studentApi";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +11,12 @@ import Button from "../shared/Button";
 import Input from "../shared/Input";
 import { FiArrowLeft } from "react-icons/fi";
 import { getGAClientId } from "../utils/analytics";
+import { useTheme } from "../context/ThemeContext";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const logo = theme === "dark" ? logoDark : logoLight;
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);

@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import "../../styles/auth.css";
-import logo from "../../assets/public/logo.png";
+import logoLight from "../../assets/public/logo.png";
+import logoDark from "../../assets/public/logo-dark.png";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { studentApi } from "../../config/studentApi";
 import Input from "../../shared/Input";
 import Button from "../../shared/Button";
 import { FiArrowLeft } from "react-icons/fi";
+import { useTheme } from "../../context/ThemeContext";
 
 const PasswordResetPage = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const logo = theme === "dark" ? logoDark : logoLight;
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({

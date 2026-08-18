@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import logo from "../assets/public/logo.png";
+import logoLight from "../assets/public/logo.png";
+import logoDark from "../assets/public/logo-dark.png";
 import "../styles/authCss/loading.css";
 
 const loadingMessages = [
@@ -11,6 +12,15 @@ const loadingMessages = [
 
 const Loading = ({ text }) => {
   const [messageIndex, setMessageIndex] = useState(0);
+  // Loading can render as PersistGate's fallback, outside ThemeProvider, so
+  // read the DOM attribute directly instead of useTheme() (whose context
+  // default would say "dark" even when data-theme hasn't been set yet).
+  const [logo] = useState(() =>
+    typeof document !== "undefined" &&
+    document.documentElement.getAttribute("data-theme") === "dark"
+      ? logoDark
+      : logoLight,
+  );
 
   useEffect(() => {
     // If a specific text prop is provided, don't cycle through messages.

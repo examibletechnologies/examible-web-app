@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import dashboardNavBar from "../assets/dashboardNavBar.json";
-import dashboardIcon from "../assets/public/logo.png";
+import dashboardIconLight from "../assets/public/logo.png";
+import dashboardIconDark from "../assets/public/logo-dark.png";
 import { MdDashboard, MdKeyboardArrowDown } from "react-icons/md";
 import { PiExamFill } from "react-icons/pi";
 import img2 from "../assets/public/pastquestion.svg";
@@ -12,6 +13,7 @@ import { SiMoneygram } from "react-icons/si";
 import { GrStatusGood } from "react-icons/gr";
 import "../styles/dashboardCss/dashboard.css";
 import { useExamibleContext } from "../context/ExamibleContext";
+import { useTheme } from "../context/ThemeContext";
 import { setMockExamQuestion } from "../global/slice";
 import Button from "../shared/Button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,6 +32,8 @@ const Sidebar = () => {
 
   const location = useLocation();
   const { setIsLogout } = useExamibleContext();
+  const { theme } = useTheme();
+  const dashboardIcon = theme === "dark" ? dashboardIconDark : dashboardIconLight;
 
   const dispatch = useDispatch();
 

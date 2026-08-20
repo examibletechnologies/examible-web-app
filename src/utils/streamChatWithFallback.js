@@ -110,6 +110,7 @@ async function streamFromModel(
         { message: accumulated, sender: "bot", direction: "incoming" },
       ]),
     );
+    return accumulated;
   } finally {
     // Guarantee this runs even if fetch() rejects or reader.read() throws, so a failed
     // attempt never leaves a stale RAF/timeout that could fire during the next model's attempt.
@@ -131,13 +132,12 @@ export async function streamChatWithFallback(
   for (let i = 0; i < MODELS.length; i++) {
     const model = MODELS[i];
     try {
-      await streamFromModel(model, payloadMessages, {
+      return await streamFromModel(model, payloadMessages, {
         chatMessages,
         dispatch,
         rafRef,
         setTyping,
       });
-      return;
     } catch (err) {
       console.warn(
         `[LegacyChatbot] ${model} failed (${err?.status ?? err?.name ?? "error"})`,
@@ -148,4 +148,68 @@ export async function streamChatWithFallback(
       dispatch(setChatbotMessages(chatMessages)); // clear any partial output before retrying
     }
   }
+}
+
+// Non-streaming, best-effort: asks the model for 3 short follow-up prompts based on the
+// conversation so far. Never throws — callers get [] on any failure (timeout, bad response,
+// unparsable output) since this is a UX nicety, not something worth surfacing an error for.
+const FOLLOWUP_TIMEOUT_MS = 8000;
+const FOLLOWUP_SYSTEM_PROMPT =
+  "Based on the conversation so far, suggest exactly 3 short follow-up prompts the student " +
+  "might naturally want to send next (e.g. asking for an example, a simpler explanation, or a " +
+  "practice question). Reply with ONLY the 3 suggestions, one per line — no numbering, no " +
+  "bullets, no quotes, no extra commentary. Each under 8 words, phrased as something the " +
+  "student would type, directly relevant to what was just discussed.";
+
+function parseFollowUpSuggestions(text) {
+  if (!text) return [];
+  return text
+    .split("\n")
+    .map((line) => line.replace(/^[\s*•\-\d.)]+/, "").trim())
+    .filter((line) => line.length > 0 && line.length <= 80)
+    .slice(0, 3);
+}
+
+export async function fetchFollowUpSuggestions(payloadMessages) {
+  const requestMessages = [
+    ...payloadMessages,
+    { role: "system", content: FOLLOWUP_SYSTEM_PROMPT },
+  ];
+
+  for (const model of MODELS) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      FOLLOWUP_TIMEOUT_MS,
+    );
+    try {
+      const response = await fetch(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: requestMessages,
+            stream: false,
+            max_tokens: 80,
+            temperature: 0.7,
+          }),
+          signal: controller.signal,
+        },
+      );
+      if (!response.ok) continue;
+      const data = await response.json();
+      const parsed = parseFollowUpSuggestions(data.choices?.[0]?.message?.content);
+      if (parsed.length) return parsed;
+    } catch (_err) {
+      // silent — try the next model
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+  return [];
 }

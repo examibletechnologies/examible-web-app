@@ -9,7 +9,10 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useState, useMemo, useRef } from "react";
 import { setChatbotMessages } from "../global/slice";
-import { streamChatWithFallback } from "../utils/streamChatWithFallback";
+import {
+  streamChatWithFallback,
+  fetchFollowUpSuggestions,
+} from "../utils/streamChatWithFallback";
 import { useDispatch, useSelector } from "react-redux";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -116,6 +119,7 @@ const LegacyChatbot = () => {
   const dispatch = useDispatch();
   const rafRef = useRef(null);
   const suggestions = useMemo(() => buildSuggestions(user), [user]);
+  const [followUps, setFollowUps] = useState([]);
 
   const processMessage = async (chatMessages) => {
     const systemMessage = {
@@ -136,12 +140,20 @@ const LegacyChatbot = () => {
     const payloadMessages = [systemMessage, ...apiMessages];
 
     try {
-      await streamChatWithFallback(payloadMessages, {
+      const botReply = await streamChatWithFallback(payloadMessages, {
         chatMessages,
         dispatch,
         rafRef,
         setTyping,
       });
+      // Non-blocking: don't delay the visible reply on this, and just leave the row
+      // empty (via the catch below) if it fails — it's a nicety, not a core feature.
+      fetchFollowUpSuggestions([
+        ...payloadMessages,
+        { role: "assistant", content: botReply },
+      ])
+        .then(setFollowUps)
+        .catch(() => setFollowUps([]));
     } catch {
       dispatch(
         setChatbotMessages([
@@ -166,6 +178,7 @@ const LegacyChatbot = () => {
     };
     const newMessages = [...messages, newMessage];
     dispatch(setChatbotMessages(newMessages));
+    setFollowUps([]);
     setTyping(true);
     processMessage(newMessages);
   };
@@ -190,76 +203,94 @@ const LegacyChatbot = () => {
   );
 
   return (
-    <MainContainer>
-      <ChatContainer>
-        <MessageList
-          style={{ paddingBlockStart: "10px" }}
-          scrollBehavior="smooth"
-          typingIndicator={
-            typing ? <TypingIndicator content="Examible bot is typing" /> : null
-          }
-        >
-          {processedMessages.length <= 1 ? (
-            <div className="legacybot-empty-state">
-              <div className="legacybot-empty-state-icon">👋</div>
-              <p className="legacybot-empty-state-title">
-                Hey, I&apos;m Examible bot
-              </p>
-              <p className="legacybot-empty-state-subtitle">
-                Ask me anything, or try one of these:
-              </p>
-              <div className="legacybot-suggestions">
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    className="legacybot-suggestion-chip"
-                    onClick={() => handleSend(suggestion)}
-                  >
-                    <span
-                      className="legacybot-suggestion-chip-icon"
-                      aria-hidden="true"
+    <>
+      <MainContainer>
+        <ChatContainer>
+          <MessageList
+            style={{ paddingBlockStart: "10px" }}
+            scrollBehavior="smooth"
+            typingIndicator={
+              typing ? (
+                <TypingIndicator content="Examible bot is typing" />
+              ) : null
+            }
+          >
+            {processedMessages.length <= 1 ? (
+              <div className="legacybot-empty-state">
+                <div className="legacybot-empty-state-icon">👋</div>
+                <p className="legacybot-empty-state-title">
+                  Hey, I&apos;m Examible bot
+                </p>
+                <p className="legacybot-empty-state-subtitle">
+                  Ask me anything, or try one of these:
+                </p>
+                <div className="legacybot-suggestions">
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      className="legacybot-suggestion-chip"
+                      onClick={() => handleSend(suggestion)}
                     >
-                      ✦
-                    </span>
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            processedMessages.map((message, index) => {
-              return (
-                <Message key={index} model={message}>
-                  <Message.CustomContent>
-                    <div className="chat-markdown">
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm, remarkMath]}
-                        rehypePlugins={[
-                          [
-                            rehypeKatex,
-                            { throwOnError: false, errorColor: "#cc0000" },
-                          ],
-                        ]}
-                        components={mdComponents}
+                      <span
+                        className="legacybot-suggestion-chip-icon"
+                        aria-hidden="true"
                       >
-                        {message._processed ?? message.message}
-                      </ReactMarkdown>
-                    </div>
-                  </Message.CustomContent>
-                </Message>
-              );
-            })
-          )}
-        </MessageList>
-        <MessageInput
-          attachButton={false}
-          placeholder="Type message here"
-          onSend={handleSend}
-          disabled={typing}
-        />
-      </ChatContainer>
-    </MainContainer>
+                        ✦
+                      </span>
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              processedMessages.map((message, index) => {
+                return (
+                  <Message key={index} model={message}>
+                    <Message.CustomContent>
+                      <div className="chat-markdown">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm, remarkMath]}
+                          rehypePlugins={[
+                            [
+                              rehypeKatex,
+                              { throwOnError: false, errorColor: "#cc0000" },
+                            ],
+                          ]}
+                          components={mdComponents}
+                        >
+                          {message._processed ?? message.message}
+                        </ReactMarkdown>
+                      </div>
+                    </Message.CustomContent>
+                  </Message>
+                );
+              })
+            )}
+          </MessageList>
+          <MessageInput
+            attachButton={false}
+            placeholder="Type message here"
+            onSend={handleSend}
+            disabled={typing}
+          />
+        </ChatContainer>
+      </MainContainer>
+      {!typing && followUps.length > 0 && (
+        <div className="legacybot-followups">
+          {followUps.map((suggestion) => (
+            <button
+              key={suggestion}
+              type="button"
+              className="legacybot-followup-chip"
+              onClick={() => handleSend(suggestion)}
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

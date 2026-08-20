@@ -31,6 +31,16 @@
   height: 70vh;
   font-family: "Montserrat", sans-serif;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* MainContainer defaults to height:100%, which would claim the whole 70vh box on its
+   own — flex:1 + min-height:0 lets it shrink to make room for the follow-up row below it,
+   so the row is visible without scrolling the whole widget. */
+.chatbot-body > .cs-main-container {
+  flex: 1;
+  min-height: 0;
 }
 
 .messagecontainer {
@@ -211,6 +221,85 @@
 @media (prefers-reduced-motion: reduce) {
   .legacybot-empty-state,
   .legacybot-suggestion-chip {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.legacybot-followups {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  padding: 8px 16px 12px;
+  animation: legacybot-followups-in 0.3s ease;
+}
+
+.legacybot-followups::-webkit-scrollbar {
+  height: 5px;
+}
+.legacybot-followups::-webkit-scrollbar-thumb {
+  background-color: var(--ex-brand, #804bf2);
+  border-radius: 10px;
+}
+
+.legacybot-followup-chip {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ex-brand-strong, var(--ex-brand, #804bf2));
+  background-color: var(--ex-brand-soft, rgba(128, 75, 242, 0.1));
+  border: 1px solid var(--ex-brand-soft, rgba(128, 75, 242, 0.1));
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    color 0.16s ease;
+  animation: legacybot-chip-in 0.3s ease backwards;
+}
+
+.legacybot-followup-chip:nth-child(1) {
+  animation-delay: 0.03s;
+}
+.legacybot-followup-chip:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.legacybot-followup-chip:nth-child(3) {
+  animation-delay: 0.13s;
+}
+
+.legacybot-followup-chip:hover,
+.legacybot-followup-chip:focus-visible {
+  background-color: var(--ex-brand, #804bf2);
+  color: var(--ex-text-onbrand, #ffffff);
+  border-color: var(--ex-brand, #804bf2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(128, 75, 242, 0.25);
+  outline: none;
+}
+
+.legacybot-followup-chip:active {
+  transform: translateY(0);
+}
+
+@keyframes legacybot-followups-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legacybot-followups,
+  .legacybot-followup-chip {
     animation: none !important;
     transition: none !important;
   }
